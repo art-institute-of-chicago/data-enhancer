@@ -1,6 +1,6 @@
 {
-    "name": "aic/data-service-template",
-    "description": "A data service for the AIC data hub.",
+    "name": "aic/data-enhancer",
+    "description": "A system-of-record for manually cleaned and reconciled data in our public API.",
     "keywords": [
         "framework",
         "laravel"

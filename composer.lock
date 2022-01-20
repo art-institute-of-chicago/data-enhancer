@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd9f6d83ce8b21508da7d7a98de0ad5e",
+    "content-hash": "a1a2335c58537a996b0ade0e449536e9",
     "packages": [
         {
             "name": "aic/data-hub-foundation",
@@ -29,7 +29,7 @@
                 "php": "^7.3|^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.0"
+                "friendsofphp/php-cs-fixer": "^3.5"
             },
             "type": "library",
             "extra": {
@@ -51,6 +51,11 @@
                 "psr-4": {
                     "Aic\\Hub\\Foundation\\": "src/"
                 }
+            },
+            "scripts": {
+                "lint": [
+                    "php-cs-fixer fix --diff --config .php-cs-fixer.dist.php"
+                ]
             },
             "license": [
                 "AGPL-3.0"
