@@ -1,0 +1,24 @@
+# Laravel 8.x Defaults
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.idea
+/.vscode
+
+# Foundation workflow [API-118]
+composer-dev.json
+composer-dev.lock
+
+# PHP-CS-Fixer [API-45]
+.php_cs.cache
+.php-cs-fixer.cache
