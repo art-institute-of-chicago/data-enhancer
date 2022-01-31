@@ -57,7 +57,8 @@
             "php artisan key:generate"
         ],
         "lint": [
-            "php-cs-fixer fix --diff --config vendor/aic/data-hub-foundation/.php-cs-fixer.dist.php"
+            "php-cs-fixer fix --diff --config vendor/aic/data-hub-foundation/.php-cs-fixer.dist.php",
+            "DIR='vendor/aic/data-hub-foundation' && [ -L ${DIR} ] && [ -d ${DIR} ] && cd ${DIR} && php-cs-fixer fix --diff --config .php-cs-fixer.dist.php || true"
         ],
         "foundation": [
             "php vendor/aic/data-hub-foundation/composer-dev.php",
