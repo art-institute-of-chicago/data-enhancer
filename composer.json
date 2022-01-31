@@ -21,9 +21,11 @@
         "sentry/sentry-laravel": "^2.9"
     },
     "require-dev": {
+        "brianium/paratest": "^6.4",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.5",
         "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^5.10",
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
@@ -33,9 +35,9 @@
         }
     },
     "autoload-dev": {
-        "classmap": [
-            "database/"
-        ]
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "scripts": {
         "post-autoload-dump": [
