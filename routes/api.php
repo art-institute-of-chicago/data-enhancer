@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\ArtworkController;
 use App\Http\Controllers\ArtworkTypeController;
+use App\Http\Controllers\TermController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,4 +19,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('artwork-types', [ArtworkTypeController::class, 'index']);
     Route::get('artwork-types/{id}', [ArtworkTypeController::class, 'show']);
+
+    Route::get('terms', [TermController::class, 'index']);
+    Route::get('terms/{id}', [TermController::class, 'show']);
 });
