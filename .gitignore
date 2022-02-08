@@ -15,6 +15,9 @@ yarn-error.log
 /.idea
 /.vscode
 
+# IDE cruft
+*.sublime-workspace
+
 # Foundation workflow [API-118]
 composer-dev.json
 composer-dev.lock
