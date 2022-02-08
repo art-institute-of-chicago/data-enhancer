@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Transformers;
+namespace App\Transformers\Api;
 
 use Aic\Hub\Foundation\AbstractTransformer;
 
