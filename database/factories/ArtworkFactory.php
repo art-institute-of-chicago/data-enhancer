@@ -16,7 +16,7 @@ class ArtworkFactory extends BaseFactory
 
         if ($this->faker->numberBetween(0, 4) < 2) {
             $depth = $this->faker->randomFloat(1, 0, 200);
-            $dimensionDisplay .=  ' × ' . $depth;
+            $dimensionDisplay .= ' × ' . $depth;
         }
 
         $dimensionDisplay .= ' cm';

@@ -18,7 +18,7 @@ class AgentTest extends BaseTestCase
             'birth_year' => 'integer|null',
             'death_year' => 'integer|null',
             'ulan_id' => 'integer|null',
-            'ulan_certainty' => function($value) {
+            'ulan_certainty' => function ($value) {
                 return is_null($value) || (is_integer($value) && $value <= 3 && $value >= 0);
             },
         ];
