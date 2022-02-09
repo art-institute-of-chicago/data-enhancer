@@ -58,6 +58,11 @@ return [
         Aic\Hub\Foundation\Providers\ResourceServiceProvider::class,
         Aic\Hub\Foundation\Providers\RouteServiceProvider::class,
 
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\GuzzleServiceProvider::class,
+
     ],
 
     /*
