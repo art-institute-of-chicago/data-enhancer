@@ -47,10 +47,13 @@ class SourceConsumer
     public static function getLimit(string $sourceName, string $resourceName)
     {
         return config(
-            'aic.imports.' . $sourceName . '.resources.' . $resourceName . '.limit',
+            'aic.imports.sources.' . $sourceName . '.resources.' . $resourceName . '.limit',
             config(
-                'aic.imports.' . $sourceName . '.limit',
-                100
+                'aic.imports.sources.' . $sourceName . '.limit',
+                config(
+                    'aic.imports.limit',
+                    100
+                )
             )
         );
     }
@@ -60,7 +63,7 @@ class SourceConsumer
      */
     public static function getSourceConfig(string $sourceName)
     {
-        $sourceConfig = config('aic.imports.' . $sourceName);
+        $sourceConfig = config('aic.imports.sources.' . $sourceName);
 
         if (!$sourceConfig) {
             throw new LogicException("Missing config for source '{$sourceName}'");
@@ -85,7 +88,7 @@ class SourceConsumer
 
     public static function getResourceConfig(string $sourceName, string $resourceName)
     {
-        $sourceConfig = config('aic.imports.' . $sourceName);
+        $sourceConfig = self::getSourceConfig($sourceName);
         $resourceConfig = $sourceConfig['resources'][$resourceName] ?? null;
 
         if (empty($sourceConfig)) {
