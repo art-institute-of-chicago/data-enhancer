@@ -29,7 +29,7 @@ class ArtworkFactory extends BaseFactory
             'height' => $height,
             'depth' => $depth,
             'medium_display' => $this->faker->words(5, true),
-            'support_aat_id' => $this->getValidId(),
+            'support_aat_id' => $this->getNumericId(),
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Transformers\Imports;
 class TermTransformer extends AbstractTransformer
 {
     protected $requiredFields = [
-        'id' => 'integer',
+        'id' => 'string',
         'title' => 'string',
     ];
 

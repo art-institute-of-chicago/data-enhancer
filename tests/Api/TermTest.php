@@ -13,7 +13,7 @@ class TermTest extends BaseTestCase
     protected function fields()
     {
         return [
-            'id' => 'integer',
+            'id' => 'string',
             'title' => 'string',
             'aat_id' => 'integer|null',
         ];

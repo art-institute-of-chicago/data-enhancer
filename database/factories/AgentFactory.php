@@ -21,7 +21,7 @@ class AgentFactory extends BaseFactory
             'title' => $this->getTitle(),
             'birth_year' => $birthYear,
             'death_year' => $deathYear,
-            'ulan_id' => $this->getValidId(),
+            'ulan_id' => $this->getNumericId(),
             'ulan_certainty' => $this->faker->numberBetween(0, 3),
         ];
     }
