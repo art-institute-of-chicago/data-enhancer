@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use LogicException;
 use App\Library\SourceConsumer;
 use Illuminate\Support\Facades\Bus;
 

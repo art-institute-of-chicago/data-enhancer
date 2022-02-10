@@ -62,6 +62,7 @@ return [
          * Application Service Providers...
          */
         App\Providers\GuzzleServiceProvider::class,
+        App\Providers\TransformerServiceProvider::class,
 
     ],
 

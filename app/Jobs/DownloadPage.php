@@ -25,8 +25,8 @@ class DownloadPage extends AbstractJob
         $transformerClass = $resourceConfig['transformer'];
 
         $transformer = app()->make($transformerClass);
-        $fields = ($transformer)::getRequiredFields();
 
+        $fields = $transformer->getRequiredFields();
         $limit = SourceConsumer::getLimit($this->sourceName, $this->resourceName);
 
         $results = SourceConsumer::get($this->sourceName, $this->resourceName, [
