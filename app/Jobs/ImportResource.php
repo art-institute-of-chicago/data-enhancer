@@ -22,7 +22,7 @@ class ImportResource extends AbstractJob
         $totalPages = SourceConsumer::getTotalPages($this->sourceName, $this->resourceName);
 
         if (config('aic.imports.debug')) {
-            $totalPages = 2;
+            $totalPages = min($totalPages, 2);
         }
 
         $this->batch()->add(Collection::times($totalPages, function ($currentPage) {

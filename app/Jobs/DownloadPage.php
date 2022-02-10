@@ -31,9 +31,16 @@ class DownloadPage extends AbstractJob
 
         $results = SourceConsumer::get($this->sourceName, $this->resourceName, [
             'fields' => $fields,
+            'limit' => $limit,
             'page' => $this->page,
         ]);
 
-        // TODO: Add ImportData job to batch here
+        $this->batch()->add([
+            new ImportData(
+                $this->sourceName,
+                $this->resourceName,
+                $results->data
+            )
+        ]);
     }
 }
