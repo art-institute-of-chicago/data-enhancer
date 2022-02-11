@@ -19,6 +19,14 @@ class DownloadPage extends AbstractJob
         $this->page = $page;
     }
 
+    public function tags()
+    {
+        return [
+            'source:' . $this->sourceName,
+            'resource:' . $this->resourceName,
+        ];
+    }
+
     public function handle()
     {
         $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName);

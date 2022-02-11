@@ -19,6 +19,14 @@ class ImportData extends AbstractJob
         $this->data = $data;
     }
 
+    public function tags()
+    {
+        return [
+            'source:' . $this->sourceName,
+            'resource:' . $this->resourceName,
+        ];
+    }
+
     public function handle()
     {
         if (count($this->data) < 1) {

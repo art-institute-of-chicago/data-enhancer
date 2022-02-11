@@ -14,6 +14,13 @@ class ImportSource extends AbstractJob
         $this->sourceName = $sourceName;
     }
 
+    public function tags()
+    {
+        return [
+            'source:' . $this->sourceName,
+        ];
+    }
+
     public function handle()
     {
         $sourceConfig = SourceConsumer::getSourceConfig($this->sourceName);

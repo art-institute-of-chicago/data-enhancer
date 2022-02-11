@@ -17,6 +17,14 @@ class ImportResource extends AbstractJob
         $this->resourceName = $resourceName;
     }
 
+    public function tags()
+    {
+        return [
+            'source:' . $this->sourceName,
+            'resource:' . $this->resourceName,
+        ];
+    }
+
     public function handle()
     {
         $totalPages = SourceConsumer::getTotalPages($this->sourceName, $this->resourceName);
