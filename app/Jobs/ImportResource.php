@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Library\SourceConsumer;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Bus;
 
 class ImportResource extends AbstractJob
 {
@@ -33,12 +34,16 @@ class ImportResource extends AbstractJob
             $totalPages = min($totalPages, 2);
         }
 
-        $this->batch()->add(Collection::times($totalPages, function ($currentPage) {
+        $jobs = Collection::times($totalPages, function ($currentPage) {
             return new DownloadPage(
                 $this->sourceName,
                 $this->resourceName,
                 $currentPage,
             );
-        }));
+        });
+
+        Bus::batch($jobs)
+            ->name($this->sourceName . '.' . $this->resourceName)
+            ->dispatch();
     }
 }

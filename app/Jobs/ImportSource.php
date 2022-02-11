@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Library\SourceConsumer;
-use Illuminate\Support\Facades\Bus;
 
 class ImportSource extends AbstractJob
 {
@@ -29,17 +28,11 @@ class ImportSource extends AbstractJob
             ->filter(function ($resourceConfig, $resourceName) {
                 return $resourceConfig['has_endpoint'];
             })
-            ->map(function ($resourceConfig, $resourceName) {
-                return new ImportResource(
+            ->each(function ($resourceConfig, $resourceName) {
+                ImportResource::dispatch(
                     $this->sourceName,
                     $resourceName,
                 );
-            })
-            ->values()
-            ->all();
-
-        Bus::batch($jobs)
-            ->name($this->sourceName)
-            ->dispatch();
+            });
     }
 }
