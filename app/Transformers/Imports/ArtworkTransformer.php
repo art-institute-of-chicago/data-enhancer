@@ -11,6 +11,7 @@ class ArtworkTransformer extends AbstractTransformer
         'title' => 'string',
         'dimensions' => 'string|null',
         'medium_display' => 'string|null',
+        'last_updated' => 'string',
     ];
 
     public function getFields()
@@ -20,6 +21,7 @@ class ArtworkTransformer extends AbstractTransformer
             'title' => null,
             'dimension_display' => fn (Datum $datum) => $datum->dimensions,
             'medium_display' => null,
+            'source_updated_at' => fn (Datum $datum) => $datum->last_updated,
         ];
     }
 }

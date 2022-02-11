@@ -30,6 +30,7 @@ class ArtworkFactory extends BaseFactory
             'depth' => $depth,
             'medium_display' => $this->faker->words(5, true),
             'support_aat_id' => $this->getNumericId(),
+            'source_updated_at' => $this->faker->dateTime(),
         ];
     }
 }

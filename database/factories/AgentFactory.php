@@ -23,6 +23,7 @@ class AgentFactory extends BaseFactory
             'death_year' => $deathYear,
             'ulan_id' => $this->getNumericId(),
             'ulan_certainty' => $this->faker->numberBetween(0, 3),
+            'source_updated_at' => $this->faker->dateTime(),
         ];
     }
 }

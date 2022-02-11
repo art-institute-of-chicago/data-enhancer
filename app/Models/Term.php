@@ -10,6 +10,8 @@ class Term extends BaseModel
         'id' => 'string',
         'title' => 'string',
         'aat_id' => 'integer',
+        'source_updated_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public static function validateId($id)

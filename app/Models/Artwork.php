@@ -15,5 +15,7 @@ class Artwork extends BaseModel
         'depth' => 'integer',
         'medium_display' => 'string',
         'support_aat_id' => 'integer',
+        'source_updated_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 }

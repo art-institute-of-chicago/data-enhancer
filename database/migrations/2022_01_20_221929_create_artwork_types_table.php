@@ -12,6 +12,7 @@ class CreateArtworkTypesTable extends Migration
             $table->integer('id')->signed()->primary();
             $table->text('title')->nullable();
             $table->integer('aat_id')->signed()->nullable();
+            $table->timestamp('source_updated_at')->nullable();
             $table->timestamps();
         });
     }

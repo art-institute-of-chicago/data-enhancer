@@ -12,6 +12,7 @@ class CreateTermsTable extends Migration
             $table->string('id')->signed()->primary();
             $table->text('title');
             $table->integer('aat_id')->signed()->nullable();
+            $table->timestamp('source_updated_at')->nullable();
             $table->timestamps();
         });
     }

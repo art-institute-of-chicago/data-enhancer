@@ -16,6 +16,8 @@ class ArtworkTypeTest extends BaseTestCase
             'id' => 'integer',
             'title' => 'string',
             'aat_id' => 'integer|null',
+            'source_updated_at' => 'string|null',
+            'updated_at' => 'string',
         ];
     }
 }
