@@ -12,11 +12,22 @@ class DownloadPage extends AbstractJob
 
     private $page;
 
-    public function __construct(string $sourceName, string $resourceName, int $page)
-    {
+    private $isFull;
+
+    private $since;
+
+    public function __construct(
+        string $sourceName,
+        string $resourceName,
+        int $page,
+        bool $isFull,
+        ?string $since
+    ) {
         $this->sourceName = $sourceName;
         $this->resourceName = $resourceName;
         $this->page = $page;
+        $this->isFull = $isFull;
+        $this->since = $since;
     }
 
     public function tags()
@@ -47,7 +58,10 @@ class DownloadPage extends AbstractJob
             new ImportData(
                 $this->sourceName,
                 $this->resourceName,
-                $results->data
+                $results->data,
+                $this->isFull,
+                $this->since,
+                $this->page,
             )
         ]);
     }

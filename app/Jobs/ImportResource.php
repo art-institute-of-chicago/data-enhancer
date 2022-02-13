@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use LogicException;
 use App\Library\SourceConsumer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
@@ -12,10 +13,20 @@ class ImportResource extends AbstractJob
 
     private $resourceName;
 
-    public function __construct(string $sourceName, string $resourceName)
-    {
+    private $isFull;
+
+    private $since;
+
+    public function __construct(
+        string $sourceName,
+        string $resourceName,
+        bool $isFull,
+        ?string $since
+    ) {
         $this->sourceName = $sourceName;
         $this->resourceName = $resourceName;
+        $this->isFull = $isFull;
+        $this->since = $since;
     }
 
     public function tags()
@@ -28,17 +39,22 @@ class ImportResource extends AbstractJob
 
     public function handle()
     {
-        $totalPages = SourceConsumer::getTotalPages($this->sourceName, $this->resourceName);
+        $pages = $this->isFull
+            ? SourceConsumer::getTotalPages($this->sourceName, $this->resourceName)
+            : 1; // for partial imports, queue one page at a time
 
-        if (config('aic.imports.debug')) {
-            $totalPages = min($totalPages, 2);
+        if (!$this->isFull && empty($this->since)) {
+            throw new LogicException("Parameter 'since' cannot be empty for partial imports");
         }
 
-        $jobs = Collection::times($totalPages, function ($currentPage) {
+
+        $jobs = Collection::times($pages, function ($currentPage) {
             return new DownloadPage(
                 $this->sourceName,
                 $this->resourceName,
                 $currentPage,
+                $this->isFull,
+                $this->since,
             );
         });
 

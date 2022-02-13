@@ -18,6 +18,8 @@ class ImportAggregator extends AbstractCommand
         ImportSource::dispatch(
             'aggregator',
             $this->argument('resource'),
+            $this->option('full'),
+            $this->option('since'),
         );
     }
 }

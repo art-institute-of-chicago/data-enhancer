@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use LogicException;
 use App\Library\SourceConsumer;
 
 class ImportSource extends AbstractJob
@@ -10,12 +11,20 @@ class ImportSource extends AbstractJob
 
     private $resourceName;
 
+    private $isFull;
+
+    private $since;
+
     public function __construct(
         string $sourceName,
         ?string $resourceName,
+        bool $isFull,
+        ?string $since
     ) {
         $this->sourceName = $sourceName;
         $this->resourceName = $resourceName;
+        $this->isFull = $isFull;
+        $this->since = $since;
     }
 
     public function tags()
@@ -42,6 +51,8 @@ class ImportSource extends AbstractJob
                 ImportResource::dispatch(
                     $this->sourceName,
                     $resourceName,
+                    $this->isFull,
+                    $this->since,
                 );
             });
     }

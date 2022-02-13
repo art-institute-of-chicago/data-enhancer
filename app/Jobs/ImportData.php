@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use LogicException;
+use Carbon\Carbon;
 use App\Library\SourceConsumer;
 
 class ImportData extends AbstractJob
@@ -12,11 +14,30 @@ class ImportData extends AbstractJob
 
     private $data;
 
-    public function __construct(string $sourceName, string $resourceName, array $data)
-    {
+    private $isFull;
+
+    private $since;
+
+    private $page;
+
+    public function __construct(
+        string $sourceName,
+        string $resourceName,
+        array $data,
+        bool $isFull,
+        ?string $since,
+        int $page
+    ) {
         $this->sourceName = $sourceName;
         $this->resourceName = $resourceName;
         $this->data = $data;
+        $this->isFull = $isFull;
+        $this->since = $since;
+        $this->page = $page;
+
+        if (!$this->isFull && empty($this->since)) {
+            throw new LogicException("Parameter 'since' cannot be empty for partial imports");
+        }
     }
 
     public function tags()
@@ -29,7 +50,9 @@ class ImportData extends AbstractJob
 
     public function handle()
     {
-        if (count($this->data) < 1) {
+        $rawDataCount = count($this->data);
+
+        if ($rawDataCount < 1) {
             return;
         }
 
@@ -46,6 +69,18 @@ class ImportData extends AbstractJob
             ->keyBy($primaryKey);
 
         $sourceUpdatedAtField = ($transformerClass)::getSourceUpdatedAtField();
+
+        if (!$this->isFull) {
+            $sinceCarbon = new Carbon($this->since);
+
+            $transformedData = $transformedData->filter(
+                fn ($datum) => (new Carbon($datum[$sourceUpdatedAtField]))->gte($sinceCarbon)
+            );
+
+            if ($transformedData->count() < 1) {
+                return;
+            }
+        }
 
         $columns = array_keys($transformedData->first());
         $incomingIds = $transformedData->keys();
@@ -81,5 +116,17 @@ class ImportData extends AbstractJob
             $primaryKey,
             array_diff($columns, [$primaryKey])
         );
+
+        if (!$this->isFull && $rawDataCount === $transformedData->count()) {
+            $this->batch()->add([
+                new DownloadPage(
+                    $this->sourceName,
+                    $this->resourceName,
+                    $this->page + 1,
+                    $this->isFull,
+                    $this->since,
+                )
+            ]);
+        }
     }
 }
