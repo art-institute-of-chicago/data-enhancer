@@ -45,6 +45,8 @@ class ImportData extends AbstractJob
             ->map(fn ($datum) => $transformer->transform($datum))
             ->keyBy($primaryKey);
 
+        $sourceUpdatedAtField = ($transformerClass)::getSourceUpdatedAtField();
+
         $columns = array_keys($transformedData->first());
         $incomingIds = $transformedData->keys();
 
@@ -53,11 +55,22 @@ class ImportData extends AbstractJob
 
         $newIds = $incomingIds->diff($foundIds);
         $dirtyIds = $foundModels
-            ->filter(function ($model) use ($transformedData, $primaryKey) {
-                $transformedDatum = $transformedData->get($model->{$primaryKey});
-                $model->fill($transformedDatum);
-                return count($model->getDirty()) > 0;
-            })
+            ->filter(
+                function ($model) use (
+                    $transformedData,
+                    $primaryKey,
+                    $sourceUpdatedAtField
+                ) {
+                    $transformedDatum = $transformedData
+                        ->get($model->{$primaryKey});
+
+                    unset($transformedDatum[$sourceUpdatedAtField]);
+
+                    $model->fill($transformedDatum);
+
+                    return count($model->getDirty()) > 0;
+                }
+            )
             ->pluck($primaryKey);
 
         $upsertIds = $newIds->merge($dirtyIds);
