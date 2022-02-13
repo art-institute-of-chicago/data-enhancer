@@ -9,12 +9,15 @@ class ImportAggregator extends AbstractCommand
 {
     use HasSince;
 
-    protected $signature = 'import:aggregator';
+    protected $signature = 'import:aggregator {resource?}';
 
     protected $description = 'Import configured resources from the aggregator';
 
     public function handle()
     {
-        ImportSource::dispatch('aggregator');
+        ImportSource::dispatch(
+            'aggregator',
+            $this->argument('resource'),
+        );
     }
 }

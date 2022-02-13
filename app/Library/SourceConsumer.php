@@ -80,13 +80,13 @@ class SourceConsumer
         }
 
         foreach ($sourceConfig['resources'] as $resourceName => $resourceConfig) {
-            self::validateResourceConfig($sourceName, $resourceName, $resourceConfig);
+            self::validateResourceConfig($sourceName, $resourceName, $resourceConfig, false);
         }
 
         return $sourceConfig;
     }
 
-    public static function getResourceConfig(string $sourceName, string $resourceName)
+    public static function getResourceConfig(string $sourceName, string $resourceName, bool $mustHaveEndpoint = true)
     {
         $sourceConfig = self::getSourceConfig($sourceName);
         $resourceConfig = $sourceConfig['resources'][$resourceName] ?? null;
@@ -95,12 +95,12 @@ class SourceConsumer
             throw new LogicException("Source '{$sourceName}' missing resource '{$resourceName}'");
         }
 
-        self::validateResourceConfig($sourceName, $resourceName, $resourceConfig);
+        self::validateResourceConfig($sourceName, $resourceName, $resourceConfig, $mustHaveEndpoint);
 
         return $resourceConfig;
     }
 
-    private static function validateResourceConfig(string $sourceName, string $resourceName, array $resourceConfig)
+    private static function validateResourceConfig(string $sourceName, string $resourceName, array $resourceConfig, bool $mustHaveEndpoint)
     {
         foreach (['model', 'transformer', 'has_endpoint'] as $key) {
             if (empty($resourceConfig[$key])) {
@@ -112,6 +112,10 @@ class SourceConsumer
             if (!class_exists($resourceConfig[$key])) {
                 throw new LogicException("Class '{$resourceConfig[$key]}' required by '{$resourceName}' not found");
             }
+        }
+
+        if ($mustHaveEndpoint && $resourceConfig['has_endpoint'] !== true) {
+            throw new LogicException("Resource '{$resourceName}' in '{$sourceName}' has no endpoint");
         }
     }
 }

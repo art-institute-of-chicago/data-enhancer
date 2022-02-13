@@ -8,9 +8,14 @@ class ImportSource extends AbstractJob
 {
     private $sourceName;
 
-    public function __construct(string $sourceName)
-    {
+    private $resourceName;
+
+    public function __construct(
+        string $sourceName,
+        ?string $resourceName,
+    ) {
         $this->sourceName = $sourceName;
+        $this->resourceName = $resourceName;
     }
 
     public function tags()
@@ -22,17 +27,41 @@ class ImportSource extends AbstractJob
 
     public function handle()
     {
-        $sourceConfig = SourceConsumer::getSourceConfig($this->sourceName);
+        $resources = !empty($this->resourceName)
+            ? $this->getOneResource()
+            : $this->getAllResources();
 
-        $jobs = collect($sourceConfig['resources'])
-            ->filter(function ($resourceConfig, $resourceName) {
-                return $resourceConfig['has_endpoint'];
-            })
+        if ($resources->count() < 1) {
+            throw new LogicException(
+                "No matching resources found for source {$sourceName}"
+            );
+        }
+
+        $resources
             ->each(function ($resourceConfig, $resourceName) {
                 ImportResource::dispatch(
                     $this->sourceName,
                     $resourceName,
                 );
             });
+    }
+
+    private function getAllResources()
+    {
+        $sourceConfig = SourceConsumer::getSourceConfig($this->sourceName);
+
+        return collect($sourceConfig['resources'])
+            ->filter(function ($resourceConfig, $resourceName) {
+                return $resourceConfig['has_endpoint'];
+            });
+    }
+
+    private function getOneResource()
+    {
+        $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName);
+
+        return collect([
+            $this->resourceName => $resourceConfig,
+        ]);
     }
 }
