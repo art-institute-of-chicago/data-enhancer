@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use LogicException;
+use Carbon\Carbon;
 use App\Library\SourceConsumer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
@@ -47,6 +48,12 @@ class ImportResource extends AbstractJob
             throw new LogicException("Parameter 'since' cannot be empty for partial imports");
         }
 
+        $this->debug(sprintf('IMP %s %s',
+            $this->resourceName,
+            $this->isFull
+                ? 'full'
+                : 'since ' . Carbon::parse($this->since)->toIso8601String()
+        ));
 
         $jobs = Collection::times($pages, function ($currentPage) {
             return new DownloadPage(

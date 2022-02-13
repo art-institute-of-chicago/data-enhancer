@@ -117,6 +117,16 @@ class ImportData extends AbstractJob
             array_diff($columns, [$primaryKey])
         );
 
+        $this->debug(sprintf(
+            'IMP %s, p. %d: %d, %d, %d',
+            $this->resourceName,
+            $this->page,
+            $newIds->count(),
+            $dirtyIds->count(),
+            $transformedData->count(),
+            $rawDataCount
+        ));
+
         if (!$this->isFull && $rawDataCount === $transformedData->count()) {
             $this->batch()->add([
                 new DownloadPage(
