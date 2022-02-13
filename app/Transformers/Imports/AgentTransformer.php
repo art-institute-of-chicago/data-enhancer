@@ -21,7 +21,7 @@ class AgentTransformer extends AbstractTransformer
             'title' => fn (Datum $datum) => $datum->sort_title,
             'birth_year' => fn (Datum $datum) => $datum->birth_date,
             'death_year' => fn (Datum $datum) => $datum->death_date,
-            'source_updated_at' => fn (Datum $datum) => $datum->last_updated,
+            'source_updated_at' => fn (Datum $datum) => $this->getDateTime($datum->last_updated),
         ];
     }
 }

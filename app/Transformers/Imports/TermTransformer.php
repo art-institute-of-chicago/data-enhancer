@@ -17,7 +17,7 @@ class TermTransformer extends AbstractTransformer
         return [
             'id' => null,
             'title' => null,
-            'source_updated_at' => fn (Datum $datum) => $datum->last_updated,
+            'source_updated_at' => fn (Datum $datum) => $this->getDateTime($datum->last_updated),
         ];
     }
 }

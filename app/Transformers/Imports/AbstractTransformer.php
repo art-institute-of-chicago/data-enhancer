@@ -4,9 +4,12 @@ namespace App\Transformers\Imports;
 
 use Closure;
 use App\Transformers\Datum;
+use App\Transformers\Imports\Concerns\HasDates;
 
 abstract class AbstractTransformer
 {
+    use HasDates;
+
     private $mappedFields;
 
     abstract protected function getFields();

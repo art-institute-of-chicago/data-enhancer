@@ -21,7 +21,7 @@ class ArtworkTransformer extends AbstractTransformer
             'title' => null,
             'dimension_display' => fn (Datum $datum) => $datum->dimensions,
             'medium_display' => null,
-            'source_updated_at' => fn (Datum $datum) => $datum->last_updated,
+            'source_updated_at' => fn (Datum $datum) => $this->getDateTime($datum->last_updated),
         ];
     }
 }
