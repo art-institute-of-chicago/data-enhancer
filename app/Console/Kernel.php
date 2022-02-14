@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,10 +20,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $since = Carbon::parse('10 min ago')->toIso8601String();
+
         $schedule->command('update:cloudfront-ips')
             ->hourly();
 
-        $schedule->command('import:aggregator --since "10 min ago"')
+        $schedule->command("import:aggregator --since '{$since}'")
             ->everyFiveMinutes()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
     }
