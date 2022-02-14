@@ -8,12 +8,20 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
+     * WEB-874: Make commands never overlap.
+     */
+    private const FOR_ONE_YEAR = 525600;
+
+    /**
      * Define the application's command schedule.
      *
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('import:aggregator --since "10 min ago"')
+            ->everyFiveMinutes()
+            ->withoutOverlapping(self::FOR_ONE_YEAR);
     }
 
     /**
