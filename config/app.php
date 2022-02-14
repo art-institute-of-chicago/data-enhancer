@@ -61,6 +61,7 @@ return [
         /*
          * Application Service Providers...
          */
+        App\Providers\HorizonServiceProvider::class,
         App\Providers\GuzzleServiceProvider::class,
         App\Providers\TransformerServiceProvider::class,
 
