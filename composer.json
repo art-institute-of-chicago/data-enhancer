@@ -16,7 +16,9 @@
     "require": {
         "php": "^7.3|^8.0",
         "aic/data-hub-foundation": "dev-laravel-8-support",
+        "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",
+        "laravel/horizon": "^5.9",
         "laravel/tinker": "^2.5",
         "sentry/sentry-laravel": "^2.9"
     },

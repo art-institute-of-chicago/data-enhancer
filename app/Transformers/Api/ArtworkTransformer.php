@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Http\Transformers;
-
-use Aic\Hub\Foundation\AbstractTransformer;
+namespace App\Transformers\Api;
 
 class ArtworkTransformer extends AbstractTransformer
 {
@@ -17,6 +15,8 @@ class ArtworkTransformer extends AbstractTransformer
             'depth' => $item->depth,
             'medium_display' => $item->medium_display,
             'support_aat_id' => $item->support_aat_id,
+            'source_updated_at' => $this->getDateTime($item->source_updated_at),
+            'updated_at' => $this->getDateTime($item->updated_at),
         ];
 
         return parent::transform($data);

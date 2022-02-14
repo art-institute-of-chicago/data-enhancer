@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Http\Transformers;
-
-use Aic\Hub\Foundation\AbstractTransformer;
+namespace App\Transformers\Api;
 
 class AgentTransformer extends AbstractTransformer
 {
@@ -15,6 +13,8 @@ class AgentTransformer extends AbstractTransformer
             'death_year' => $item->death_year,
             'ulan_id' => $item->ulan_id,
             'ulan_certainty' => $item->ulan_certainty,
+            'source_updated_at' => $this->getDateTime($item->source_updated_at),
+            'updated_at' => $this->getDateTime($item->updated_at),
         ];
 
         return parent::transform($data);

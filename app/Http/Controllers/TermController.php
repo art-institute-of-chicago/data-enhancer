@@ -8,5 +8,5 @@ class TermController extends BaseController
 {
     protected $model = \App\Models\Term::class;
 
-    protected $transformer = \App\Http\Transformers\TermTransformer::class;
+    protected $transformer = \App\Transformers\Api\TermTransformer::class;
 }

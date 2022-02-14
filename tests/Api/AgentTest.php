@@ -21,6 +21,8 @@ class AgentTest extends BaseTestCase
             'ulan_certainty' => function ($value) {
                 return is_null($value) || (is_integer($value) && $value <= 3 && $value >= 0);
             },
+            'source_updated_at' => 'string|null',
+            'updated_at' => 'string',
         ];
     }
 }

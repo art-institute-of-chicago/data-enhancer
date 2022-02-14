@@ -9,9 +9,10 @@ class CreateTermsTable extends Migration
     public function up()
     {
         Schema::create('terms', function (Blueprint $table) {
-            $table->integer('id')->signed()->primary();
+            $table->string('id')->signed()->primary();
             $table->text('title');
             $table->integer('aat_id')->signed()->nullable();
+            $table->timestamp('source_updated_at')->nullable();
             $table->timestamps();
         });
     }

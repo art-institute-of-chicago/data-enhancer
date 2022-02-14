@@ -11,7 +11,8 @@ class ArtworkTypeFactory extends BaseFactory
         return [
             'id' => $this->getValidId(),
             'title' => $this->getTitle(),
-            'aat_id' => $this->getValidId(),
+            'aat_id' => $this->getNumericId(),
+            'source_updated_at' => $this->faker->dateTime(),
         ];
     }
 }

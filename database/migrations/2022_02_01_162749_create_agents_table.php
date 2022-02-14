@@ -15,6 +15,7 @@ class CreateAgentsTable extends Migration
             $table->integer('death_year')->nullable();
             $table->integer('ulan_id')->signed()->nullable();
             $table->integer('ulan_certainty')->nullable();
+            $table->timestamp('source_updated_at')->nullable();
             $table->timestamps();
         });
     }

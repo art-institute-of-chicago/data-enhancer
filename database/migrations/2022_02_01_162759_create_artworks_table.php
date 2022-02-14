@@ -17,6 +17,7 @@ class CreateArtworksTable extends Migration
             $table->integer('depth')->signed()->nullable();
             $table->text('medium_display')->nullable();
             $table->integer('support_aat_id')->signed()->nullable();
+            $table->timestamp('source_updated_at')->nullable();
             $table->timestamps();
         });
     }
