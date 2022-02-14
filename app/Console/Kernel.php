@@ -19,6 +19,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('update:cloudfront-ips')
+            ->hourly();
+
         $schedule->command('import:aggregator --since "10 min ago"')
             ->everyFiveMinutes()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
