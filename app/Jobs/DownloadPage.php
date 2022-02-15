@@ -6,6 +6,8 @@ use App\Library\SourceConsumer;
 
 class DownloadPage extends AbstractJob
 {
+    public $tries = 3;
+
     private $sourceName;
 
     private $resourceName;
@@ -28,6 +30,15 @@ class DownloadPage extends AbstractJob
         $this->page = $page;
         $this->isFull = $isFull;
         $this->since = $since;
+    }
+
+    public function backoff()
+    {
+        return [
+            random_int(1, 2),
+            random_int(3, 7),
+            random_int(8, 12),
+        ];
     }
 
     public function tags()
