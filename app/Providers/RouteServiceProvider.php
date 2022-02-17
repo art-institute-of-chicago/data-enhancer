@@ -17,6 +17,7 @@ class RouteServiceProvider extends BaseServiceProvider
     protected function mapCsvRoutes()
     {
         Route::prefix('csv')
+            ->middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/csv.php'));
     }
