@@ -56,7 +56,6 @@ return [
          */
         Aic\Hub\Foundation\Providers\DefaultConfigServiceProvider::class,
         Aic\Hub\Foundation\Providers\ResourceServiceProvider::class,
-        Aic\Hub\Foundation\Providers\RouteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -64,6 +63,7 @@ return [
         App\Providers\HorizonServiceProvider::class,
         App\Providers\GuzzleServiceProvider::class,
         App\Providers\TransformerServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
 
     ],
 
