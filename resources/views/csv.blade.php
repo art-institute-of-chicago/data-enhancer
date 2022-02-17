@@ -33,10 +33,9 @@
             <div class="mb-3">
                 <label for="resource" class="form-label">Resource</label>
                 <select class="form-select" id="resource" name="resource">
-                    <option>agents</option>
-                    <option>artworks</option>
-                    <option>artwork-types</option>
-                    <option>terms</option>
+                    @foreach ($resources as $resource)
+                        <option {{ $resource['selected'] ? 'selected' : '' }}>{{ $resource['name'] }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="mb-3">

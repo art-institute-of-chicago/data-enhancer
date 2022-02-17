@@ -9,7 +9,21 @@ class CsvController extends BaseController
 {
     public function index()
     {
-        return view('csv');
+        $resources = array_map(function($resource) {
+            return [
+                'name' => $resource,
+                'selected' => old('resource') === $resource,
+            ];
+        }, [
+            'agents',
+            'artworks',
+            'artwork-types',
+            'terms',
+        ]);
+
+        return view('csv', [
+            'resources' => $resources,
+        ]);
     }
 
     public function upload(Request $request)
