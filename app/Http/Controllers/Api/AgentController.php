@@ -8,5 +8,5 @@ class AgentController extends BaseController
 {
     protected $model = \App\Models\Agent::class;
 
-    protected $transformer = \App\Transformers\Api\AgentTransformer::class;
+    protected $transformer = \App\Transformers\Outbound\Api\AgentTransformer::class;
 }

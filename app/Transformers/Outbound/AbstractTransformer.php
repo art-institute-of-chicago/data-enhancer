@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Transformers\Api;
+namespace App\Transformers\Outbound;
 
 use Carbon\CarbonInterface;
 use Aic\Hub\Foundation\AbstractTransformer as BaseTransformer;

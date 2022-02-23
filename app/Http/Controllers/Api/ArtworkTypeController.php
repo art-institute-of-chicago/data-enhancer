@@ -8,5 +8,5 @@ class ArtworkTypeController extends BaseController
 {
     protected $model = \App\Models\ArtworkType::class;
 
-    protected $transformer = \App\Transformers\Api\ArtworkTypeTransformer::class;
+    protected $transformer = \App\Transformers\Outbound\Api\ArtworkTypeTransformer::class;
 }

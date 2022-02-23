@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Transformers\Api;
+namespace App\Transformers\Outbound\Api;
+
+use App\Transformers\Outbound\AbstractTransformer;
 
 class ArtworkTransformer extends AbstractTransformer
 {

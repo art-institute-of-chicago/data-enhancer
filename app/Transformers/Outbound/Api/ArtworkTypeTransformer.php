@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Transformers\Api;
+namespace App\Transformers\Outbound\Api;
 
-class TermTransformer extends AbstractTransformer
+use App\Transformers\Outbound\AbstractTransformer;
+
+class ArtworkTypeTransformer extends AbstractTransformer
 {
     public function transform($item)
     {
