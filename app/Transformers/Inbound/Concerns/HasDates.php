@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Transformers\Imports\Concerns;
+namespace App\Transformers\Inbound\Concerns;
 
 use Carbon\Carbon;
 

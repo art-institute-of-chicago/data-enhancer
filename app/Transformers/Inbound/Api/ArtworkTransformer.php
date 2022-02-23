@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Transformers\Imports;
+namespace App\Transformers\Inbound\Api;
 
 use App\Transformers\Datum;
+use App\Transformers\Inbound\AbstractTransformer;
 
 class ArtworkTransformer extends AbstractTransformer
 {

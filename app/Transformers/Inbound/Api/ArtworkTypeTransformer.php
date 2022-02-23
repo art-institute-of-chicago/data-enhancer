@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Transformers\Imports;
+namespace App\Transformers\Inbound\Api;
 
 use App\Transformers\Datum;
+use App\Transformers\Inbound\AbstractTransformer;
 
-class TermTransformer extends AbstractTransformer
+class ArtworkTypeTransformer extends AbstractTransformer
 {
     protected $requiredFields = [
-        'id' => 'string',
+        'id' => 'integer',
         'title' => 'string',
         'last_updated' => 'string',
     ];

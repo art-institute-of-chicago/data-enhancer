@@ -11,22 +11,22 @@ return [
                 'agents' => [
                     'has_endpoint' => true,
                     'model' => \App\Models\Agent::class,
-                    'transformer' => \App\Transformers\Imports\AgentTransformer::class,
+                    'transformer' => \App\Transformers\Inbound\Api\AgentTransformer::class,
                 ],
                 'artworks' => [
                     'has_endpoint' => true,
                     'model' => \App\Models\Artwork::class,
-                    'transformer' => \App\Transformers\Imports\ArtworkTransformer::class,
+                    'transformer' => \App\Transformers\Inbound\Api\ArtworkTransformer::class,
                 ],
                 'artwork-types' => [
                     'has_endpoint' => true,
                     'model' => \App\Models\ArtworkType::class,
-                    'transformer' => \App\Transformers\Imports\ArtworkTypeTransformer::class,
+                    'transformer' => \App\Transformers\Inbound\Api\ArtworkTypeTransformer::class,
                 ],
                 'category-terms' => [
                     'has_endpoint' => true,
                     'model' => \App\Models\Term::class,
-                    'transformer' => \App\Transformers\Imports\TermTransformer::class,
+                    'transformer' => \App\Transformers\Inbound\Api\TermTransformer::class,
                 ],
             ],
         ],

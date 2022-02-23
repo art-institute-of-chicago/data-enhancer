@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Transformers\Imports;
+namespace App\Transformers\Inbound;
 
 use Closure;
 use App\Transformers\Datum;
-use App\Transformers\Imports\Concerns\HasDates;
+use App\Transformers\Inbound\Concerns\HasDates;
 
 abstract class AbstractTransformer
 {
