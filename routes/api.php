@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\AgentController;
-use App\Http\Controllers\ArtworkController;
-use App\Http\Controllers\ArtworkTypeController;
-use App\Http\Controllers\TermController;
+use App\Http\Controllers\Api\AgentController;
+use App\Http\Controllers\Api\ArtworkController;
+use App\Http\Controllers\Api\ArtworkTypeController;
+use App\Http\Controllers\Api\TermController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
