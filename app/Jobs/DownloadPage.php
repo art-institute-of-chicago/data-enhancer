@@ -73,7 +73,7 @@ class DownloadPage extends AbstractJob
         $batch = $this->batch();
         $batch->options['queue'] = 'high';
         $batch->add([
-            new ImportData(
+            new ImportPage(
                 $this->sourceName,
                 $this->resourceName,
                 $results->data,
