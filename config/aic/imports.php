@@ -31,5 +31,27 @@ return [
                 ],
             ],
         ],
+
+        'csv' => [
+            'is_api' => false,
+            'resources' => [
+                'agents' => [
+                    'model' => \App\Models\Agent::class,
+                    'transformer' => \App\Transformers\Inbound\Csv\AgentTransformer::class,
+                ],
+                'artworks' => [
+                    'model' => \App\Models\Artwork::class,
+                    'transformer' => \App\Transformers\Inbound\Csv\ArtworkTransformer::class,
+                ],
+                'artwork-types' => [
+                    'model' => \App\Models\ArtworkType::class,
+                    'transformer' => \App\Transformers\Inbound\Csv\ArtworkTypeTransformer::class,
+                ],
+                'category-terms' => [
+                    'model' => \App\Models\Term::class,
+                    'transformer' => \App\Transformers\Inbound\Csv\TermTransformer::class,
+                ],
+            ],
+        ],
     ],
 ];
