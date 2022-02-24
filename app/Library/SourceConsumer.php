@@ -61,7 +61,7 @@ class SourceConsumer
     /**
      * Should we validate config via tests instead?
      */
-    public static function getSourceConfig(string $sourceName)
+    public static function getSourceConfig(string $sourceName, bool $validateResources = true)
     {
         $sourceConfig = config('aic.imports.sources.' . $sourceName);
 
@@ -85,14 +85,16 @@ class SourceConsumer
             throw new LogicException("No 'resources' defined for source '{$sourceName}'");
         }
 
-        foreach ($sourceConfig['resources'] as $resourceName => $resourceConfig) {
-            self::validateResourceConfig(
-                $sourceName,
-                $resourceName,
-                $sourceConfig,
-                $resourceConfig,
-                false
-            );
+        if ($validateResources) {
+            foreach ($sourceConfig['resources'] as $resourceName => $resourceConfig) {
+                self::validateResourceConfig(
+                    $sourceName,
+                    $resourceName,
+                    $sourceConfig,
+                    $resourceConfig,
+                    false
+                );
+            }
         }
 
         return $sourceConfig;
@@ -103,7 +105,7 @@ class SourceConsumer
         string $resourceName,
         bool $mustHaveEndpoint = true
     ) {
-        $sourceConfig = self::getSourceConfig($sourceName);
+        $sourceConfig = self::getSourceConfig($sourceName, false);
         $resourceConfig = $sourceConfig['resources'][$resourceName] ?? null;
 
         if (empty($sourceConfig)) {
