@@ -103,7 +103,7 @@ class SourceConsumer
     public static function getResourceConfig(
         string $sourceName,
         string $resourceName,
-        bool $mustHaveEndpoint = true
+        bool $mustHaveEndpoint = false
     ) {
         $sourceConfig = self::getSourceConfig($sourceName, false);
         $resourceConfig = $sourceConfig['resources'][$resourceName] ?? null;
@@ -132,7 +132,7 @@ class SourceConsumer
     ) {
         $requiredKeys = ['model', 'transformer'];
 
-        if ($sourceConfig['is_api']) {
+        if ($sourceConfig['is_api'] || $mustHaveEndpoint) {
             $requiredKeys[] = 'has_endpoint';
         }
 

@@ -51,7 +51,7 @@ class DownloadPage extends AbstractJob
 
     public function handle()
     {
-        $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName);
+        $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName, true);
         $transformerClass = $resourceConfig['transformer'];
 
         $transformer = app()->make($transformerClass);
