@@ -34,11 +34,11 @@ class CsvController extends BaseController
             'csvFile' => 'required',
         ]);
 
-        $file = $request->file('csvFile');
+        $path = $request->file('csvFile')->store('uploads');
 
         ImportCsv::dispatch(
             $request->resource,
-            $file->path(),
+            $path,
         );
 
         return back()

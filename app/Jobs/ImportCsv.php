@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use League\Csv\Reader;
+use Illuminate\Support\Facades\Storage;
 use App\Library\SourceConsumer;
 use App\Jobs\Concerns\ImportsData;
 
@@ -40,7 +41,7 @@ class ImportCsv extends AbstractJob
             $this->csvPath
         ));
 
-        $csv = Reader::createFromPath($this->csvPath, 'r');
+        $csv = Reader::createFromPath(Storage::path($this->csvPath), 'r');
         $csv->setHeaderOffset(0);
 
         $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName);
@@ -63,6 +64,8 @@ class ImportCsv extends AbstractJob
         if (count($batch) > 0) {
             $this->importBatch($batch, $modelClass, $transformerClass);
         }
+
+        Storage::delete($this->csvPath);
     }
 
     private function importBatch($batch, $modelClass, $transformerClass)
