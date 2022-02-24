@@ -42,7 +42,6 @@ class CsvController extends BaseController
         );
 
         return back()
-            ->with('success', 'File has been uploaded, import in progress.')
-            ->with('file', $file->getClientOriginalName());
+            ->with('success', 'File has been uploaded, import in progress.');
     }
 }

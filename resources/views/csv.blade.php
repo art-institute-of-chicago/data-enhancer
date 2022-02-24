@@ -21,6 +21,11 @@
         <form action="{{route('csv.upload')}}" method="post" enctype="multipart/form-data">
             <h3 class="text-center mb-3">Upload CSV</h3>
             @csrf
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success">
+                    {{ $message }}
+                </div>
+            @endif
             @if (count($errors ?? []) > 0)
                 <div class="alert alert-danger">
                     <ul>
