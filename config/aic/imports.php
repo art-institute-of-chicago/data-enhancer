@@ -5,6 +5,7 @@ return [
     'limit' => env('IMPORTS_LIMIT') ?: 100,
     'sources' => [
         'aggregator' => [
+            'is_api' => true,
             'base_uri' => env('AGGREGATOR_BASE_URI', 'https://api.artic.edu/api/v1'),
             'api_token' => env('AGGREGATOR_API_TOKEN'),
             'resources' => [
