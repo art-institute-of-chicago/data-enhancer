@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Agent;
 use App\Models\Artwork;
 use App\Models\ArtworkType;
+use App\Models\Term;
 use Illuminate\Http\UploadedFile;
 
 use Tests\FeatureTestCase as BaseTestCase;
@@ -146,5 +147,39 @@ class CsvTest extends BaseTestCase
             'created_at' => $artworkType->created_at->toISOString(),
             'updated_at' => $artworkType->updated_at->toISOString(),
         ], $artworkType->toArray());
+    }
+
+    public function test_it_imports_csv_for_terms()
+    {
+        Term::factory()->create([
+            'id' => 'TM-1',
+            'title' => 'Foobar',
+            'aat_id' => 12345,
+            'source_updated_at' => $this->oldUpdatedAt,
+        ]);
+
+        $csvFile = UploadedFile::fake()->createWithContent('terms.csv', <<<END
+        id,title,aat_id,source_updated_at
+        TM-1,Foobaz,67890,{$this->newUpdatedAt}
+        END);
+
+        $response = $this->post('/csv/upload', [
+            'resource' => 'terms',
+            'csvFile' => $csvFile,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHas('success');
+
+        $term = Term::find('TM-1');
+
+        $this->assertEquals([
+            'id' => 'TM-1',
+            'title' => 'Foobar',
+            'aat_id' => 67890,
+            'source_updated_at' => $this->oldUpdatedAt,
+            'created_at' => $term->created_at->toISOString(),
+            'updated_at' => $term->updated_at->toISOString(),
+        ], $term->toArray());
     }
 }
