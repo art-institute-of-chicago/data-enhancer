@@ -52,7 +52,8 @@ class CsvTest extends BaseTestCase
             'csvFile' => $csvFile,
         ]);
 
-        $this->assertTrue($response->getSession()->has('success'));
+        $response->assertStatus(302);
+        $response->assertSessionHas('success');
 
         $agent = Agent::find(1);
 
@@ -93,7 +94,8 @@ class CsvTest extends BaseTestCase
             'csvFile' => $csvFile,
         ]);
 
-        $this->assertTrue($response->getSession()->has('success'));
+        $response->assertStatus(302);
+        $response->assertSessionHas('success');
 
         $artwork = Artwork::find(1);
 
@@ -131,7 +133,8 @@ class CsvTest extends BaseTestCase
             'csvFile' => $csvFile,
         ]);
 
-        $this->assertTrue($response->getSession()->has('success'));
+        $response->assertStatus(302);
+        $response->assertSessionHas('success');
 
         $artworkType = ArtworkType::find(1);
 
