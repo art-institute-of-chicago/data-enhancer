@@ -15,12 +15,7 @@ class CsvController extends BaseController
                 'name' => $resource,
                 'selected' => old('resource') === $resource,
             ];
-        }, [
-            'agents',
-            'artworks',
-            'artwork-types',
-            'terms',
-        ]);
+        }, array_keys(config('aic.imports.sources.csv.resources')));
 
         return view('csv', [
             'resources' => $resources,
