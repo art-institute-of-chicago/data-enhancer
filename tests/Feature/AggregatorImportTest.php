@@ -14,5 +14,7 @@ class AggregatorImportTest extends BaseTestCase
         $since = Carbon::parse('10 min ago')->toIso8601String();
 
         Artisan::call("import:aggregator --since '{$since}'");
+
+        $this->addToAssertionCount(1);
     }
 }
