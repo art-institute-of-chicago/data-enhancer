@@ -3,6 +3,7 @@
 namespace Tests\Api;
 
 use Carbon\Carbon;
+use App\Models\Agent;
 use App\Models\Artwork;
 use Illuminate\Http\UploadedFile;
 
@@ -26,6 +27,45 @@ class CsvTest extends BaseTestCase
         $response = $this->get('/csv');
 
         $response->assertSee('Upload CSV');
+    }
+
+    public function test_it_imports_csv_for_agents()
+    {
+        Agent::factory()->create([
+            'id' => 1,
+            'title' => 'Foobar',
+            'birth_year' => 1950,
+            'death_year' => 1999,
+            'ulan_id' => 12345,
+            'ulan_certainty' => 1,
+            'source_updated_at' => $this->oldUpdatedAt,
+        ]);
+
+        $csvFile = UploadedFile::fake()->createWithContent('agents.csv', <<<END
+        id,title,birth_year,death_year,ulan_id,ulan_certainty,source_updated_at
+        1,Foobaz,1945,2000,67890,3,{$this->newUpdatedAt}
+        END);
+
+        $response = $this->post('/csv/upload', [
+            'resource' => 'agents',
+            'csvFile' => $csvFile,
+        ]);
+
+        $this->assertTrue($response->getSession()->has('success'));
+
+        $agent = Agent::find(1);
+
+        $this->assertEquals([
+            'id' => 1,
+            'title' => 'Foobar',
+            'birth_year' => 1950,
+            'death_year' => 1999,
+            'ulan_id' => 67890,
+            'ulan_certainty' => 3,
+            'source_updated_at' => $this->oldUpdatedAt,
+            'created_at' => $agent->created_at->toISOString(),
+            'updated_at' => $agent->updated_at->toISOString(),
+        ], $agent->toArray());
     }
 
     public function test_it_imports_csv_for_artworks()
