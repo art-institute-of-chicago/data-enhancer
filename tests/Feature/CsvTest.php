@@ -5,6 +5,7 @@ namespace Tests\Api;
 use Carbon\Carbon;
 use App\Models\Agent;
 use App\Models\Artwork;
+use App\Models\ArtworkType;
 use Illuminate\Http\UploadedFile;
 
 use Tests\FeatureTestCase as BaseTestCase;
@@ -109,5 +110,38 @@ class CsvTest extends BaseTestCase
             'created_at' => $artwork->created_at->toISOString(),
             'updated_at' => $artwork->updated_at->toISOString(),
         ], $artwork->toArray());
+    }
+
+    public function test_it_imports_csv_for_artwork_types()
+    {
+        ArtworkType::factory()->create([
+            'id' => 1,
+            'title' => 'Foobar',
+            'aat_id' => 12345,
+            'source_updated_at' => $this->oldUpdatedAt,
+        ]);
+
+        $csvFile = UploadedFile::fake()->createWithContent('artwork-types.csv', <<<END
+        id,title,aat_id,source_updated_at
+        1,Foobaz,67890,{$this->newUpdatedAt}
+        END);
+
+        $response = $this->post('/csv/upload', [
+            'resource' => 'artwork-types',
+            'csvFile' => $csvFile,
+        ]);
+
+        $this->assertTrue($response->getSession()->has('success'));
+
+        $artworkType = ArtworkType::find(1);
+
+        $this->assertEquals([
+            'id' => 1,
+            'title' => 'Foobar',
+            'aat_id' => 67890,
+            'source_updated_at' => $this->oldUpdatedAt,
+            'created_at' => $artworkType->created_at->toISOString(),
+            'updated_at' => $artworkType->updated_at->toISOString(),
+        ], $artworkType->toArray());
     }
 }
