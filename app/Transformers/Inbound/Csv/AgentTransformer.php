@@ -4,7 +4,7 @@ namespace App\Transformers\Inbound\Csv;
 
 use App\Transformers\Inbound\AbstractTransformer;
 
-class TermTransformer extends AbstractTransformer
+class AgentTransformer extends AbstractTransformer
 {
     public function getFields()
     {
