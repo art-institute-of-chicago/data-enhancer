@@ -47,7 +47,7 @@ return [
                     'model' => \App\Models\ArtworkType::class,
                     'transformer' => \App\Transformers\Inbound\Csv\ArtworkTypeTransformer::class,
                 ],
-                'category-terms' => [
+                'terms' => [
                     'model' => \App\Models\Term::class,
                     'transformer' => \App\Transformers\Inbound\Csv\TermTransformer::class,
                 ],
