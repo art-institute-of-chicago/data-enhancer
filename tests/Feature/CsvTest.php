@@ -33,153 +33,145 @@ class CsvTest extends BaseTestCase
 
     public function test_it_imports_csv_for_agents()
     {
-        Agent::factory()->create([
-            'id' => 1,
-            'title' => 'Foobar',
-            'birth_year' => 1950,
-            'death_year' => 1999,
-            'ulan_id' => 12345,
-            'ulan_certainty' => 1,
-            'source_updated_at' => $this->oldUpdatedAt,
-        ]);
-
-        $csvFile = UploadedFile::fake()->createWithContent('agents.csv', <<<END
-        id,title,birth_year,death_year,ulan_id,ulan_certainty,source_updated_at
-        1,Foobaz,1945,2000,67890,3,{$this->newUpdatedAt}
-        END);
-
-        $response = $this->post('/csv/upload', [
-            'resource' => 'agents',
-            'csvFile' => $csvFile,
-        ]);
-
-        $response->assertStatus(302);
-        $response->assertSessionHas('success');
-
-        $agent = Agent::find(1);
-
-        $this->assertEquals([
-            'id' => 1,
-            'title' => 'Foobar',
-            'birth_year' => 1950,
-            'death_year' => 1999,
-            'ulan_id' => 67890,
-            'ulan_certainty' => 3,
-            'source_updated_at' => $this->oldUpdatedAt,
-            'created_at' => $agent->created_at->toISOString(),
-            'updated_at' => $agent->updated_at->toISOString(),
-        ], $agent->toArray());
+        $this->it_imports_csv_for_resource(
+            Agent::class,
+            'agents',
+            [
+                'id' => 1,
+                'title' => 'Foobar',
+                'birth_year' => 1950,
+                'death_year' => 1999,
+                'ulan_id' => 12345,
+                'ulan_certainty' => 1,
+                'source_updated_at' => $this->oldUpdatedAt,
+            ],
+            <<<END
+            id,title,birth_year,death_year,ulan_id,ulan_certainty,source_updated_at
+            1,Foobaz,1945,2000,67890,3,{$this->newUpdatedAt}
+            END,
+            [
+                'id' => 1,
+                'title' => 'Foobar',
+                'birth_year' => 1950,
+                'death_year' => 1999,
+                'ulan_id' => 67890,
+                'ulan_certainty' => 3,
+                'source_updated_at' => $this->oldUpdatedAt,
+            ]
+        );
     }
 
     public function test_it_imports_csv_for_artworks()
     {
-        Artwork::factory()->create([
-            'id' => 1,
-            'title' => 'Foobar',
-            'dimension_display' => '5 × 5 × 5 cm',
-            'width' => 5,
-            'height' => 5,
-            'depth' => 5,
-            'medium_display' => 'Foobar',
-            'support_aat_id' => 12345,
-            'source_updated_at' => $this->oldUpdatedAt,
-        ]);
-
-        $csvFile = UploadedFile::fake()->createWithContent('artworks.csv', <<<END
-        id,title,dimension_display,width,height,depth,medium_display,support_aat_id,source_updated_at
-        1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,67890,{$this->newUpdatedAt}
-        END);
-
-        $response = $this->post('/csv/upload', [
-            'resource' => 'artworks',
-            'csvFile' => $csvFile,
-        ]);
-
-        $response->assertStatus(302);
-        $response->assertSessionHas('success');
-
-        $artwork = Artwork::find(1);
-
-        $this->assertEquals([
-            'id' => 1,
-            'title' => 'Foobar',
-            'dimension_display' => '5 × 5 × 5 cm',
-            'width' => 10,
-            'height' => 10,
-            'depth' => 10,
-            'medium_display' => 'Foobar',
-            'support_aat_id' => 67890,
-            'source_updated_at' => $this->oldUpdatedAt,
-            'created_at' => $artwork->created_at->toISOString(),
-            'updated_at' => $artwork->updated_at->toISOString(),
-        ], $artwork->toArray());
+        $this->it_imports_csv_for_resource(
+            Artwork::class,
+            'artworks',
+            [
+                'id' => 1,
+                'title' => 'Foobar',
+                'dimension_display' => '5 × 5 × 5 cm',
+                'width' => 5,
+                'height' => 5,
+                'depth' => 5,
+                'medium_display' => 'Foobar',
+                'support_aat_id' => 12345,
+                'source_updated_at' => $this->oldUpdatedAt,
+            ],
+            <<<END
+            id,title,dimension_display,width,height,depth,medium_display,support_aat_id,source_updated_at
+            1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,67890,{$this->newUpdatedAt}
+            END,
+            [
+                'id' => 1,
+                'title' => 'Foobar',
+                'dimension_display' => '5 × 5 × 5 cm',
+                'width' => 10,
+                'height' => 10,
+                'depth' => 10,
+                'medium_display' => 'Foobar',
+                'support_aat_id' => 67890,
+                'source_updated_at' => $this->oldUpdatedAt,
+            ]
+        );
     }
 
     public function test_it_imports_csv_for_artwork_types()
     {
-        ArtworkType::factory()->create([
-            'id' => 1,
-            'title' => 'Foobar',
-            'aat_id' => 12345,
-            'source_updated_at' => $this->oldUpdatedAt,
-        ]);
-
-        $csvFile = UploadedFile::fake()->createWithContent('artwork-types.csv', <<<END
-        id,title,aat_id,source_updated_at
-        1,Foobaz,67890,{$this->newUpdatedAt}
-        END);
-
-        $response = $this->post('/csv/upload', [
-            'resource' => 'artwork-types',
-            'csvFile' => $csvFile,
-        ]);
-
-        $response->assertStatus(302);
-        $response->assertSessionHas('success');
-
-        $artworkType = ArtworkType::find(1);
-
-        $this->assertEquals([
-            'id' => 1,
-            'title' => 'Foobar',
-            'aat_id' => 67890,
-            'source_updated_at' => $this->oldUpdatedAt,
-            'created_at' => $artworkType->created_at->toISOString(),
-            'updated_at' => $artworkType->updated_at->toISOString(),
-        ], $artworkType->toArray());
+        $this->it_imports_csv_for_resource(
+            ArtworkType::class,
+            'artwork-types',
+            [
+                'id' => 1,
+                'title' => 'Foobar',
+                'aat_id' => 12345,
+                'source_updated_at' => $this->oldUpdatedAt,
+            ],
+            <<<END
+            id,title,aat_id,source_updated_at
+            1,Foobaz,67890,{$this->newUpdatedAt}
+            END,
+            [
+                'id' => 1,
+                'title' => 'Foobar',
+                'aat_id' => 67890,
+                'source_updated_at' => $this->oldUpdatedAt,
+            ]
+        );
     }
 
     public function test_it_imports_csv_for_terms()
     {
-        Term::factory()->create([
-            'id' => 'TM-1',
-            'title' => 'Foobar',
-            'aat_id' => 12345,
-            'source_updated_at' => $this->oldUpdatedAt,
-        ]);
+        $this->it_imports_csv_for_resource(
+            Term::class,
+            'terms',
+            [
+                'id' => 'TM-1',
+                'title' => 'Foobar',
+                'aat_id' => 12345,
+                'source_updated_at' => $this->oldUpdatedAt,
+            ],
+            <<<END
+            id,title,aat_id,source_updated_at
+            TM-1,Foobaz,67890,{$this->newUpdatedAt}
+            END,
+            [
+                'id' => 'TM-1',
+                'title' => 'Foobar',
+                'aat_id' => 67890,
+                'source_updated_at' => $this->oldUpdatedAt,
+            ]
+        );
+    }
 
-        $csvFile = UploadedFile::fake()->createWithContent('terms.csv', <<<END
-        id,title,aat_id,source_updated_at
-        TM-1,Foobaz,67890,{$this->newUpdatedAt}
-        END);
+    private function it_imports_csv_for_resource(
+        string $modelClass,
+        string $resourceName,
+        array $initialState,
+        string $csvContents,
+        array $expectedState
+    ) {
+        $initialItem = ($modelClass)::factory()->create($initialState);
+        $id = $initialItem->getKey();
+
+        $csvFile = UploadedFile::fake()->createWithContent('test.csv', $csvContents);
 
         $response = $this->post('/csv/upload', [
-            'resource' => 'terms',
+            'resource' => $resourceName,
             'csvFile' => $csvFile,
         ]);
 
         $response->assertStatus(302);
         $response->assertSessionHas('success');
 
-        $term = Term::find('TM-1');
+        $finalItem = ($modelClass)::find($id);
+        $finalState = $finalItem->toArray();
 
-        $this->assertEquals([
-            'id' => 'TM-1',
-            'title' => 'Foobar',
-            'aat_id' => 67890,
-            'source_updated_at' => $this->oldUpdatedAt,
-            'created_at' => $term->created_at->toISOString(),
-            'updated_at' => $term->updated_at->toISOString(),
-        ], $term->toArray());
+        $this->assertEquals(
+            $expectedState,
+            array_intersect_key(
+                $finalState,
+                $expectedState
+            )
+        );
     }
 }
