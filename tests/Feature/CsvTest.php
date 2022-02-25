@@ -43,16 +43,16 @@ class CsvTest extends BaseTestCase
         ]);
 
         $csvFile = UploadedFile::fake()->createWithContent('artworks.csv', <<<END
-        id,title,dimension_display,width,height,depth,medium_display,support_aat_id,source_updated_at,updated_at
+        id,title,dimension_display,width,height,depth,medium_display,support_aat_id,source_updated_at
         1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,67890,{$this->newUpdatedAt}
         END);
 
         $response = $this->post('/csv/upload', [
-            'resources' => 'artworks',
+            'resource' => 'artworks',
             'csvFile' => $csvFile,
         ]);
 
-        $response->assertStatus(302);
+        $this->assertTrue($response->getSession()->has('success'));
 
         $artwork = Artwork::find(1);
 
@@ -60,11 +60,11 @@ class CsvTest extends BaseTestCase
             'id' => 1,
             'title' => 'Foobar',
             'dimension_display' => '5 × 5 × 5 cm',
-            'width' => 5,
-            'height' => 5,
-            'depth' => 5,
+            'width' => 10,
+            'height' => 10,
+            'depth' => 10,
             'medium_display' => 'Foobar',
-            'support_aat_id' => 12345,
+            'support_aat_id' => 67890,
             'source_updated_at' => $this->oldUpdatedAt,
             'created_at' => $artwork->created_at->toISOString(),
             'updated_at' => $artwork->updated_at->toISOString(),
