@@ -175,7 +175,7 @@ class CsvImportTest extends BaseTestCase
         $secondCount = round($limit * 0.75);
         $secondTerms = $firstTerms
             ->random($secondCount)
-            ->each(function($term) {
+            ->each(function ($term) {
                 do {
                     $aatId = Term::factory()->make()->aat_id;
                 }
