@@ -22,14 +22,14 @@ class CsvController extends BaseController
         ]);
     }
 
-    public function upload(Request $request)
+    public function import(Request $request)
     {
         $request->validate([
             'resource' => 'required',
             'csvFile' => 'required',
         ]);
 
-        $path = $request->file('csvFile')->store('uploads');
+        $path = $request->file('csvFile')->store('imports');
 
         ImportCsv::dispatch(
             $request->resource,

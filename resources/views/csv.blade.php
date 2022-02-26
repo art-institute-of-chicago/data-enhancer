@@ -18,8 +18,8 @@
 </head>
 <body>
     <div class="container mt-5">
-        <form action="{{route('csv.upload')}}" method="post" enctype="multipart/form-data">
-            <h3 class="text-center mb-3">Upload CSV</h3>
+        <form action="{{route('csv.import')}}" method="post" enctype="multipart/form-data">
+            <h3 class="text-center mb-3">Import CSV</h3>
             @csrf
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -48,7 +48,7 @@
                 <input class="form-control" type="file" id="csvFile" name="csvFile">
             </div>
             <button type="submit" name="submit" class="btn btn-primary">
-                Upload CSV
+                Import CSV
             </button>
         </form>
     </div>

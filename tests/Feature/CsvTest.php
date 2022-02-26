@@ -29,7 +29,7 @@ class CsvTest extends BaseTestCase
     {
         $response = $this->get('/csv');
 
-        $response->assertSee('Upload CSV');
+        $response->assertSee('Import CSV');
     }
 
     public function test_it_imports_csv_for_agents()
@@ -145,12 +145,12 @@ class CsvTest extends BaseTestCase
     }
 
     /**
-     * Uploads two CSV files in sequence. First CSV file is 2.5x the limit,
+     * Imports two CSV files in sequence. First CSV file is 2.5x the limit,
      * so it's guaranteed to be processed in multiple batches. Second CSV
      * file is 0.75x the limit, so it tests what happens when a CSV file
      * contains multiple rows, but is still small enough to be contained
      * in one batch. Also tests that `updated_at` gets updated correctly.
-     * The `aat_id` column is modified between uploads.
+     * The `aat_id` column is modified between imports.
      */
     public function test_it_imports_big_csv()
     {
@@ -167,7 +167,7 @@ class CsvTest extends BaseTestCase
         $firstCsvContents = $getCsvContents($firstTerms);
 
         $this->travel(-5)->days();
-        $this->it_uploads_csv('terms', $firstCsvContents);
+        $this->it_imports_csv('terms', $firstCsvContents);
         $this->travelBack();
 
         $this->assertDatabaseCount('terms', $firstCount);
@@ -187,7 +187,7 @@ class CsvTest extends BaseTestCase
         $secondCsvContents = $getCsvContents($secondTerms);
 
         $this->travel(5)->days();
-        $this->it_uploads_csv('terms', $secondCsvContents);
+        $this->it_imports_csv('terms', $secondCsvContents);
         $this->travelBack();
 
         $updatedCount = Term::whereDate('updated_at', '>', now()->toDateString())->count();
@@ -205,7 +205,7 @@ class CsvTest extends BaseTestCase
         $initialItem = ($modelClass)::factory()->create($initialState);
         $id = $initialItem->getKey();
 
-        $this->it_uploads_csv($resourceName, $csvContents);
+        $this->it_imports_csv($resourceName, $csvContents);
 
         $finalItem = ($modelClass)::find($id);
         $finalState = $finalItem->toArray();
@@ -219,13 +219,13 @@ class CsvTest extends BaseTestCase
         );
     }
 
-    private function it_uploads_csv(
+    private function it_imports_csv(
         string $resourceName,
         string $csvContents
     ) {
         $csvFile = UploadedFile::fake()->createWithContent('test.csv', $csvContents);
 
-        $response = $this->post('/csv/upload', [
+        $response = $this->post('/csv/import', [
             'resource' => $resourceName,
             'csvFile' => $csvFile,
         ]);
