@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Transformers\Outbound;
+namespace App\Transformers\Outbound\Concerns;
 
 use Carbon\CarbonInterface;
-use Aic\Hub\Foundation\AbstractTransformer as BaseTransformer;
 
-class AbstractTransformer extends BaseTransformer
+trait HasDates
 {
     protected function getDateTime(?CarbonInterface $value)
     {

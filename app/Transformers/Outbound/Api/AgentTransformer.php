@@ -2,8 +2,6 @@
 
 namespace App\Transformers\Outbound\Api;
 
-use App\Transformers\Outbound\AbstractTransformer;
-
 class AgentTransformer extends AbstractTransformer
 {
     public function transform($item)
