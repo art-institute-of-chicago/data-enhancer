@@ -7,6 +7,7 @@ use App\Models\Agent;
 use App\Models\Artwork;
 use App\Models\ArtworkType;
 use App\Models\Term;
+use App\Library\SourceConsumer;
 use Illuminate\Http\UploadedFile;
 
 use Tests\FeatureTestCase as BaseTestCase;
@@ -143,6 +144,57 @@ class CsvTest extends BaseTestCase
         );
     }
 
+    /**
+     * Uploads two CSV files in sequence. First CSV file is 2.5x the limit,
+     * so it's guaranteed to be processed in multiple batches. Second CSV
+     * file is 0.75x the limit, so it tests what happens when a CSV file
+     * contains multiple rows, but is still small enough to be contained
+     * in one batch. Also tests that `updated_at` gets updated correctly.
+     * The `aat_id` column is modified between uploads.
+     */
+    public function test_it_imports_big_csv()
+    {
+        $getCsvContents = fn ($terms) => $terms
+            ->map(fn ($term) => implode(',', [$term->id, $term->aat_id]))
+            ->prepend('id,aat_id')
+            ->implode(PHP_EOL);
+
+        $limit = SourceConsumer::getLimit('csv', 'terms');
+
+        $firstCount = round($limit * 2.5);
+        $firstTerms = Term::factory()->count($firstCount)->make();
+
+        $firstCsvContents = $getCsvContents($firstTerms);
+
+        $this->travel(-5)->days();
+        $this->it_uploads_csv('terms', $firstCsvContents);
+        $this->travelBack();
+
+        $this->assertDatabaseCount('terms', $firstCount);
+
+        $secondCount = round($limit * 0.75);
+        $secondTerms = $firstTerms
+            ->random($secondCount)
+            ->each(function($term) {
+                do {
+                    $aatId = Term::factory()->make()->aat_id;
+                }
+                while ($aatId === $term->aat_id);
+
+                $term->aat_id = $aatId;
+            });
+
+        $secondCsvContents = $getCsvContents($secondTerms);
+
+        $this->travel(5)->days();
+        $this->it_uploads_csv('terms', $secondCsvContents);
+        $this->travelBack();
+
+        $updatedCount = Term::whereDate('updated_at', '>', now()->toDateString())->count();
+
+        $this->assertEquals($secondCount, $updatedCount);
+    }
+
     private function it_imports_csv_for_resource(
         string $modelClass,
         string $resourceName,
@@ -153,15 +205,7 @@ class CsvTest extends BaseTestCase
         $initialItem = ($modelClass)::factory()->create($initialState);
         $id = $initialItem->getKey();
 
-        $csvFile = UploadedFile::fake()->createWithContent('test.csv', $csvContents);
-
-        $response = $this->post('/csv/upload', [
-            'resource' => $resourceName,
-            'csvFile' => $csvFile,
-        ]);
-
-        $response->assertStatus(302);
-        $response->assertSessionHas('success');
+        $this->it_uploads_csv($resourceName, $csvContents);
 
         $finalItem = ($modelClass)::find($id);
         $finalState = $finalItem->toArray();
@@ -174,4 +218,22 @@ class CsvTest extends BaseTestCase
             )
         );
     }
+
+    private function it_uploads_csv(
+        string $resourceName,
+        string $csvContents
+    ) {
+        $csvFile = UploadedFile::fake()->createWithContent('test.csv', $csvContents);
+
+        $response = $this->post('/csv/upload', [
+            'resource' => $resourceName,
+            'csvFile' => $csvFile,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHas('success');
+
+        return $response;
+    }
+
 }
