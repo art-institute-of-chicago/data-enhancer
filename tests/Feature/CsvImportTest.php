@@ -12,7 +12,7 @@ use Illuminate\Http\UploadedFile;
 
 use Tests\FeatureTestCase as BaseTestCase;
 
-class CsvTest extends BaseTestCase
+class CsvImportTest extends BaseTestCase
 {
     private $oldUpdatedAt;
     private $newUpdatedAt;
