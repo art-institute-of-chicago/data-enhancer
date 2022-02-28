@@ -3,5 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CsvController;
 
-Route::get('/', [CsvController::class, 'index'])->name('csv.index');
-Route::post('/import', [CsvController::class, 'import'])->name('csv.import');
+Route::get('/', function () {
+    return redirect('/csv/import');
+})->name('csv.index');
+
+Route::get('/import', [CsvController::class, 'importForm'])->name('csv.import.form');
+Route::post('/import', [CsvController::class, 'importAction'])->name('csv.import.action');
