@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
+use Carbon\Carbon;
 use App\Jobs\ImportCsv;
+use App\Jobs\ExportCsv;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -67,8 +70,60 @@ class CsvController extends BaseController
         ]);
     }
 
+    /**
+     * Validate the free-text input fields, but assume that
+     * select and checkbox fields contain only valid values.
+     */
     public function exportAction(Request $request)
     {
+        $request->validate([
+            'resource' => 'required',
+        ]);
+
+        $ids = null;
+
+        if (!empty($request->ids)) {
+            $ids = collect(preg_split('/\r\n|\r|\n|,/', $request->ids))
+                ->map('trim')
+                ->filter()
+                ->values();
+
+            $modelClass = config('aic.output.csv.resources.' . $request->resource . '.model');
+            $model = ($modelClass)::instance();
+
+            $ids->each(function ($id) use ($model, $request) {
+                if (!$model->validateId($id)) {
+                    $request->validate(['ids' => function ($attribute, $value, $fail) {
+                        $fail('IDs field contains an invalid ID');
+                    }]);
+                }
+            });
+
+            $ids = $ids->all();
+        }
+
+        if (!empty($request->since)) {
+            $request->validate([
+                'since' => function ($attribute, $value, $fail) {
+                    try {
+                        Carbon::parse($value);
+                    } catch (Throwable $e) {
+                        $fail('Cannot parse date from since field');
+                    }
+                }
+            ]);
+        }
+
+        ExportCsv::dispatch(
+            $request->resource,
+            $ids,
+            $request->since,
+            $request->blankFields,
+            $request->exportFields,
+        );
+
+        return back()
+            ->with('success', 'Generating CSV file. This may take a few minutes. Refresh this page, and keep an eye on the list at the bottom.');
     }
 
     private function getNavLinks()
