@@ -28,6 +28,10 @@ class Kernel extends ConsoleKernel
         $schedule->command("import:aggregator --since '{$since}'")
             ->everyFiveMinutes()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
+
+        $schedule->command("csv:clear")
+            ->everyFiveMinutes()
+            ->withoutOverlapping(self::FOR_ONE_YEAR);
     }
 
     /**
