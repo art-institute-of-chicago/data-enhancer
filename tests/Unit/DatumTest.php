@@ -16,6 +16,9 @@ class DatumTest extends TestCase
         };
     }
 
+    /**
+     * @todo Add test for Carbon value?
+     */
     private function getInput()
     {
         $input = [

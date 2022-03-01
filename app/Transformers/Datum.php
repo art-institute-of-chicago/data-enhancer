@@ -5,6 +5,7 @@ namespace App\Transformers;
 use stdClass;
 use JsonSerializable;
 use InvalidArgumentException;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -133,6 +134,10 @@ class Datum implements JsonSerializable
             }
 
             return array_values(array_filter(array_map([$this, 'getCleanValue'], $value)));
+        }
+
+        if ($value instanceof Carbon) {
+            return $value;
         }
 
         if (is_object($value)) {
