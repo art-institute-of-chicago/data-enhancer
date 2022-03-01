@@ -7,22 +7,34 @@ use App\Transformers\Inbound\AbstractTransformer;
 
 class AgentTransformer extends AbstractTransformer
 {
-    protected $requiredFields = [
-        'id' => 'integer',
-        'sort_title' => 'string',
-        'birth_date' => 'integer|null',
-        'death_date' => 'integer|null',
-        'last_updated' => 'string',
-    ];
-
     public function getFields()
     {
         return [
             'id' => null,
-            'title' => fn (Datum $datum) => $datum->sort_title,
-            'birth_year' => fn (Datum $datum) => $datum->birth_date,
-            'death_year' => fn (Datum $datum) => $datum->death_date,
-            'source_updated_at' => fn (Datum $datum) => $this->getDateTime($datum->last_updated),
+            'title' => [
+                'value' => fn (Datum $datum) => $datum->sort_title,
+                'requires' => [
+                    'sort_title',
+                ],
+            ],
+            'birth_year' => [
+                'value' => fn (Datum $datum) => $datum->birth_date,
+                'requires' => [
+                    'birth_date',
+                ],
+            ],
+            'death_year' => [
+                'value' => fn (Datum $datum) => $datum->death_date,
+                'requires' => [
+                    'death_date',
+                ],
+            ],
+            'source_updated_at' => [
+                'value' => fn (Datum $datum) => $this->getDateTime($datum->last_updated),
+                'requires' => [
+                    'last_updated',
+                ],
+            ],
         ];
     }
 }
