@@ -10,10 +10,17 @@ abstract class AbstractTransformer
 
     abstract protected function getFields();
 
-    final public function transform($datum): array
+    final public function transform($datum, $requestedFields = null): array
     {
         $datum = $this->getDatum($datum);
         $mappedFields = $this->getMappedFields();
+
+        if (!empty($requestedFields)) {
+            $mappedFields = array_intersect_key(
+                $mappedFields,
+                array_flip($requestedFields)
+            );
+        }
 
         return array_map(function ($mappedField) use ($datum) {
             return call_user_func($mappedField['value'], $datum);
