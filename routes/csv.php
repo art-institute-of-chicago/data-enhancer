@@ -9,3 +9,6 @@ Route::get('/', function () {
 
 Route::get('/import', [CsvController::class, 'importForm'])->name('csv.import.form');
 Route::post('/import', [CsvController::class, 'importAction'])->name('csv.import.action');
+
+Route::get('/export', [CsvController::class, 'exportForm'])->name('csv.export.form');
+Route::post('/export', [CsvController::class, 'exportAction'])->name('csv.export.action');
