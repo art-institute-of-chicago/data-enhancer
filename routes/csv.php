@@ -12,3 +12,5 @@ Route::post('/import', [CsvController::class, 'importAction'])->name('csv.import
 
 Route::get('/export', [CsvController::class, 'exportForm'])->name('csv.export.form');
 Route::post('/export', [CsvController::class, 'exportAction'])->name('csv.export.action');
+
+Route::get('/files', [CsvController::class, 'listFiles'])->name('csv.list');

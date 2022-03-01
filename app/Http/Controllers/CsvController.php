@@ -6,11 +6,22 @@ use Throwable;
 use Carbon\Carbon;
 use App\Jobs\ImportCsv;
 use App\Jobs\ExportCsv;
+use App\Models\CsvFile;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 class CsvController extends BaseController
 {
+    public function listFiles()
+    {
+        $csvFiles = CsvFile::query()->byLastMod()->get();
+
+        return view('files', [
+            'navLinks' => $this->getNavLinks(),
+            'csvFiles' => $csvFiles,
+        ]);
+    }
+
     public function importForm()
     {
         $resources = array_map(function ($resource) {
@@ -123,7 +134,7 @@ class CsvController extends BaseController
         );
 
         return back()
-            ->with('success', 'Generating CSV file. This may take a few minutes. Refresh this page, and keep an eye on the list at the bottom.');
+            ->with('success', 'Generating CSV file. This may take a few minutes. Check the Files section.');
     }
 
     private function getNavLinks()
@@ -141,6 +152,10 @@ class CsvController extends BaseController
             [
                 'title' => 'Export',
                 'route' => 'csv.export.form',
+            ],
+            [
+                'title' => 'Files',
+                'route' => 'csv.list',
             ],
         ]);
     }
