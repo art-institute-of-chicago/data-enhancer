@@ -87,6 +87,8 @@ class ImportPage extends AbstractJob
             },
             function ($transformedDatum) use ($sourceUpdatedAtField) {
                 unset($transformedDatum[$sourceUpdatedAtField]);
+
+                return $transformedDatum;
             },
         );
 
