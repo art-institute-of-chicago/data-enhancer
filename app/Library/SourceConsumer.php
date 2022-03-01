@@ -61,7 +61,7 @@ class SourceConsumer
     /**
      * Should we validate config via tests instead?
      */
-    public static function getSourceConfig(string $sourceName)
+    public static function getSourceConfig(string $sourceName, bool $validateResources = true)
     {
         $sourceConfig = config('aic.imports.sources.' . $sourceName);
 
@@ -69,40 +69,74 @@ class SourceConsumer
             throw new LogicException("Missing config for source '{$sourceName}'");
         }
 
-        if (empty($sourceConfig['base_uri'])) {
-            throw new LogicException("No 'base_uri' defined for source '{$sourceName}'");
+        if (!isset($sourceConfig['is_api'])) {
+            throw new LogicException("Must specify 'is_api' for source '{$sourceName}'");
         }
 
-        $sourceConfig['base_uri'] = rtrim($sourceConfig['base_uri'], '/');
+        if ($sourceConfig['is_api']) {
+            if (!isset($sourceConfig['base_uri'])) {
+                throw new LogicException("No 'base_uri' defined for source '{$sourceName}'");
+            }
+
+            $sourceConfig['base_uri'] = rtrim($sourceConfig['base_uri'], '/');
+        }
 
         if (empty($sourceConfig['resources'])) {
             throw new LogicException("No 'resources' defined for source '{$sourceName}'");
         }
 
-        foreach ($sourceConfig['resources'] as $resourceName => $resourceConfig) {
-            self::validateResourceConfig($sourceName, $resourceName, $resourceConfig, false);
+        if ($validateResources) {
+            foreach ($sourceConfig['resources'] as $resourceName => $resourceConfig) {
+                self::validateResourceConfig(
+                    $sourceName,
+                    $resourceName,
+                    $sourceConfig,
+                    $resourceConfig,
+                    false
+                );
+            }
         }
 
         return $sourceConfig;
     }
 
-    public static function getResourceConfig(string $sourceName, string $resourceName, bool $mustHaveEndpoint = true)
-    {
-        $sourceConfig = self::getSourceConfig($sourceName);
+    public static function getResourceConfig(
+        string $sourceName,
+        string $resourceName,
+        bool $mustHaveEndpoint = false
+    ) {
+        $sourceConfig = self::getSourceConfig($sourceName, false);
         $resourceConfig = $sourceConfig['resources'][$resourceName] ?? null;
 
         if (empty($sourceConfig)) {
             throw new LogicException("Source '{$sourceName}' missing resource '{$resourceName}'");
         }
 
-        self::validateResourceConfig($sourceName, $resourceName, $resourceConfig, $mustHaveEndpoint);
+        self::validateResourceConfig(
+            $sourceName,
+            $resourceName,
+            $sourceConfig,
+            $resourceConfig,
+            $mustHaveEndpoint
+        );
 
         return $resourceConfig;
     }
 
-    private static function validateResourceConfig(string $sourceName, string $resourceName, array $resourceConfig, bool $mustHaveEndpoint)
-    {
-        foreach (['model', 'transformer', 'has_endpoint'] as $key) {
+    private static function validateResourceConfig(
+        string $sourceName,
+        string $resourceName,
+        array $sourceConfig,
+        array $resourceConfig,
+        bool $mustHaveEndpoint
+    ) {
+        $requiredKeys = ['model', 'transformer'];
+
+        if ($sourceConfig['is_api'] || $mustHaveEndpoint) {
+            $requiredKeys[] = 'has_endpoint';
+        }
+
+        foreach ($requiredKeys as $key) {
             if (empty($resourceConfig[$key])) {
                 throw new LogicException("Resource '{$resourceName}' in '{$sourceName}' missing '{$key}'");
             }
@@ -116,6 +150,10 @@ class SourceConsumer
 
         if ($mustHaveEndpoint && $resourceConfig['has_endpoint'] !== true) {
             throw new LogicException("Resource '{$resourceName}' in '{$sourceName}' has no endpoint");
+        }
+
+        if ($mustHaveEndpoint && !$sourceConfig['is_api']) {
+            throw new LogicException("Resource '{$resourceName}' has endpoint, but '{$sourceName}' is not an API");
         }
     }
 }

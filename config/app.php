@@ -48,7 +48,7 @@ return [
         Illuminate\Redis\RedisServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
-        // Illuminate\Validation\ValidationServiceProvider::class,
+        Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
         /*
@@ -56,7 +56,6 @@ return [
          */
         Aic\Hub\Foundation\Providers\DefaultConfigServiceProvider::class,
         Aic\Hub\Foundation\Providers\ResourceServiceProvider::class,
-        Aic\Hub\Foundation\Providers\RouteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -64,6 +63,7 @@ return [
         App\Providers\HorizonServiceProvider::class,
         App\Providers\GuzzleServiceProvider::class,
         App\Providers\TransformerServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
 
     ],
 
@@ -112,7 +112,7 @@ return [
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
         'URL' => Illuminate\Support\Facades\URL::class,
-        // 'Validator' => Illuminate\Support\Facades\Validator::class,
+        'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
     ],

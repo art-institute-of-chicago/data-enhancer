@@ -51,7 +51,7 @@ class DownloadPage extends AbstractJob
 
     public function handle()
     {
-        $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName);
+        $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName, true);
         $transformerClass = $resourceConfig['transformer'];
 
         $transformer = app()->make($transformerClass);
@@ -73,7 +73,7 @@ class DownloadPage extends AbstractJob
         $batch = $this->batch();
         $batch->options['queue'] = 'high';
         $batch->add([
-            new ImportData(
+            new ImportPage(
                 $this->sourceName,
                 $this->resourceName,
                 $results->data,

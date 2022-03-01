@@ -75,7 +75,7 @@ class ImportSource extends AbstractJob implements ShouldBeUnique
 
     private function getOneResource()
     {
-        $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName);
+        $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName, true);
 
         return collect([
             $this->resourceName => $resourceConfig,
