@@ -95,7 +95,7 @@ class CsvController extends BaseController
 
         if (!empty($request->ids)) {
             $ids = collect(preg_split('/\r\n|\r|\n|,/', $request->ids))
-                ->map('trim')
+                ->map(fn ($id) => trim($id))
                 ->filter()
                 ->values();
 
@@ -104,8 +104,12 @@ class CsvController extends BaseController
 
             $ids->each(function ($id) use ($model, $request) {
                 if (!$model->validateId($id)) {
-                    $request->validate(['ids' => function ($attribute, $value, $fail) {
-                        $fail('IDs field contains an invalid ID');
+                    $request->validate(['ids' => function (
+                        $attribute,
+                        $value,
+                        $fail
+                    ) use ($id) {
+                        $fail('IDs field contains an invalid ID: ' . $id);
                     }]);
                 }
             });
