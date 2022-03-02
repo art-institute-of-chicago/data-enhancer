@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api;
+namespace Tests\Feature;
 
 use Carbon\Carbon;
 use App\Models\Agent;
