@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Str;
 use Aic\Hub\Foundation\Middleware\TrustProxies;
-use App\Http\Middleware\HorizonBasicAuthMiddleware;
 
 return [
 
@@ -75,7 +74,7 @@ return [
     'middleware' => [
         'web',
         TrustProxies::class,
-        HorizonBasicAuthMiddleware::class,
+        'basic_auth',
     ],
 
     /*
