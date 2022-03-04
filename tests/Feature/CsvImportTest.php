@@ -25,11 +25,16 @@ class CsvImportTest extends BaseTestCase
         parent::setUp();
     }
 
-    public function test_it_shows_csv_form()
+    public function test_it_shows_csv_import_form()
     {
-        $response = $this->get('/csv');
-
+        $response = $this->get('/csv/import');
         $response->assertSee('Import CSV');
+    }
+
+    public function test_it_shows_csv_export_form()
+    {
+        $response = $this->get('/csv/export');
+        $response->assertSee('Export CSV');
     }
 
     public function test_it_imports_csv_for_agents()
