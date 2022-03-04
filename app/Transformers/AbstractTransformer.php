@@ -3,9 +3,12 @@
 namespace App\Transformers;
 
 use Closure;
+use App\Transformers\Concerns\CanPrefixValues;
 
 abstract class AbstractTransformer
 {
+    use CanPrefixValues;
+
     private $mappedFields;
 
     abstract protected function getFields();

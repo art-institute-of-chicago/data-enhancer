@@ -2,6 +2,7 @@
 
 namespace App\Transformers\Inbound\Csv;
 
+use App\Transformers\Datum;
 use App\Transformers\Inbound\AbstractTransformer;
 
 class ArtworkTypeTransformer extends AbstractTransformer
@@ -10,7 +11,7 @@ class ArtworkTypeTransformer extends AbstractTransformer
     {
         return [
             'id' => null,
-            'aat_id' => null,
+            'aat_id' => fn (Datum $datum) => $this->trimPrefix($datum->aat_id, 'aat/'),
         ];
     }
 }

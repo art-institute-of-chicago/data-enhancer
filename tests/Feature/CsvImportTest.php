@@ -48,7 +48,7 @@ class CsvImportTest extends BaseTestCase
             ],
             <<<END
             id,title,birth_year,death_year,ulan_id,ulan_certainty,source_updated_at
-            1,Foobaz,1945,2000,67890,3,{$this->newUpdatedAt}
+            1,Foobaz,1945,2000,ulan/67890,3,{$this->newUpdatedAt}
             END,
             [
                 'id' => 1,
@@ -80,7 +80,7 @@ class CsvImportTest extends BaseTestCase
             ],
             <<<END
             id,title,dimension_display,width,height,depth,medium_display,support_aat_id,source_updated_at
-            1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,67890,{$this->newUpdatedAt}
+            1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,aat/67890,{$this->newUpdatedAt}
             END,
             [
                 'id' => 1,
@@ -109,7 +109,7 @@ class CsvImportTest extends BaseTestCase
             ],
             <<<END
             id,title,aat_id,source_updated_at
-            1,Foobaz,67890,{$this->newUpdatedAt}
+            1,Foobaz,aat/67890,{$this->newUpdatedAt}
             END,
             [
                 'id' => 1,
@@ -133,7 +133,7 @@ class CsvImportTest extends BaseTestCase
             ],
             <<<END
             id,title,aat_id,source_updated_at
-            TM-1,Foobaz,67890,{$this->newUpdatedAt}
+            TM-1,Foobaz,aat/67890,{$this->newUpdatedAt}
             END,
             [
                 'id' => 'TM-1',
