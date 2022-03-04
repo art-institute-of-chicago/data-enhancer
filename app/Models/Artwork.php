@@ -6,6 +6,10 @@ use Aic\Hub\Foundation\AbstractModel as BaseModel;
 
 class Artwork extends BaseModel
 {
+    protected $dates = [
+        'source_updated_at',
+    ];
+
     protected $casts = [
         'id' => 'integer',
         'title' => 'string',
