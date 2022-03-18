@@ -17,6 +17,11 @@ return [
             'model' => \App\Models\ArtworkType::class,
             'transformer' => \App\Transformers\Outbound\Api\ArtworkTypeTransformer::class,
         ],
+        'places' => [
+            'has_endpoint' => true,
+            'model' => \App\Models\Place::class,
+            'transformer' => \App\Transformers\Outbound\Api\PlaceTransformer::class,
+        ],
         'terms' => [
             'has_endpoint' => true,
             'model' => \App\Models\Term::class,

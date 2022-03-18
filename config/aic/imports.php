@@ -29,6 +29,11 @@ return [
                     'model' => \App\Models\Term::class,
                     'transformer' => \App\Transformers\Inbound\Api\TermTransformer::class,
                 ],
+                'places' => [
+                    'has_endpoint' => true,
+                    'model' => \App\Models\Place::class,
+                    'transformer' => \App\Transformers\Inbound\Api\PlaceTransformer::class,
+                ],
             ],
         ],
 
@@ -46,6 +51,10 @@ return [
                 'artwork-types' => [
                     'model' => \App\Models\ArtworkType::class,
                     'transformer' => \App\Transformers\Inbound\Csv\ArtworkTypeTransformer::class,
+                ],
+                'places' => [
+                    'model' => \App\Models\Place::class,
+                    'transformer' => \App\Transformers\Inbound\Csv\PlaceTransformer::class,
                 ],
                 'terms' => [
                     'model' => \App\Models\Term::class,
