@@ -26,7 +26,9 @@ class SourceConsumer
         }
 
         $client = app()->make(ClientInterface::class);
-        $response = $client->request('GET', $uri, $headers);
+        $response = $client->request('GET', $uri, [
+            'headers' => $headers,
+        ]);
         $contents = $response->getBody()->getContents();
 
         return json_decode($contents);
