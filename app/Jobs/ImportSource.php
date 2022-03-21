@@ -4,9 +4,8 @@ namespace App\Jobs;
 
 use LogicException;
 use App\Library\SourceConsumer;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class ImportSource extends AbstractJob implements ShouldBeUnique
+class ImportSource extends AbstractJob
 {
     private $sourceName;
 
@@ -26,11 +25,6 @@ class ImportSource extends AbstractJob implements ShouldBeUnique
         $this->resourceName = $resourceName;
         $this->isFull = $isFull;
         $this->since = $since;
-    }
-
-    public function uniqueId()
-    {
-        return $this->sourceName;
     }
 
     public function tags()
