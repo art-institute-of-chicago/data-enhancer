@@ -2,9 +2,7 @@
 
 namespace Tests\Feature;
 
-use League\Csv\Reader;
-use App\Models\CsvFile;
-use Illuminate\Support\Facades\Storage;
+use Tests\Concerns\HasCsvReader;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
@@ -23,6 +21,8 @@ use Tests\FeatureTestCase as BaseTestCase;
 
 class CsvExportTest extends BaseTestCase
 {
+    use HasCsvReader;
+
     private $modelClass;
 
     protected function setUp(): void
@@ -291,16 +291,5 @@ class CsvExportTest extends BaseTestCase
             $this->assertTrue(empty($record['acme_id']));
             $this->assertTrue(empty($record['updated_at']));
         }
-    }
-
-    private function getCsvReader()
-    {
-        $csvFile = CsvFile::first();
-        $csvPath = Storage::disk('public')->path($csvFile->filename);
-
-        $csv = Reader::createFromPath($csvPath, 'r');
-        $csv->setHeaderOffset(0);
-
-        return $csv;
     }
 }
