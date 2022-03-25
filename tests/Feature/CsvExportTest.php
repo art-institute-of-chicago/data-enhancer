@@ -2,6 +2,10 @@
 
 namespace Tests\Feature;
 
+use League\Csv\Reader;
+use App\Models\CsvFile;
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -139,5 +143,35 @@ class CsvExportTest extends BaseTestCase
         $response->assertSessionHasErrors([
             'since' => 'Cannot parse date from since field',
         ]);
+    }
+
+    public function test_it_exports_many_sorted_items()
+    {
+        $datums = ($this->modelClass)::factory()
+            ->count(3)
+            ->create()
+            ->sortBy('id')
+            ->values();
+
+        $response = $this->post('/csv/export', [
+            'resource' => 'foos',
+        ]);
+
+        $csvFile = CsvFile::first();
+        $csvPath = Storage::disk('public')->path($csvFile->filename);
+
+        $csv = Reader::createFromPath($csvPath, 'r');
+        $csv->setHeaderOffset(0);
+
+        foreach ($csv->getRecords() as $offset => $record) {
+            $datum = $datums[$offset - 1];
+
+            $this->assertEquals($record, [
+                'id' => (string) $datum->id,
+                'title' => $datum->title,
+                'acme_id' => 'acme/' . $datum->acme_id,
+                'updated_at' => $datum->updated_at->toIso8601String(),
+            ]);
+        }
     }
 }

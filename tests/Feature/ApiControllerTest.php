@@ -5,8 +5,10 @@ namespace Tests\Feature;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+
 use Aic\Hub\Foundation\AbstractModel as BaseModel;
 use App\Transformers\Outbound\Api\AbstractTransformer as BaseTransformer;
+
 use Tests\FeatureTestCase as BaseTestCase;
 
 class ApiControllerTest extends BaseTestCase

@@ -68,6 +68,8 @@ class ExportCsv extends AbstractJob
         $primaryKey = $model->getKeyName();
         $query = $modelClass::query();
 
+        $query->orderBy($primaryKey);
+
         if (!empty($this->ids)) {
             $query->whereIn($primaryKey, $this->ids);
         } else {
