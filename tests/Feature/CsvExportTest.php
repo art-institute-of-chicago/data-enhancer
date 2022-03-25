@@ -25,6 +25,8 @@ class CsvExportTest extends BaseTestCase
 
     private $modelClass;
 
+    private $resource = 'foos';
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -126,7 +128,7 @@ class CsvExportTest extends BaseTestCase
         $invalidId = ($this->modelClass)::factory()->getInvalidId();
 
         $response = $this->post('/csv/export', [
-            'resource' => 'foos',
+            'resource' => $this->resource,
             'ids' => $invalidId,
         ]);
 
@@ -138,7 +140,7 @@ class CsvExportTest extends BaseTestCase
     public function test_it_errors_on_invalid_date()
     {
         $response = $this->post('/csv/export', [
-            'resource' => 'foos',
+            'resource' => $this->resource,
             'since' => 'foobar',
         ]);
 
@@ -156,7 +158,7 @@ class CsvExportTest extends BaseTestCase
             ->values();
 
         $response = $this->post('/csv/export', [
-            'resource' => 'foos',
+            'resource' => $this->resource,
         ]);
 
         $csvReader = $this->getCsvReader();
@@ -191,7 +193,7 @@ class CsvExportTest extends BaseTestCase
         ]);
 
         $response = $this->post('/csv/export', [
-            'resource' => 'foos',
+            'resource' => $this->resource,
             'ids' => $inputIds,
         ]);
 
@@ -222,7 +224,7 @@ class CsvExportTest extends BaseTestCase
         $sinceCarbon = Carbon::parse($sinceInput);
 
         $response = $this->post('/csv/export', [
-            'resource' => 'foos',
+            'resource' => $this->resource,
             'since' => $sinceInput,
         ]);
 
@@ -255,7 +257,7 @@ class CsvExportTest extends BaseTestCase
         ]);
 
         $response = $this->post('/csv/export', [
-            'resource' => 'foos',
+            'resource' => $this->resource,
             'blankFields' => [
                 'title',
                 'acme_id',
@@ -278,7 +280,7 @@ class CsvExportTest extends BaseTestCase
         ($this->modelClass)::factory()->create();
 
         $response = $this->post('/csv/export', [
-            'resource' => 'foos',
+            'resource' => $this->resource,
             'exportFields' => [
                 'id',
                 'title',
