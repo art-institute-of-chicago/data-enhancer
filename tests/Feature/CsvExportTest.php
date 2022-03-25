@@ -2,11 +2,96 @@
 
 namespace Tests\Feature;
 
-use App\Models\Agent;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+
+use App\Transformers\Datum;
+use Aic\Hub\Foundation\AbstractFactory as BaseFactory;
+use Aic\Hub\Foundation\AbstractModel as BaseModel;
+use App\Transformers\Outbound\Csv\AbstractTransformer as BaseTransformer;
+
 use Tests\FeatureTestCase as BaseTestCase;
 
 class CsvExportTest extends BaseTestCase
 {
+    private $modelClass;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Schema::create('foos', function (Blueprint $table) {
+            $table->integer('id', true, true);
+            $table->text('title')->nullable();
+            $table->integer('acme_id')->nullable();
+            $table->timestamps();
+        });
+
+        $modelClass = new class() extends BaseModel {
+            protected $table = 'foos';
+
+            protected $casts = [
+                'id' => 'integer',
+                'title' => 'string',
+                'acme_id' => 'integer',
+                'updated_at' => 'datetime',
+            ];
+
+            public static $factoryClass;
+
+            protected static function newFactory()
+            {
+                return (static::$factoryClass)::new();
+            }
+        };
+
+        $factoryClass = new class() extends BaseFactory {
+            public function definition()
+            {
+                return [
+                    'id' => $this->getValidId(),
+                    'title' => $this->getTitle(),
+                    'acme_id' => $this->getNumericId(),
+                ];
+            }
+
+            public static $modelClass;
+
+            public function modelName()
+            {
+                return static::$modelClass;
+            }
+        };
+
+        // https://stackoverflow.com/a/49038436
+        ($modelClass)::$factoryClass = $factoryClass;
+        ($factoryClass)::$modelClass = $modelClass;
+
+        $transformerClass = new class() extends BaseTransformer {
+            public function getFields()
+            {
+                return [
+                    'id' => null,
+                    'title' => null,
+                    'acme_id' => fn (Datum $datum) => $this->addPrefix($datum->acme_id, 'acme/'),
+                    'updated_at' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
+                ];
+            }
+        };
+
+        Config::set('aic.output.csv', [
+            'resources' => [
+                'foos' => [
+                    'model' => $modelClass,
+                    'transformer' => $transformerClass,
+                ],
+            ],
+        ]);
+
+        $this->modelClass = $modelClass;
+    }
+
     public function test_it_shows_csv_export_form()
     {
         $response = $this->get('/csv/export');
@@ -23,10 +108,10 @@ class CsvExportTest extends BaseTestCase
 
     public function test_it_errors_on_invalid_id()
     {
-        $invalidId = Agent::factory()->getInvalidId();
+        $invalidId = ($this->modelClass)::factory()->getInvalidId();
 
         $response = $this->post('/csv/export', [
-            'resource' => 'agents',
+            'resource' => 'foos',
             'ids' => $invalidId,
         ]);
 
