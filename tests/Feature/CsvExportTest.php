@@ -237,6 +237,42 @@ class CsvExportTest extends BaseTestCase
         }
     }
 
+    public function test_it_exports_only_items_where_field_is_blank()
+    {
+        ($this->modelClass)::factory()->count(12)->create();
+
+        ($this->modelClass)::factory()->count(12)->create([
+            'title' => null,
+        ]);
+
+        ($this->modelClass)::factory()->count(12)->create([
+            'acme_id' => null,
+        ]);
+
+        ($this->modelClass)::factory()->count(12)->create([
+            'title' => null,
+            'acme_id' => null,
+        ]);
+
+        $response = $this->post('/csv/export', [
+            'resource' => 'foos',
+            'blankFields' => [
+                'title',
+                'acme_id',
+            ],
+        ]);
+
+        $csvReader = $this->getCsvReader();
+
+        $this->assertEquals(36, count(iterator_to_array($csvReader)));
+
+        foreach ($csvReader as $record) {
+            $this->assertTrue(
+                $record['title'] === '' || $record['acme_id'] === ''
+            );
+        }
+    }
+
     private function getCsvReader()
     {
         $csvFile = CsvFile::first();
