@@ -16,6 +16,15 @@ class TermFactory extends BaseFactory
         ];
     }
 
+    public function nullable()
+    {
+        return $this->state(fn (array $attributes) => [
+            'title' => null,
+            'aat_id' => null,
+            'source_updated_at' => null,
+        ]);
+    }
+
     public function getValidId()
     {
         return 'TM-' . $this->getNumericId();

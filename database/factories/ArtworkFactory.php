@@ -33,4 +33,18 @@ class ArtworkFactory extends BaseFactory
             'source_updated_at' => $this->faker->dateTime(),
         ];
     }
+
+    public function nullable()
+    {
+        return $this->state(fn (array $attributes) => [
+            'title' => null,
+            'dimension_display' => null,
+            'width' => null,
+            'height' => null,
+            'depth' => null,
+            'medium_display' => null,
+            'support_aat_id' => null,
+            'source_updated_at' => null,
+        ]);
+    }
 }

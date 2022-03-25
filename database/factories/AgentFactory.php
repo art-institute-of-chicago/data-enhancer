@@ -26,4 +26,16 @@ class AgentFactory extends BaseFactory
             'source_updated_at' => $this->faker->dateTime(),
         ];
     }
+
+    public function nullable()
+    {
+        return $this->state(fn (array $attributes) => [
+            'title' => null,
+            'birth_year' => null,
+            'death_year' => null,
+            'ulan_id' => null,
+            'ulan_certainty' => null,
+            'source_updated_at' => null,
+        ]);
+    }
 }
