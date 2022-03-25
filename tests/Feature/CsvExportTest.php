@@ -17,7 +17,7 @@ use Aic\Hub\Foundation\AbstractFactory as BaseFactory;
 use Aic\Hub\Foundation\AbstractModel as BaseModel;
 use App\Transformers\Outbound\Csv\AbstractTransformer as BaseTransformer;
 
-use Tests\FeatureTestCase as BaseTestCase;
+use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
 class CsvExportTest extends BaseTestCase
 {
