@@ -157,13 +157,9 @@ class CsvExportTest extends BaseTestCase
             'resource' => 'foos',
         ]);
 
-        $csvFile = CsvFile::first();
-        $csvPath = Storage::disk('public')->path($csvFile->filename);
+        $csvReader = $this->getCsvReader();
 
-        $csv = Reader::createFromPath($csvPath, 'r');
-        $csv->setHeaderOffset(0);
-
-        foreach ($csv->getRecords() as $offset => $record) {
+        foreach ($csvReader as $offset => $record) {
             $datum = $datums[$offset - 1];
 
             $this->assertEquals($record, [
@@ -197,20 +193,27 @@ class CsvExportTest extends BaseTestCase
             'ids' => $inputIds,
         ]);
 
-        $csvFile = CsvFile::first();
-        $csvPath = Storage::disk('public')->path($csvFile->filename);
-
-        $csv = Reader::createFromPath($csvPath, 'r');
-        $csv->setHeaderOffset(0);
+        $csvReader = $this->getCsvReader();
 
         $exportedIds = array_map(
             fn ($record) => $record['id'],
-            iterator_to_array($csv->getRecords())
+            iterator_to_array($csvReader)
         );
 
         $this->assertEqualsCanonicalizing(
             $exportedIds,
             $chosenIds->all()
         );
+    }
+
+    private function getCsvReader()
+    {
+        $csvFile = CsvFile::first();
+        $csvPath = Storage::disk('public')->path($csvFile->filename);
+
+        $csv = Reader::createFromPath($csvPath, 'r');
+        $csv->setHeaderOffset(0);
+
+        return $csv;
     }
 }
