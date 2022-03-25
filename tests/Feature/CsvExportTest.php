@@ -174,4 +174,43 @@ class CsvExportTest extends BaseTestCase
             ]);
         }
     }
+
+    public function test_it_exports_only_specific_ids()
+    {
+        $datums = ($this->modelClass)::factory()
+            ->count(12)
+            ->create();
+
+        $chosenIds = $datums
+            ->random(6)
+            ->pluck('id')
+            ->sort()
+            ->values();
+
+        $inputIds = implode(PHP_EOL, [
+            $chosenIds->slice(0, 3)->implode(','),
+            $chosenIds->slice(3, 3)->implode(PHP_EOL),
+        ]);
+
+        $response = $this->post('/csv/export', [
+            'resource' => 'foos',
+            'ids' => $inputIds,
+        ]);
+
+        $csvFile = CsvFile::first();
+        $csvPath = Storage::disk('public')->path($csvFile->filename);
+
+        $csv = Reader::createFromPath($csvPath, 'r');
+        $csv->setHeaderOffset(0);
+
+        $exportedIds = array_map(
+            fn ($record) => $record['id'],
+            iterator_to_array($csv->getRecords())
+        );
+
+        $this->assertEqualsCanonicalizing(
+            $exportedIds,
+            $chosenIds->all()
+        );
+    }
 }
