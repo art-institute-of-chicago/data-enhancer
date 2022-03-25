@@ -20,16 +20,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $since = Carbon::parse('10 min ago')->toIso8601String();
-
         $schedule->command('update:cloudfront-ips')
             ->hourly();
+
+        $since = Carbon::parse('10 min ago')->toIso8601String();
 
         $schedule->command("import:aggregator --since '{$since}'")
             ->everyFiveMinutes()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
 
-        $schedule->command('csv:clear')
+        $before = Carbon::parse('72 hours ago')->toIso8601String();
+
+        $schedule->command("csv:clear --before '{$before}'")
             ->everyFiveMinutes()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
     }

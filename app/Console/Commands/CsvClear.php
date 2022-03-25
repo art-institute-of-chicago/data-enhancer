@@ -8,17 +8,23 @@ use Illuminate\Support\Facades\Storage;
 
 class CsvClear extends AbstractCommand
 {
-    protected $signature = 'csv:clear';
+    protected $signature = 'csv:clear {--before=}';
 
-    protected $description = 'Delete old CSV files';
+    protected $description = 'Delete exported CSV files';
 
     public function handle()
     {
+        $before = $this->option('before')
+            ? Carbon::parse($this->option('before'))
+            : null;
+
         foreach (CsvFile::cursor() as $csvFile) {
-            if ($csvFile->updated_at->diffInHours(Carbon::now()) > 72) {
-                Storage::disk('public')->delete($csvFile->filename);
-                $csvFile->delete();
+            if ($before && $csvFile->updated_at->gt($before)) {
+                continue;
             }
+
+            Storage::disk('public')->delete($csvFile->filename);
+            $csvFile->delete();
         }
     }
 }

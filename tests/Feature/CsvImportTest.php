@@ -33,10 +33,13 @@ class CsvImportTest extends BaseTestCase
         $response->assertSee('Import CSV');
     }
 
-    public function test_it_shows_csv_export_form()
+    public function test_it_errors_on_missing_fields()
     {
-        $response = $this->get('/csv/export');
-        $response->assertSee('Export CSV');
+        $response = $this->post('/csv/import');
+        $response->assertSessionHasErrors([
+            'resource' => 'The resource field is required.',
+            'csvFile' => 'The csv file field is required.',
+        ]);
     }
 
     public function test_it_imports_csv_for_agents()
