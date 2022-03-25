@@ -33,12 +33,6 @@ class CsvImportTest extends BaseTestCase
         $response->assertSee('Import CSV');
     }
 
-    public function test_it_shows_csv_export_form()
-    {
-        $response = $this->get('/csv/export');
-        $response->assertSee('Export CSV');
-    }
-
     public function test_it_imports_csv_for_agents()
     {
         $this->it_imports_csv_for_resource(
