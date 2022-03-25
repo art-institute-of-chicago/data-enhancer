@@ -176,18 +176,18 @@ class CsvExportTest extends BaseTestCase
     public function test_it_exports_only_specific_ids()
     {
         $datums = ($this->modelClass)::factory()
-            ->count(12)
+            ->count(8)
             ->create();
 
         $chosenIds = $datums
-            ->random(6)
+            ->random(4)
             ->pluck('id')
             ->sort()
             ->values();
 
         $inputIds = implode(PHP_EOL, [
-            $chosenIds->slice(0, 3)->implode(','),
-            $chosenIds->slice(3, 3)->implode(PHP_EOL),
+            $chosenIds->slice(0, 2)->implode(','),
+            $chosenIds->slice(2, 2)->implode(PHP_EOL),
         ]);
 
         $response = $this->post('/csv/export', [
@@ -211,11 +211,11 @@ class CsvExportTest extends BaseTestCase
     public function test_it_exports_only_items_updated_since_date()
     {
         $this->travel(-5)->days();
-        ($this->modelClass)::factory()->count(12)->create();
+        ($this->modelClass)::factory()->count(2)->create();
         $this->travelBack();
 
         $this->travel(-3)->days();
-        ($this->modelClass)::factory()->count(12)->create();
+        ($this->modelClass)::factory()->count(2)->create();
         $this->travelBack();
 
         $sinceInput = '4 days ago';
@@ -228,7 +228,7 @@ class CsvExportTest extends BaseTestCase
 
         $csvReader = $this->getCsvReader();
 
-        $this->assertEquals(12, count(iterator_to_array($csvReader)));
+        $this->assertEquals(2, count(iterator_to_array($csvReader)));
 
         foreach ($csvReader as $record) {
             $this->assertTrue(
@@ -239,17 +239,17 @@ class CsvExportTest extends BaseTestCase
 
     public function test_it_exports_only_items_where_field_is_blank()
     {
-        ($this->modelClass)::factory()->count(12)->create();
+        ($this->modelClass)::factory()->count(2)->create();
 
-        ($this->modelClass)::factory()->count(12)->create([
+        ($this->modelClass)::factory()->count(2)->create([
             'title' => null,
         ]);
 
-        ($this->modelClass)::factory()->count(12)->create([
+        ($this->modelClass)::factory()->count(2)->create([
             'acme_id' => null,
         ]);
 
-        ($this->modelClass)::factory()->count(12)->create([
+        ($this->modelClass)::factory()->count(2)->create([
             'title' => null,
             'acme_id' => null,
         ]);
@@ -264,7 +264,7 @@ class CsvExportTest extends BaseTestCase
 
         $csvReader = $this->getCsvReader();
 
-        $this->assertEquals(36, count(iterator_to_array($csvReader)));
+        $this->assertEquals(6, count(iterator_to_array($csvReader)));
 
         foreach ($csvReader as $record) {
             $this->assertTrue(
