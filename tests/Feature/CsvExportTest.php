@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 
+use Illuminate\Support\Facades\Artisan;
+
 use App\Transformers\Datum;
 use Aic\Hub\Foundation\AbstractFactory as BaseFactory;
 use Aic\Hub\Foundation\AbstractModel as BaseModel;
@@ -90,6 +92,13 @@ class CsvExportTest extends BaseTestCase
         ]);
 
         $this->modelClass = $modelClass;
+    }
+
+    public function tearDown(): void
+    {
+        Artisan::call('csv:clear');
+
+        parent::tearDown();
     }
 
     public function test_it_shows_csv_export_form()
