@@ -12,6 +12,8 @@ use Illuminate\Database\Schema\Blueprint;
 
 use Illuminate\Support\Facades\Artisan;
 
+use Carbon\Carbon;
+
 use App\Transformers\Datum;
 use Aic\Hub\Foundation\AbstractFactory as BaseFactory;
 use Aic\Hub\Foundation\AbstractModel as BaseModel;
@@ -204,6 +206,35 @@ class CsvExportTest extends BaseTestCase
             $exportedIds,
             $chosenIds->all()
         );
+    }
+
+    public function test_it_exports_only_items_updated_since_date()
+    {
+        $this->travel(-5)->days();
+        ($this->modelClass)::factory()->count(12)->create();
+        $this->travelBack();
+
+        $this->travel(-3)->days();
+        ($this->modelClass)::factory()->count(12)->create();
+        $this->travelBack();
+
+        $sinceInput = '4 days ago';
+        $sinceCarbon = Carbon::parse($sinceInput);
+
+        $response = $this->post('/csv/export', [
+            'resource' => 'foos',
+            'since' => $sinceInput,
+        ]);
+
+        $csvReader = $this->getCsvReader();
+
+        $this->assertEquals(12, count(iterator_to_array($csvReader)));
+
+        foreach ($csvReader as $record) {
+            $this->assertTrue(
+                Carbon::parse($record['updated_at'])->gt($sinceCarbon)
+            );
+        }
     }
 
     private function getCsvReader()
