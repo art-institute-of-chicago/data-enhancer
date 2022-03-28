@@ -11,7 +11,7 @@ use App\Models\Term;
 use App\Library\SourceConsumer;
 use Illuminate\Http\UploadedFile;
 
-use Tests\FeatureTestCase as BaseTestCase;
+use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
 class CsvImportTest extends BaseTestCase
 {

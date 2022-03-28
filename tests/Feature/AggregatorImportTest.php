@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 
-use Tests\FeatureTestCase as BaseTestCase;
+use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
 class AggregatorImportTest extends BaseTestCase
 {

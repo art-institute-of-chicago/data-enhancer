@@ -14,7 +14,7 @@ class TermTest extends BaseTestCase
     {
         return [
             'id' => 'string',
-            'title' => 'string',
+            'title' => 'string|null',
             'aat_id' => 'integer|null',
             'source_updated_at' => 'string|null',
             'updated_at' => 'string',
