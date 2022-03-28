@@ -2,19 +2,14 @@
 
 namespace Tests\Feature;
 
+use Carbon\Carbon;
 use Tests\Concerns\HasCsvReader;
-
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-
 use Illuminate\Support\Facades\Artisan;
 
-use Carbon\Carbon;
+use Tests\Concerns\HasFakeModel;
+use Illuminate\Support\Facades\Config;
 
 use App\Transformers\Datum;
-use Aic\Hub\Foundation\AbstractFactory as BaseFactory;
-use Aic\Hub\Foundation\AbstractModel as BaseModel;
 use App\Transformers\Outbound\Csv\AbstractTransformer as BaseTransformer;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
@@ -22,69 +17,13 @@ use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 class CsvExportTest extends BaseTestCase
 {
     use HasCsvReader;
+    use HasFakeModel;
 
-    private $modelClass;
+    private $resource;
 
-    private $resource = 'foos';
-
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
-
-        Schema::create('foos', function (Blueprint $table) {
-            $table->integer('id', true, true);
-            $table->text('title')->nullable();
-            $table->integer('acme_id')->nullable();
-            $table->timestamps();
-        });
-
-        $modelClass = new class() extends BaseModel {
-            protected $table = 'foos';
-
-            protected $casts = [
-                'id' => 'integer',
-                'title' => 'string',
-                'acme_id' => 'integer',
-                'updated_at' => 'datetime',
-            ];
-
-            public static $factoryClass;
-
-            protected static function newFactory()
-            {
-                return (static::$factoryClass)::new();
-            }
-        };
-
-        $factoryClass = new class() extends BaseFactory {
-            public function definition()
-            {
-                return [
-                    'id' => $this->getValidId(),
-                    'title' => $this->getTitle(),
-                    'acme_id' => $this->getNumericId(),
-                ];
-            }
-
-            public function nullable()
-            {
-                return $this->state(fn (array $attributes) => [
-                    'title' => null,
-                    'acme_id' => null,
-                ]);
-            }
-
-            public static $modelClass;
-
-            public function modelName()
-            {
-                return static::$modelClass;
-            }
-        };
-
-        // https://stackoverflow.com/a/49038436
-        ($modelClass)::$factoryClass = $factoryClass;
-        ($factoryClass)::$modelClass = $modelClass;
 
         $transformerClass = new class() extends BaseTransformer {
             public function getFields()
@@ -101,13 +40,13 @@ class CsvExportTest extends BaseTestCase
         Config::set('aic.output.csv', [
             'resources' => [
                 'foos' => [
-                    'model' => $modelClass,
+                    'model' => $this->modelClass,
                     'transformer' => $transformerClass,
                 ],
             ],
         ]);
 
-        $this->modelClass = $modelClass;
+        $this->resource = 'foos';
     }
 
     public function tearDown(): void

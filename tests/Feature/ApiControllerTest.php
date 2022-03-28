@@ -2,40 +2,27 @@
 
 namespace Tests\Feature;
 
+use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 
-use Aic\Hub\Foundation\AbstractModel as BaseModel;
 use App\Transformers\Outbound\Api\AbstractTransformer as BaseTransformer;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
 class ApiControllerTest extends BaseTestCase
 {
-    private $modelClass;
+    use HasFakeModel;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        Schema::create('foobarbazs', function (Blueprint $table) {
-            $table->integer('id', true, true);
-            $table->timestamps();
-        });
-
-        $this->modelClass = new class() extends BaseModel {
-            protected $table = 'foobarbazs';
-            protected $casts = [
-                'id' => 'integer',
-            ];
-        };
 
         $transformerClass = new class() extends BaseTransformer {
             public function transform($item)
             {
                 return parent::transform([
                     'id' => $item->id,
+                    // ...other fields don't matter
                 ]);
             }
         };
@@ -68,8 +55,7 @@ class ApiControllerTest extends BaseTestCase
 
     public function test_it_200s_on_resource_show()
     {
-        ($this->modelClass)::create();
-        $foo = ($this->modelClass)::first();
+        $foo = ($this->modelClass)::factory()->create();
         $response = $this->get('/api/v1/foos/' . $foo->id);
         $response->assertStatus(200);
         $this->assertEquals($foo->getKey(), $response['data']['id']);
