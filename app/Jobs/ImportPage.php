@@ -11,33 +11,14 @@ class ImportPage extends AbstractJob
 {
     use ImportsData;
 
-    private $sourceName;
-
-    private $resourceName;
-
-    private $data;
-
-    private $isFull;
-
-    private $since;
-
-    private $page;
-
     public function __construct(
-        string $sourceName,
-        string $resourceName,
-        array $data,
-        bool $isFull,
-        ?string $since,
-        int $page
+        private string $sourceName,
+        private string $resourceName,
+        private array $data,
+        private bool $isFull,
+        private ?string $since,
+        private int $page
     ) {
-        $this->sourceName = $sourceName;
-        $this->resourceName = $resourceName;
-        $this->data = $data;
-        $this->isFull = $isFull;
-        $this->since = $since;
-        $this->page = $page;
-
         if (!$this->isFull && empty($this->since)) {
             throw new LogicException("Parameter 'since' cannot be empty for partial imports");
         }

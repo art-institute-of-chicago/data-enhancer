@@ -8,28 +8,13 @@ class DownloadPage extends AbstractJob
 {
     public $tries = 3;
 
-    private $sourceName;
-
-    private $resourceName;
-
-    private $page;
-
-    private $isFull;
-
-    private $since;
-
     public function __construct(
-        string $sourceName,
-        string $resourceName,
-        int $page,
-        bool $isFull,
-        ?string $since
+        private string $sourceName,
+        private string $resourceName,
+        private int $page,
+        private bool $isFull,
+        private ?string $since
     ) {
-        $this->sourceName = $sourceName;
-        $this->resourceName = $resourceName;
-        $this->page = $page;
-        $this->isFull = $isFull;
-        $this->since = $since;
     }
 
     public function backoff()
