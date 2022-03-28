@@ -14,7 +14,7 @@ class ArtworkTest extends BaseTestCase
     {
         return [
             'id' => 'integer',
-            'title' => 'string',
+            'title' => 'string|null',
             'dimension_display' => 'string|null',
             'width' => 'integer|null',
             'height' => 'integer|null',

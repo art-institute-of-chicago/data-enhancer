@@ -66,6 +66,14 @@ class CsvExportTest extends BaseTestCase
                 ];
             }
 
+            public function nullable()
+            {
+                return $this->state(fn (array $attributes) => [
+                    'title' => null,
+                    'acme_id' => null,
+                ]);
+            }
+
             public static $modelClass;
 
             public function modelName()

@@ -14,7 +14,7 @@ class AgentTest extends BaseTestCase
     {
         return [
             'id' => 'integer',
-            'title' => 'string',
+            'title' => 'string|null',
             'birth_year' => 'integer|null',
             'death_year' => 'integer|null',
             'ulan_id' => 'integer|null',

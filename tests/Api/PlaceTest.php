@@ -14,7 +14,7 @@ class PlaceTest extends BaseTestCase
     {
         return [
             'id' => 'integer',
-            'title' => 'string',
+            'title' => 'string|null',
             'latitude' => 'double|null',
             'longitude' => 'double|null',
             'tgn_id' => 'integer|null',
