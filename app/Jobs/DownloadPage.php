@@ -13,7 +13,7 @@ class DownloadPage extends AbstractJob
         private string $resourceName,
         private int $page,
         private bool $isFull,
-        private ?string $since
+        private ?string $since,
     ) {
     }
 

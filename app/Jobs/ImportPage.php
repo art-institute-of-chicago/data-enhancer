@@ -17,7 +17,7 @@ class ImportPage extends AbstractJob
         private array $data,
         private bool $isFull,
         private ?string $since,
-        private int $page
+        private int $page,
     ) {
         if (!$this->isFull && empty($this->since)) {
             throw new LogicException("Parameter 'since' cannot be empty for partial imports");

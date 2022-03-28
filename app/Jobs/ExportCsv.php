@@ -15,7 +15,7 @@ class ExportCsv extends AbstractJob
         private ?array $ids,
         private ?string $since,
         private ?array $blankFields,
-        private ?array $exportFields
+        private ?array $exportFields,
     ) {
     }
 

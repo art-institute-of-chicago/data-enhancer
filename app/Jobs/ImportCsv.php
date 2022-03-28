@@ -15,7 +15,7 @@ class ImportCsv extends AbstractJob
 
     public function __construct(
         private string $resourceName,
-        private string $csvPath
+        private string $csvPath,
     ) {
     }
 

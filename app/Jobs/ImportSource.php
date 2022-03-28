@@ -11,7 +11,7 @@ class ImportSource extends AbstractJob
         private string $sourceName,
         private ?string $resourceName,
         private bool $isFull,
-        private ?string $since
+        private ?string $since,
     ) {
     }
 
