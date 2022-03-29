@@ -7,6 +7,7 @@ use League\Csv\Writer;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CsvFile;
+use Spatie\SlackAlerts\Facades\SlackAlert;
 
 class ExportCsv extends AbstractJob
 {
@@ -126,5 +127,25 @@ class ExportCsv extends AbstractJob
             'blank_fields' => $this->blankFields,
             'export_fields' => $this->exportFields,
         ]);
+
+        $this->alertSlack($csvId);
+    }
+
+    private function alertSlack($csvId)
+    {
+        if (app()->environment('testing')) {
+            return;
+        }
+
+        $csvFile = CsvFile::find($csvId);
+
+        SlackAlert::message(sprintf(
+            'Enhancer: exported CSV with %d %s (<%s|%s>) [%s]',
+            $csvFile->count,
+            $csvFile->resource,
+            $csvFile->getCsvUrl(),
+            $csvFile->filename,
+            app('env'),
+        ));
     }
 }
