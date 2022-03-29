@@ -19,6 +19,7 @@ class Artwork extends BaseModel
         'depth' => 'integer',
         'medium_display' => 'string',
         'support_aat_id' => 'integer',
+        'linked_art_json' => 'object',
         'source_updated_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

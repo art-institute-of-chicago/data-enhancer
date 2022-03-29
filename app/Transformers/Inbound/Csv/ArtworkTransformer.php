@@ -3,10 +3,13 @@
 namespace App\Transformers\Inbound\Csv;
 
 use App\Transformers\Datum;
+use App\Transformers\Inbound\Csv\Concerns\FromJson;
 use App\Transformers\Inbound\AbstractTransformer;
 
 class ArtworkTransformer extends AbstractTransformer
 {
+    use FromJson;
+
     public function getFields()
     {
         return [
@@ -15,6 +18,7 @@ class ArtworkTransformer extends AbstractTransformer
             'height' => null,
             'depth' => null,
             'support_aat_id' => fn (Datum $datum) => $this->trimPrefix($datum->support_aat_id, 'aat/'),
+            'linked_art_json' => fn (Datum $datum) => $this->fromJson($datum->linked_art_json),
         ];
     }
 }
