@@ -10,28 +10,13 @@ use App\Models\CsvFile;
 
 class ExportCsv extends AbstractJob
 {
-    private $resourceName;
-
-    private $ids;
-
-    private $since;
-
-    private $blankFields;
-
-    private $exportFields;
-
     public function __construct(
-        string $resourceName,
-        ?array $ids,
-        ?string $since,
-        ?array $blankFields,
-        ?array $exportFields
+        private string $resourceName,
+        private ?array $ids,
+        private ?string $since,
+        private ?array $blankFields,
+        private ?array $exportFields,
     ) {
-        $this->resourceName = $resourceName;
-        $this->ids = $ids;
-        $this->since = $since;
-        $this->blankFields = $blankFields;
-        $this->exportFields = $exportFields;
     }
 
     public function tags()

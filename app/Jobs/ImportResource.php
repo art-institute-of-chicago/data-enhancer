@@ -10,24 +10,12 @@ use Illuminate\Support\Facades\Bus;
 
 class ImportResource extends AbstractJob
 {
-    private $sourceName;
-
-    private $resourceName;
-
-    private $isFull;
-
-    private $since;
-
     public function __construct(
-        string $sourceName,
-        string $resourceName,
-        bool $isFull,
-        ?string $since
+        private string $sourceName,
+        private string $resourceName,
+        private bool $isFull,
+        private ?string $since,
     ) {
-        $this->sourceName = $sourceName;
-        $this->resourceName = $resourceName;
-        $this->isFull = $isFull;
-        $this->since = $since;
     }
 
     public function tags()

@@ -13,16 +13,10 @@ class ImportCsv extends AbstractJob
 
     private $sourceName = 'csv';
 
-    private $resourceName;
-
-    private $csvPath;
-
     public function __construct(
-        string $resourceName,
-        string $csvPath
+        private string $resourceName,
+        private string $csvPath,
     ) {
-        $this->resourceName = $resourceName;
-        $this->csvPath = $csvPath;
     }
 
     public function tags()
