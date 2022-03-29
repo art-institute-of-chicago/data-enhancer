@@ -21,6 +21,7 @@ class ArtworkTest extends BaseTestCase
             'depth' => 'integer|null',
             'medium_display' => 'string|null',
             'support_aat_id' => 'integer|null',
+            'linked_art_json' => 'array|null',
             'source_updated_at' => 'string|null',
             'updated_at' => 'string',
         ];

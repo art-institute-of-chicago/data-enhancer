@@ -15,6 +15,7 @@ class ArtworkTransformer extends AbstractTransformer
             'height' => null,
             'depth' => null,
             'support_aat_id' => fn (Datum $datum) => $this->trimPrefix($datum->support_aat_id, 'aat/'),
+            'linked_art_json' => null,
         ];
     }
 }

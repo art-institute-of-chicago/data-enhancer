@@ -17,6 +17,7 @@ class ArtworkTransformer extends AbstractTransformer
             'depth' => null,
             'medium_display' => null,
             'support_aat_id' => fn (Datum $datum) => $this->addPrefix($datum->support_aat_id, 'aat/'),
+            'linked_art_json' => null,
             'source_updated_at' => fn (Datum $datum) => $this->getDateTime($datum->source_updated_at),
             'updated_at' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
         ];

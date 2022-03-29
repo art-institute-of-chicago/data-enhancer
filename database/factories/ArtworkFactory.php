@@ -30,6 +30,7 @@ class ArtworkFactory extends BaseFactory
             'depth' => $depth,
             'medium_display' => $this->faker->words(5, true),
             'support_aat_id' => $this->getNumericId(),
+            'linked_art_json' => $this->getLinkedArtJson(),
             'source_updated_at' => $this->faker->dateTime(),
         ];
     }
@@ -44,7 +45,21 @@ class ArtworkFactory extends BaseFactory
             'depth' => null,
             'medium_display' => null,
             'support_aat_id' => null,
+            'linked_art_json' => null,
             'source_updated_at' => null,
         ]);
+    }
+
+    private function getLinkedArtJson()
+    {
+        return json_decode(<<<END
+        {
+            "see_also": [
+                {
+                    "id": "https://vangoghworldwide.org/data/artwork/F1234"
+                }
+            ]
+        }
+        END);
     }
 }
