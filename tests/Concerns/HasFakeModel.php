@@ -32,6 +32,7 @@ trait HasFakeModel
             $table->integer('id', true, true);
             $table->text('title')->nullable();
             $table->integer('acme_id')->nullable();
+            $table->json('some_json')->nullable();
             $table->timestamps();
         });
     }
@@ -45,6 +46,7 @@ trait HasFakeModel
                 'id' => 'integer',
                 'title' => 'string',
                 'acme_id' => 'integer',
+                'some_json' => 'object',
                 'updated_at' => 'datetime',
             ];
 
@@ -66,6 +68,9 @@ trait HasFakeModel
                     'id' => $this->getValidId(),
                     'title' => $this->getTitle(),
                     'acme_id' => $this->getNumericId(),
+                    'some_json' => (object) [
+                        'hello' => 'world',
+                    ],
                 ];
             }
 
@@ -74,6 +79,7 @@ trait HasFakeModel
                 return $this->state(fn (array $attributes) => [
                     'title' => null,
                     'acme_id' => null,
+                    'some_json' => null,
                 ]);
             }
 

@@ -3,9 +3,12 @@
 namespace App\Transformers\Outbound\Csv;
 
 use App\Transformers\Datum;
+use App\Transformers\Outbound\Csv\Concerns\ToJson;
 
 class ArtworkTransformer extends AbstractTransformer
 {
+    use ToJson;
+
     public function getFields()
     {
         return [
@@ -17,7 +20,7 @@ class ArtworkTransformer extends AbstractTransformer
             'depth' => null,
             'medium_display' => null,
             'support_aat_id' => fn (Datum $datum) => $this->addPrefix($datum->support_aat_id, 'aat/'),
-            'linked_art_json' => null,
+            'linked_art_json' => fn (Datum $datum) => $this->toJson($datum->linked_art_json),
             'source_updated_at' => fn (Datum $datum) => $this->getDateTime($datum->source_updated_at),
             'updated_at' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
         ];

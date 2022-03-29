@@ -10,6 +10,7 @@ use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
 
 use App\Transformers\Datum;
+use App\Transformers\Outbound\Csv\Concerns\ToJson;
 use App\Transformers\Outbound\Csv\AbstractTransformer as BaseTransformer;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
@@ -26,12 +27,15 @@ class CsvExportTest extends BaseTestCase
         parent::setUp();
 
         $transformerClass = new class() extends BaseTransformer {
+            use ToJson;
+
             public function getFields()
             {
                 return [
                     'id' => null,
                     'title' => null,
                     'acme_id' => fn (Datum $datum) => $this->addPrefix($datum->acme_id, 'acme/'),
+                    'some_json' => fn (Datum $datum) => $this->toJson($datum->some_json),
                     'updated_at' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
                 ];
             }
@@ -117,6 +121,7 @@ class CsvExportTest extends BaseTestCase
                 'id' => (string) $datum->id,
                 'title' => $datum->title,
                 'acme_id' => 'acme/' . $datum->acme_id,
+                'some_json' => '{"hello":"world"}',
                 'updated_at' => $datum->updated_at->toIso8601String(),
             ]);
         }
@@ -238,6 +243,7 @@ class CsvExportTest extends BaseTestCase
 
         foreach ($csvReader as $record) {
             $this->assertTrue(empty($record['acme_id']));
+            $this->assertTrue(empty($record['some_json']));
             $this->assertTrue(empty($record['updated_at']));
         }
     }
