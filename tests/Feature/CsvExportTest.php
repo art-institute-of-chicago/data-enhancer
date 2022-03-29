@@ -17,10 +17,10 @@ use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
 class CsvExportTest extends BaseTestCase
 {
-    use HasCsvReader;
     use HasFakeModel;
+    use HasCsvReader;
 
-    private $resource;
+    private $resourceName;
 
     public function setUp(): void
     {
@@ -50,7 +50,7 @@ class CsvExportTest extends BaseTestCase
             ],
         ]);
 
-        $this->resource = 'foos';
+        $this->resourceName = 'foos';
     }
 
     public function tearDown(): void
@@ -79,7 +79,7 @@ class CsvExportTest extends BaseTestCase
         $invalidId = ($this->modelClass)::factory()->getInvalidId();
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'ids' => $invalidId,
         ]);
 
@@ -91,7 +91,7 @@ class CsvExportTest extends BaseTestCase
     public function test_it_errors_on_invalid_date()
     {
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'since' => 'foobar',
         ]);
 
@@ -109,7 +109,7 @@ class CsvExportTest extends BaseTestCase
             ->values();
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
         ]);
 
         $csvReader = $this->getCsvReader();
@@ -145,7 +145,7 @@ class CsvExportTest extends BaseTestCase
         ]);
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'ids' => $inputIds,
         ]);
 
@@ -176,7 +176,7 @@ class CsvExportTest extends BaseTestCase
         $sinceCarbon = Carbon::parse($sinceInput);
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'since' => $sinceInput,
         ]);
 
@@ -209,7 +209,7 @@ class CsvExportTest extends BaseTestCase
         ]);
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'blankFields' => [
                 'title',
                 'acme_id',
@@ -232,7 +232,7 @@ class CsvExportTest extends BaseTestCase
         ($this->modelClass)::factory()->create();
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'exportFields' => [
                 'id',
                 'title',
