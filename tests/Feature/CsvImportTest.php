@@ -2,30 +2,15 @@
 
 namespace Tests\Feature;
 
-use Carbon\Carbon;
-use App\Models\Agent;
-use App\Models\Artwork;
-use App\Models\ArtworkType;
-use App\Models\Place;
 use App\Models\Term;
 use App\Library\SourceConsumer;
-use Illuminate\Http\UploadedFile;
+use Tests\Concerns\ImportsCsv;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
 class CsvImportTest extends BaseTestCase
 {
-    private $oldUpdatedAt;
-    private $newUpdatedAt;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // API-129: Be careful about inserting values with timezones without pre-processing.
-        $this->oldUpdatedAt = Carbon::parse('10 minutes ago')->roundSecond()->toISOString();
-        $this->newUpdatedAt = Carbon::parse('5 minutes ago')->roundSecond()->toISOString();
-    }
+    use ImportsCsv;
 
     public function test_it_shows_csv_import_form()
     {
@@ -40,152 +25,6 @@ class CsvImportTest extends BaseTestCase
             'resource' => 'The resource field is required.',
             'csvFile' => 'The csv file field is required.',
         ]);
-    }
-
-    public function test_it_imports_csv_for_agents()
-    {
-        $this->it_imports_csv_for_resource(
-            Agent::class,
-            'agents',
-            [
-                'id' => 1,
-                'title' => 'Foobar',
-                'birth_year' => 1950,
-                'death_year' => 1999,
-                'ulan_id' => 12345,
-                'ulan_certainty' => 1,
-                'source_updated_at' => $this->oldUpdatedAt,
-            ],
-            <<<END
-            id,title,birth_year,death_year,ulan_id,ulan_certainty,source_updated_at
-            1,Foobaz,1945,2000,ulan/67890,3,{$this->newUpdatedAt}
-            END,
-            [
-                'id' => 1,
-                'title' => 'Foobar',
-                'birth_year' => 1950,
-                'death_year' => 1999,
-                'ulan_id' => 67890,
-                'ulan_certainty' => 3,
-                'source_updated_at' => $this->oldUpdatedAt,
-            ]
-        );
-    }
-
-    public function test_it_imports_csv_for_artworks()
-    {
-        $this->it_imports_csv_for_resource(
-            Artwork::class,
-            'artworks',
-            [
-                'id' => 1,
-                'title' => 'Foobar',
-                'dimension_display' => '5 × 5 × 5 cm',
-                'width' => 5,
-                'height' => 5,
-                'depth' => 5,
-                'medium_display' => 'Foobar',
-                'support_aat_id' => 12345,
-                'linked_art_json' => (object) [
-                    'foo' => 'bar',
-                ],
-                'source_updated_at' => $this->oldUpdatedAt,
-            ],
-            <<<END
-            id,title,dimension_display,width,height,depth,medium_display,support_aat_id,linked_art_json,source_updated_at
-            1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,aat/67890,"{""foo"":""baz""}",{$this->newUpdatedAt}
-            END,
-            [
-                'id' => 1,
-                'title' => 'Foobar',
-                'dimension_display' => '5 × 5 × 5 cm',
-                'width' => 10,
-                'height' => 10,
-                'depth' => 10,
-                'medium_display' => 'Foobar',
-                'support_aat_id' => 67890,
-                'linked_art_json' => (object) [
-                    'foo' => 'baz',
-                ],
-                'source_updated_at' => $this->oldUpdatedAt,
-            ]
-        );
-    }
-
-    public function test_it_imports_csv_for_artwork_types()
-    {
-        $this->it_imports_csv_for_resource(
-            ArtworkType::class,
-            'artwork-types',
-            [
-                'id' => 1,
-                'title' => 'Foobar',
-                'aat_id' => 12345,
-                'source_updated_at' => $this->oldUpdatedAt,
-            ],
-            <<<END
-            id,title,aat_id,source_updated_at
-            1,Foobaz,aat/67890,{$this->newUpdatedAt}
-            END,
-            [
-                'id' => 1,
-                'title' => 'Foobar',
-                'aat_id' => 67890,
-                'source_updated_at' => $this->oldUpdatedAt,
-            ]
-        );
-    }
-
-    public function test_it_imports_csv_for_places()
-    {
-        $this->it_imports_csv_for_resource(
-            Place::class,
-            'places',
-            [
-                'id' => 1,
-                'title' => 'Foobar',
-                'latitude' => 41.8796,
-                'longitude' => 87.6237,
-                'tgn_id' => 12345,
-                'source_updated_at' => $this->oldUpdatedAt,
-            ],
-            <<<END
-            id,title,latitude,longitude,tgn_id,source_updated_at
-            1,Foobaz,39.8260,86.1857,tgn/67890,{$this->newUpdatedAt}
-            END,
-            [
-                'id' => 1,
-                'title' => 'Foobar',
-                'latitude' => 41.8796,
-                'longitude' => 87.6237,
-                'tgn_id' => 67890,
-                'source_updated_at' => $this->oldUpdatedAt,
-            ]
-        );
-    }
-
-    public function test_it_imports_csv_for_terms()
-    {
-        $this->it_imports_csv_for_resource(
-            Term::class,
-            'terms',
-            [
-                'id' => 'TM-1',
-                'title' => 'Foobar',
-                'aat_id' => 12345,
-                'source_updated_at' => $this->oldUpdatedAt,
-            ],
-            <<<END
-            id,title,aat_id,source_updated_at
-            TM-1,Foobaz,aat/67890,{$this->newUpdatedAt}
-            END,
-            [
-                'id' => 'TM-1',
-                'title' => 'Foobar',
-                'aat_id' => 67890,
-                'source_updated_at' => $this->oldUpdatedAt,
-            ]
-        );
     }
 
     /**
@@ -211,7 +50,7 @@ class CsvImportTest extends BaseTestCase
         $firstCsvContents = $getCsvContents($firstTerms);
 
         $this->travel(-5)->days();
-        $this->it_imports_csv('terms', $firstCsvContents);
+        $this->importCsv('terms', $firstCsvContents);
         $this->travelBack();
 
         $this->assertDatabaseCount('terms', $firstCount);
@@ -231,53 +70,11 @@ class CsvImportTest extends BaseTestCase
         $secondCsvContents = $getCsvContents($secondTerms);
 
         $this->travel(5)->days();
-        $this->it_imports_csv('terms', $secondCsvContents);
+        $this->importCsv('terms', $secondCsvContents);
         $this->travelBack();
 
         $updatedCount = Term::whereDate('updated_at', '>', now()->toDateString())->count();
 
         $this->assertEquals($secondCount, $updatedCount);
     }
-
-    private function it_imports_csv_for_resource(
-        string $modelClass,
-        string $resourceName,
-        array $initialState,
-        string $csvContents,
-        array $expectedState
-    ) {
-        $initialItem = ($modelClass)::factory()->create($initialState);
-        $id = $initialItem->getKey();
-
-        $this->it_imports_csv($resourceName, $csvContents);
-
-        $finalItem = ($modelClass)::find($id);
-        $finalState = $finalItem->toArray();
-
-        $this->assertEquals(
-            $expectedState,
-            array_intersect_key(
-                $finalState,
-                $expectedState
-            )
-        );
-    }
-
-    private function it_imports_csv(
-        string $resourceName,
-        string $csvContents
-    ) {
-        $csvFile = UploadedFile::fake()->createWithContent('test.csv', $csvContents);
-
-        $response = $this->post('/csv/import', [
-            'resource' => $resourceName,
-            'csvFile' => $csvFile,
-        ]);
-
-        $response->assertStatus(302);
-        $response->assertSessionHas('success');
-
-        return $response;
-    }
-
 }
