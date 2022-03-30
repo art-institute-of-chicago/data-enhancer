@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
+use Tests\Concerns\HasDates;
 
 use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
@@ -13,6 +14,7 @@ use Tests\Csv\CsvExportTestCase as BaseTestCase;
 class CsvExportTest extends BaseTestCase
 {
     use HasFakeModel;
+    use HasDates;
 
     protected $resourceName = 'foos';
 

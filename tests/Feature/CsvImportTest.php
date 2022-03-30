@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Term;
 use App\Library\SourceConsumer;
+use Tests\Concerns\HasDates;
 
 use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
@@ -14,6 +15,7 @@ use Tests\Csv\CsvImportTestCase as BaseTestCase;
 class CsvImportTest extends BaseTestCase
 {
     use HasFakeModel;
+    use HasDates;
 
     protected $resourceName = 'foos';
 
@@ -113,7 +115,7 @@ class CsvImportTest extends BaseTestCase
         $this->travelBack();
 
         $updatedCount = ($this->modelClass)::query()
-            ->whereDate('updated_at', '>', now()->toDateString())
+            ->whereDate('updated_at', '>', now()->toDateTimeString())
             ->count();
 
         $this->assertEquals($secondCount, $updatedCount);
