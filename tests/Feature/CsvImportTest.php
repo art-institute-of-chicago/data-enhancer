@@ -4,13 +4,16 @@ namespace Tests\Feature;
 
 use App\Models\Term;
 use App\Library\SourceConsumer;
-use Tests\Concerns\ImportsCsv;
 
-use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
+use Tests\Csv\CsvImportTestCase as BaseTestCase;
 
 class CsvImportTest extends BaseTestCase
 {
-    use ImportsCsv;
+
+    public function test_it_imports_csv_for_resource()
+    {
+        $this->addToAssertionCount(1);
+    }
 
     public function test_it_shows_csv_import_form()
     {

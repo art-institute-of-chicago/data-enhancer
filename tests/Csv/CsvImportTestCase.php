@@ -3,14 +3,12 @@
 namespace Tests\Csv;
 
 use Carbon\Carbon;
-use Tests\Concerns\ImportsCsv;
+use Illuminate\Http\UploadedFile;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase;
 
 class CsvImportTestCase extends FeatureTestCase
 {
-    use ImportsCsv;
-
     protected $oldUpdatedAt;
     protected $newUpdatedAt;
 
@@ -46,5 +44,22 @@ class CsvImportTestCase extends FeatureTestCase
                 $expectedState
             )
         );
+    }
+
+    protected function importCsv(
+        string $resourceName,
+        string $csvContents
+    ) {
+        $csvFile = UploadedFile::fake()->createWithContent('test.csv', $csvContents);
+
+        $response = $this->post('/csv/import', [
+            'resource' => $resourceName,
+            'csvFile' => $csvFile,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHas('success');
+
+        return $response;
     }
 }
