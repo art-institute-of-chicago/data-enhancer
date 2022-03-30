@@ -30,6 +30,30 @@ class CsvExportTest extends BaseTestCase
         ]);
     }
 
+    public function data()
+    {
+        return [
+            [
+                [
+                    'id' => 1,
+                    'title' => 'Foobar',
+                    'acme_id' => 1234,
+                    'some_json' => (object) [
+                        'foo' => 'bar',
+                    ],
+                    'updated_at' => now()->toDateTimeString(),
+                ],
+                [
+                    'id' => '1',
+                    'title' => 'Foobar',
+                    'acme_id' => 'acme/1234',
+                    'some_json' => '{"foo":"bar"}',
+                    'updated_at' => now()->toIso8601String(),
+                ],
+            ]
+        ];
+    }
+
     public function test_it_shows_csv_export_form()
     {
         $response = $this->get('/csv/export');

@@ -21,6 +21,39 @@ class CsvExportTestCase extends FeatureTestCase
         parent::tearDown();
     }
 
+    public function test_it_exports_resource()
+    {
+        $primaryKey = ($this->modelClass)::instance()->getKeyName();
+
+        $data = collect($this->data());
+
+        $initialStates = $data->pluck(0);
+        $expectedStates = $data->pluck(1);
+
+        $datums = $initialStates
+            ->map(fn ($attributes) => ($this->modelClass)::factory()->create($attributes))
+            ->sortBy($primaryKey)
+            ->values();
+
+        $response = $this->post('/csv/export', [
+            'resource' => $this->resourceName,
+        ]);
+
+        $csvReader = $this->getCsvReader();
+
+        foreach ($csvReader as $offset => $finalState) {
+            $expectedState = $expectedStates[$offset - 1];
+
+            $this->assertEquals(
+                $expectedState,
+                array_intersect_key(
+                    $finalState,
+                    $expectedState
+                )
+            );
+        }
+    }
+
     protected function getCsvReader()
     {
         $csvFile = CsvFile::first();
