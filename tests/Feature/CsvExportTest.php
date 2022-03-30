@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 
 use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
-
-use App\Transformers\Datum;
-use App\Transformers\Outbound\Csv\Concerns\ToJson;
-use App\Transformers\Outbound\Csv\AbstractTransformer as BaseTransformer;
+use Tests\Fakes\FakeOutboundCsvTransformer;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
@@ -20,37 +17,20 @@ class CsvExportTest extends BaseTestCase
     use HasFakeModel;
     use HasCsvReader;
 
-    private $resourceName;
+    private $resourceName = 'foos';
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $transformerClass = new class() extends BaseTransformer {
-            use ToJson;
-
-            public function getFields()
-            {
-                return [
-                    'id' => null,
-                    'title' => null,
-                    'acme_id' => fn (Datum $datum) => $this->addPrefix($datum->acme_id, 'acme/'),
-                    'some_json' => fn (Datum $datum) => $this->toJson($datum->some_json),
-                    'updated_at' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
-                ];
-            }
-        };
-
         Config::set('aic.output.csv', [
             'resources' => [
                 'foos' => [
                     'model' => $this->modelClass,
-                    'transformer' => $transformerClass,
+                    'transformer' => FakeOutboundCsvTransformer::class,
                 ],
             ],
         ]);
-
-        $this->resourceName = 'foos';
     }
 
     public function tearDown(): void
