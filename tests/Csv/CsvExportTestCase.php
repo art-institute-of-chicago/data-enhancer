@@ -31,9 +31,16 @@ class CsvExportTestCase extends FeatureTestCase
         $expectedStates = $data->pluck(1);
 
         $datums = $initialStates
-            ->map(fn ($attributes) => ($this->modelClass)::factory()->create($attributes))
+            ->map(function ($attributes, $offset) use ($expectedStates) {
+                $datum = ($this->modelClass)::factory()->create($attributes);
+                $datum->expectedState = $expectedStates[$offset];
+                return $datum;
+            })
             ->sortBy($primaryKey)
             ->values();
+
+        // Ensures this collection is also sorted by pkey
+        $expectedStates = $datums->pluck('expectedState');
 
         $response = $this->post('/csv/export', [
             'resource' => $this->resourceName,
