@@ -5,14 +5,54 @@ namespace Tests\Feature;
 use App\Models\Term;
 use App\Library\SourceConsumer;
 
+use Tests\Concerns\HasFakeModel;
+use Illuminate\Support\Facades\Config;
+use Tests\Fakes\FakeInboundCsvTransformer;
+
 use Tests\Csv\CsvImportTestCase as BaseTestCase;
 
 class CsvImportTest extends BaseTestCase
 {
+    use HasFakeModel;
 
-    public function test_it_imports_csv_for_resource()
+    public function setUp(): void
     {
-        $this->addToAssertionCount(1);
+        parent::setUp();
+
+        Config::set('aic.imports.sources.csv.resources', [
+            'foos' => [
+                'model' => $this->modelClass,
+                'transformer' => FakeInboundCsvTransformer::class,
+            ],
+        ]);
+
+        $this->resourceName = 'foos';
+    }
+
+    protected function data()
+    {
+        return [
+            [
+                'id' => 1,
+                'title' => 'Foobar',
+                'acme_id' => 12345,
+                'some_json' => (object) [
+                    'foo' => 'bar',
+                ],
+            ],
+            <<<END
+            id,title,acme_id,some_json
+            1,Foobaz,acme/67890,"{""foo"":""baz""}"
+            END,
+            [
+                'id' => 1,
+                'title' => 'Foobar',
+                'acme_id' => 67890,
+                'some_json' => (object) [
+                    'foo' => 'baz',
+                ],
+            ]
+        ];
     }
 
     public function test_it_shows_csv_import_form()
@@ -36,47 +76,45 @@ class CsvImportTest extends BaseTestCase
      * file is 0.75x the limit, so it tests what happens when a CSV file
      * contains multiple rows, but is still small enough to be contained
      * in one batch. Also tests that `updated_at` gets updated correctly.
-     * The `aat_id` column is modified between imports.
+     * The `acme_id` column is modified between imports.
      */
     public function test_it_imports_big_csv()
     {
-        $getCsvContents = fn ($terms) => $terms
-            ->map(fn ($term) => implode(',', [$term->id, $term->aat_id]))
-            ->prepend('id,aat_id')
+        $getCsvContents = fn ($items) => $items
+            ->map(fn ($item) => $item->id . ',' . $item->acme_id)
+            ->prepend('id,acme_id')
             ->implode(PHP_EOL);
 
-        $limit = SourceConsumer::getLimit('csv', 'terms');
+        $limit = SourceConsumer::getLimit('csv', $this->resourceName);
 
         $firstCount = round($limit * 2.5);
-        $firstTerms = Term::factory()->count($firstCount)->make();
+        $firstItems = ($this->modelClass)::factory()->count($firstCount)->make();
 
-        $firstCsvContents = $getCsvContents($firstTerms);
+        $firstCsvContents = $getCsvContents($firstItems);
 
         $this->travel(-5)->days();
-        $this->importCsv('terms', $firstCsvContents);
+        $this->importCsv($this->resourceName, $firstCsvContents);
         $this->travelBack();
 
-        $this->assertDatabaseCount('terms', $firstCount);
+        $tableName = ($this->modelClass)::getTableName();
+        $this->assertDatabaseCount($tableName, $firstCount);
 
         $secondCount = round($limit * 0.75);
-        $secondTerms = $firstTerms
+        $secondItems = $firstItems
             ->random($secondCount)
-            ->each(function ($term) {
-                do {
-                    $aatId = Term::factory()->make()->aat_id;
-                }
-                while ($aatId === $term->aat_id);
-
-                $term->aat_id = $aatId;
+            ->each(function ($item) {
+                $item->acme_id = ($this->modelClass)::factory()->make()->acme_id;
             });
 
-        $secondCsvContents = $getCsvContents($secondTerms);
+        $secondCsvContents = $getCsvContents($secondItems);
 
         $this->travel(5)->days();
-        $this->importCsv('terms', $secondCsvContents);
+        $this->importCsv($this->resourceName, $secondCsvContents);
         $this->travelBack();
 
-        $updatedCount = Term::whereDate('updated_at', '>', now()->toDateString())->count();
+        $updatedCount = ($this->modelClass)::query()
+            ->whereDate('updated_at', '>', now()->toDateString())
+            ->count();
 
         $this->assertEquals($secondCount, $updatedCount);
     }
