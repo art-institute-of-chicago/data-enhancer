@@ -2,11 +2,8 @@
 
 namespace Tests\Concerns;
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-
-use Aic\Hub\Foundation\AbstractFactory as BaseFactory;
-use Aic\Hub\Foundation\AbstractModel as BaseModel;
+use Tests\Fakes\FakeMigration;
+use Tests\Fakes\FakeModel;
 
 trait HasFakeModel
 {
@@ -14,81 +11,8 @@ trait HasFakeModel
 
     protected function setUpHasFakeModel()
     {
-        $this->createFakeTable();
+        FakeMigration::createFakeTable();
 
-        $modelClass = $this->getFakeModel();
-        $factoryClass = $this->getFakeFactory();
-
-        // https://stackoverflow.com/a/49038436
-        ($modelClass)::$factoryClass = $factoryClass;
-        ($factoryClass)::$modelClass = $modelClass;
-
-        $this->modelClass = $modelClass;
-    }
-
-    private function createFakeTable()
-    {
-        Schema::create('foos', function (Blueprint $table) {
-            $table->integer('id', true, true);
-            $table->text('title')->nullable();
-            $table->integer('acme_id')->nullable();
-            $table->json('some_json')->nullable();
-            $table->timestamps();
-        });
-    }
-
-    private function getFakeModel(): BaseModel
-    {
-        return new class() extends BaseModel {
-            protected $table = 'foos';
-
-            protected $casts = [
-                'id' => 'integer',
-                'title' => 'string',
-                'acme_id' => 'integer',
-                'some_json' => 'object',
-                'updated_at' => 'datetime',
-            ];
-
-            public static $factoryClass;
-
-            protected static function newFactory()
-            {
-                return (static::$factoryClass)::new();
-            }
-        };
-    }
-
-    private function getFakeFactory(): BaseFactory
-    {
-        return new class() extends BaseFactory {
-            public function definition()
-            {
-                return [
-                    'id' => $this->getValidId(),
-                    'title' => $this->getTitle(),
-                    'acme_id' => $this->getNumericId(),
-                    'some_json' => (object) [
-                        'hello' => 'world',
-                    ],
-                ];
-            }
-
-            public function nullable()
-            {
-                return $this->state(fn (array $attributes) => [
-                    'title' => null,
-                    'acme_id' => null,
-                    'some_json' => null,
-                ]);
-            }
-
-            public static $modelClass;
-
-            public function modelName()
-            {
-                return static::$modelClass;
-            }
-        };
+        $this->modelClass = FakeModel::class;
     }
 }
