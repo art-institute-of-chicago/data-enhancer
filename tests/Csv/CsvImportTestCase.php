@@ -9,7 +9,10 @@ use Aic\Hub\Foundation\Testing\FeatureTestCase;
 
 class CsvImportTestCase extends FeatureTestCase
 {
+    protected $resourceName;
+
     protected $oldUpdatedAt;
+
     protected $newUpdatedAt;
 
     protected function setUp(): void

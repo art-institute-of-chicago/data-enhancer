@@ -15,6 +15,8 @@ class CsvImportTest extends BaseTestCase
 {
     use HasFakeModel;
 
+    protected $resourceName = 'foos';
+
     public function setUp(): void
     {
         parent::setUp();
@@ -25,8 +27,6 @@ class CsvImportTest extends BaseTestCase
                 'transformer' => FakeInboundCsvTransformer::class,
             ],
         ]);
-
-        $this->resourceName = 'foos';
     }
 
     protected function data()
