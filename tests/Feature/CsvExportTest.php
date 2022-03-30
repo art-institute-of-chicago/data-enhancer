@@ -3,21 +3,18 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Tests\Concerns\HasCsvReader;
-use Illuminate\Support\Facades\Artisan;
 
 use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
 use Tests\Fakes\FakeOutboundCsvTransformer;
 
-use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
+use Tests\Csv\CsvExportTestCase as BaseTestCase;
 
 class CsvExportTest extends BaseTestCase
 {
     use HasFakeModel;
-    use HasCsvReader;
 
-    private $resourceName = 'foos';
+    protected $resourceName = 'foos';
 
     public function setUp(): void
     {
@@ -31,13 +28,6 @@ class CsvExportTest extends BaseTestCase
                 ],
             ],
         ]);
-    }
-
-    public function tearDown(): void
-    {
-        Artisan::call('csv:clear');
-
-        parent::tearDown();
     }
 
     public function test_it_shows_csv_export_form()

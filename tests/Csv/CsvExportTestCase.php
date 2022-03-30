@@ -1,13 +1,26 @@
 <?php
 
-namespace Tests\Concerns;
+namespace Tests\Csv;
+
+use Illuminate\Support\Facades\Artisan;
 
 use League\Csv\Reader;
 use App\Models\CsvFile;
 use Illuminate\Support\Facades\Storage;
 
-trait HasCsvReader
+use Aic\Hub\Foundation\Testing\FeatureTestCase;
+
+class CsvExportTestCase extends FeatureTestCase
 {
+    protected $resourceName;
+
+    public function tearDown(): void
+    {
+        Artisan::call('csv:clear');
+
+        parent::tearDown();
+    }
+
     protected function getCsvReader()
     {
         $csvFile = CsvFile::first();
