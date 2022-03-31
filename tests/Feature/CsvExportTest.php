@@ -3,61 +3,69 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Tests\Concerns\HasCsvReader;
-use Illuminate\Support\Facades\Artisan;
+use Tests\Concerns\HasDates;
 
 use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
+use Tests\Fakes\FakeOutboundCsvTransformer;
 
-use App\Transformers\Datum;
-use App\Transformers\Outbound\Csv\Concerns\ToJson;
-use App\Transformers\Outbound\Csv\AbstractTransformer as BaseTransformer;
-
-use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
+use Tests\Csv\CsvExportTestCase as BaseTestCase;
 
 class CsvExportTest extends BaseTestCase
 {
-    use HasCsvReader;
     use HasFakeModel;
+    use HasDates;
 
-    private $resource;
+    protected $resourceName = 'foos';
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $transformerClass = new class() extends BaseTransformer {
-            use ToJson;
-
-            public function getFields()
-            {
-                return [
-                    'id' => null,
-                    'title' => null,
-                    'acme_id' => fn (Datum $datum) => $this->addPrefix($datum->acme_id, 'acme/'),
-                    'some_json' => fn (Datum $datum) => $this->toJson($datum->some_json),
-                    'updated_at' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
-                ];
-            }
-        };
-
         Config::set('aic.output.csv', [
             'resources' => [
                 'foos' => [
                     'model' => $this->modelClass,
-                    'transformer' => $transformerClass,
+                    'transformer' => FakeOutboundCsvTransformer::class,
                 ],
             ],
         ]);
-
-        $this->resource = 'foos';
     }
 
-    public function tearDown(): void
+    public function data()
     {
-        Artisan::call('csv:clear');
-
-        parent::tearDown();
+        return [
+            [
+                [
+                    'id' => 1,
+                    'title' => 'Foobar',
+                    'acme_id' => 1234,
+                    'some_json' => (object) [
+                        'foo' => 'bar',
+                    ],
+                    'updated_at' => now()->toDateTimeString(),
+                ],
+                [
+                    'id' => '1',
+                    'title' => 'Foobar',
+                    'acme_id' => 'acme/1234',
+                    'some_json' => '{"foo":"bar"}',
+                    'updated_at' => now()->toIso8601String(),
+                ]
+            ],
+            [
+                [
+                    'title' => null,
+                    'acme_id' => null,
+                    'some_json' => null,
+                ],
+                [
+                    'title' => '',
+                    'acme_id' => '',
+                    'some_json' => 'null',
+                ]
+            ],
+        ];
     }
 
     public function test_it_shows_csv_export_form()
@@ -79,7 +87,7 @@ class CsvExportTest extends BaseTestCase
         $invalidId = ($this->modelClass)::factory()->getInvalidId();
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'ids' => $invalidId,
         ]);
 
@@ -91,7 +99,7 @@ class CsvExportTest extends BaseTestCase
     public function test_it_errors_on_invalid_date()
     {
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'since' => 'foobar',
         ]);
 
@@ -109,7 +117,7 @@ class CsvExportTest extends BaseTestCase
             ->values();
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
         ]);
 
         $csvReader = $this->getCsvReader();
@@ -145,7 +153,7 @@ class CsvExportTest extends BaseTestCase
         ]);
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'ids' => $inputIds,
         ]);
 
@@ -176,7 +184,7 @@ class CsvExportTest extends BaseTestCase
         $sinceCarbon = Carbon::parse($sinceInput);
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'since' => $sinceInput,
         ]);
 
@@ -209,7 +217,7 @@ class CsvExportTest extends BaseTestCase
         ]);
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'blankFields' => [
                 'title',
                 'acme_id',
@@ -232,7 +240,7 @@ class CsvExportTest extends BaseTestCase
         ($this->modelClass)::factory()->create();
 
         $response = $this->post('/csv/export', [
-            'resource' => $this->resource,
+            'resource' => $this->resourceName,
             'exportFields' => [
                 'id',
                 'title',
