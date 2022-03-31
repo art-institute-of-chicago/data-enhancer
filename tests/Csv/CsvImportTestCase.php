@@ -26,27 +26,27 @@ abstract class CsvImportTestCase extends FeatureTestCase
 
     public function test_it_imports_csv_for_resource()
     {
-        $data = $this->data();
+        foreach ($this->data() as $datum) {
+            $initialState = $datum[0];
+            $csvContents = $datum[1];
+            $expectedState = $datum[2];
 
-        $initialState = $data[0];
-        $csvContents = $data[1];
-        $expectedState = $data[2];
+            $initialItem = ($this->modelClass)::factory()->create($initialState);
+            $id = $initialItem->getKey();
 
-        $initialItem = ($this->modelClass)::factory()->create($initialState);
-        $id = $initialItem->getKey();
+            $this->importCsv($this->resourceName, $csvContents);
 
-        $this->importCsv($this->resourceName, $csvContents);
+            $finalItem = ($this->modelClass)::find($id);
+            $finalState = $finalItem->toArray();
 
-        $finalItem = ($this->modelClass)::find($id);
-        $finalState = $finalItem->toArray();
-
-        $this->assertEquals(
-            $expectedState,
-            array_intersect_key(
-                $finalState,
-                $expectedState
-            )
-        );
+            $this->assertEquals(
+                $expectedState,
+                array_intersect_key(
+                    $finalState,
+                    $expectedState
+                )
+            );
+        }
     }
 
     protected function importCsv(

@@ -35,25 +35,27 @@ class CsvImportTest extends BaseTestCase
     {
         return [
             [
-                'id' => 1,
-                'title' => 'Foobar',
-                'acme_id' => 12345,
-                'some_json' => (object) [
-                    'foo' => 'bar',
+                [
+                    'id' => 1,
+                    'title' => 'Foobar',
+                    'acme_id' => 12345,
+                    'some_json' => (object) [
+                        'foo' => 'bar',
+                    ],
                 ],
+                <<<END
+                id,title,acme_id,some_json
+                1,Foobaz,acme/67890,"{""foo"":""baz""}"
+                END,
+                [
+                    'id' => 1,
+                    'title' => 'Foobar',
+                    'acme_id' => 67890,
+                    'some_json' => (object) [
+                        'foo' => 'baz',
+                    ],
+                ]
             ],
-            <<<END
-            id,title,acme_id,some_json
-            1,Foobaz,acme/67890,"{""foo"":""baz""}"
-            END,
-            [
-                'id' => 1,
-                'title' => 'Foobar',
-                'acme_id' => 67890,
-                'some_json' => (object) [
-                    'foo' => 'baz',
-                ],
-            ]
         ];
     }
 
