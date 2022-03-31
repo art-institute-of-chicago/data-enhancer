@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase;
 
-class CsvImportTestCase extends FeatureTestCase
+abstract class CsvImportTestCase extends FeatureTestCase
 {
     protected $resourceName;
 

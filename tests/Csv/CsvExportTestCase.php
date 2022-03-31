@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase;
 
-class CsvExportTestCase extends FeatureTestCase
+abstract class CsvExportTestCase extends FeatureTestCase
 {
     protected $resourceName;
 
