@@ -52,6 +52,8 @@ class ImportCsv extends AbstractJob
         $modelClass = $resourceConfig['model'];
         $transformerClass = $resourceConfig['transformer'];
 
+        $includeFields = $csv->getHeader();
+
         $limit = SourceConsumer::getLimit($this->sourceName, $this->resourceName);
         $batch = [];
 
@@ -59,7 +61,7 @@ class ImportCsv extends AbstractJob
             $batch[] = $record;
 
             if (count($batch) === $limit) {
-                $this->importBatch($batch, $modelClass, $transformerClass);
+                $this->importBatch($batch, $modelClass, $transformerClass, $includeFields);
                 $batch = [];
             }
 
@@ -67,7 +69,7 @@ class ImportCsv extends AbstractJob
         }
 
         if (count($batch) > 0) {
-            $this->importBatch($batch, $modelClass, $transformerClass);
+            $this->importBatch($batch, $modelClass, $transformerClass, $includeFields);
         }
 
         Storage::delete($this->csvPath);
@@ -75,7 +77,7 @@ class ImportCsv extends AbstractJob
         $this->alertSlack();
     }
 
-    private function importBatch($batch, $modelClass, $transformerClass)
+    private function importBatch($batch, $modelClass, $transformerClass, $includeFields)
     {
         [
             $createdCount,
@@ -85,6 +87,9 @@ class ImportCsv extends AbstractJob
             $batch,
             $modelClass,
             $transformerClass,
+            transformCallArgs: [
+                'includeFields' => $includeFields,
+            ],
         );
 
         $this->debug(sprintf(

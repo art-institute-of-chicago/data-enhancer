@@ -55,7 +55,7 @@ class ImportPage extends AbstractJob
             $this->data,
             $modelClass,
             $transformerClass,
-            function ($transformedData) use ($sourceUpdatedAtField) {
+            dataFilterFunc: function ($transformedData) use ($sourceUpdatedAtField) {
                 if (!$this->isFull) {
                     $sinceCarbon = new Carbon($this->since);
 
@@ -66,7 +66,7 @@ class ImportPage extends AbstractJob
 
                 return $transformedData;
             },
-            function ($transformedDatum) use ($sourceUpdatedAtField) {
+            fieldFilterFunc: function ($transformedDatum) use ($sourceUpdatedAtField) {
                 unset($transformedDatum[$sourceUpdatedAtField]);
 
                 return $transformedDatum;

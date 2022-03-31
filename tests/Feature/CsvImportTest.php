@@ -57,6 +57,32 @@ class CsvImportTest extends BaseTestCase
         );
     }
 
+    public function test_it_imports_subset_of_importable_fields()
+    {
+        return $this->checkCsvImport(
+            [
+                'id' => 2,
+                'title' => 'Foobar',
+                'acme_id' => 12345,
+                'some_json' => (object) [
+                    'foo' => 'bar',
+                ],
+            ],
+            <<<END
+            id,some_json
+            2,"{""foo"":""baz""}"
+            END,
+            [
+                'id' => 2,
+                'title' => 'Foobar',
+                'acme_id' => 12345,
+                'some_json' => (object) [
+                    'foo' => 'baz',
+                ],
+            ]
+        );
+    }
+
     public function test_it_shows_csv_import_form()
     {
         $response = $this->get('/csv/import');
