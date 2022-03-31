@@ -51,8 +51,20 @@ class CsvExportTest extends BaseTestCase
                     'acme_id' => 'acme/1234',
                     'some_json' => '{"foo":"bar"}',
                     'updated_at' => now()->toIso8601String(),
+                ]
+            ],
+            [
+                [
+                    'title' => null,
+                    'acme_id' => null,
+                    'some_json' => null,
                 ],
-            ]
+                [
+                    'title' => '',
+                    'acme_id' => '',
+                    'some_json' => 'null',
+                ]
+            ],
         ];
     }
 
