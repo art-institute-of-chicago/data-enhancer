@@ -24,29 +24,28 @@ abstract class CsvImportTestCase extends FeatureTestCase
         $this->newUpdatedAt = Carbon::parse('5 minutes ago')->roundSecond()->toISOString();
     }
 
-    public function test_it_imports_csv_for_resource()
-    {
-        foreach ($this->data() as $datum) {
-            $initialState = $datum[0];
-            $csvContents = $datum[1];
-            $expectedState = $datum[2];
+    abstract public function test_it_imports_resource();
 
-            $initialItem = ($this->modelClass)::factory()->create($initialState);
-            $id = $initialItem->getKey();
+    protected function checkCsvImport(
+        array $initialState,
+        string $csvContents,
+        array $expectedState
+    ) {
+        $initialItem = ($this->modelClass)::factory()->create($initialState);
+        $id = $initialItem->getKey();
 
-            $this->importCsv($this->resourceName, $csvContents);
+        $this->importCsv($this->resourceName, $csvContents);
 
-            $finalItem = ($this->modelClass)::find($id);
-            $finalState = $finalItem->toArray();
+        $finalItem = ($this->modelClass)::find($id);
+        $finalState = $finalItem->toArray();
 
-            $this->assertEquals(
-                $expectedState,
-                array_intersect_key(
-                    $finalState,
-                    $expectedState
-                )
-            );
-        }
+        $this->assertEquals(
+            $expectedState,
+            array_intersect_key(
+                $finalState,
+                $expectedState
+            )
+        );
     }
 
     protected function importCsv(

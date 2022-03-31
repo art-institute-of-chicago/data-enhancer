@@ -21,26 +21,13 @@ abstract class CsvExportTestCase extends FeatureTestCase
         parent::tearDown();
     }
 
-    public function test_it_exports_resource()
-    {
-        $primaryKey = ($this->modelClass)::instance()->getKeyName();
+    abstract public function test_it_exports_resource();
 
-        $data = collect($this->data());
-
-        $initialStates = $data->pluck(0);
-        $expectedStates = $data->pluck(1);
-
-        $datums = $initialStates
-            ->map(function ($attributes, $offset) use ($expectedStates) {
-                $datum = ($this->modelClass)::factory()->create($attributes);
-                $datum->expectedState = $expectedStates[$offset];
-                return $datum;
-            })
-            ->sortBy($primaryKey)
-            ->values();
-
-        // Ensures this collection is also sorted by pkey
-        $expectedStates = $datums->pluck('expectedState');
+    protected function checkCsvExport(
+        array $initialState,
+        array $expectedState
+    ) {
+        $datum = ($this->modelClass)::factory()->create($initialState);
 
         $response = $this->post('/csv/export', [
             'resource' => $this->resourceName,
@@ -48,17 +35,15 @@ abstract class CsvExportTestCase extends FeatureTestCase
 
         $csvReader = $this->getCsvReader();
 
-        foreach ($csvReader as $offset => $finalState) {
-            $expectedState = $expectedStates[$offset - 1];
+        $finalState = $csvReader->fetchOne();
 
-            $this->assertEquals(
-                $expectedState,
-                array_intersect_key(
-                    $finalState,
-                    $expectedState
-                )
-            );
-        }
+        $this->assertEquals(
+            $expectedState,
+            array_intersect_key(
+                $finalState,
+                $expectedState
+            )
+        );
     }
 
     protected function getCsvReader()
