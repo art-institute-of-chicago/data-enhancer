@@ -10,33 +10,35 @@ class PlaceTest extends BaseTestCase
 
     protected $modelClass = \App\Models\Place::class;
 
-    protected function data()
+    public function test_it_exports_resource()
     {
-        return [
+        return $this->checkCsvExport(
             [
-                [
-                    'title' => 'Foobar',
-                    'tgn_id' => 1234,
-                    'source_updated_at' => '2020-02-02 02:02:02',
-                ],
-                [
-                    'title' => 'Foobar',
-                    'tgn_id' => 'tgn/1234',
-                    'source_updated_at' => '2020-02-02T02:02:02+00:00',
-                ]
+                'title' => 'Foobar',
+                'tgn_id' => 1234,
+                'source_updated_at' => '2020-02-02 02:02:02',
             ],
             [
-                [
-                    'title' => null,
-                    'tgn_id' => null,
-                    'source_updated_at' => null,
-                ],
-                [
-                    'title' => '',
-                    'tgn_id' => '',
-                    'source_updated_at' => '',
-                ]
+                'title' => 'Foobar',
+                'tgn_id' => 'tgn/1234',
+                'source_updated_at' => '2020-02-02T02:02:02+00:00',
+            ]
+        );
+    }
+
+    public function test_it_exports_nullable_resource()
+    {
+        return $this->checkCsvExport(
+            [
+                'title' => null,
+                'tgn_id' => null,
+                'source_updated_at' => null,
             ],
-        ];
+            [
+                'title' => '',
+                'tgn_id' => '',
+                'source_updated_at' => '',
+            ]
+        );
     }
 }

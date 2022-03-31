@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase;
 
-class CsvImportTestCase extends FeatureTestCase
+abstract class CsvImportTestCase extends FeatureTestCase
 {
     protected $resourceName;
 
@@ -24,14 +24,13 @@ class CsvImportTestCase extends FeatureTestCase
         $this->newUpdatedAt = Carbon::parse('5 minutes ago')->roundSecond()->toISOString();
     }
 
-    public function test_it_imports_csv_for_resource()
-    {
-        $data = $this->data();
+    abstract public function test_it_imports_resource();
 
-        $initialState = $data[0];
-        $csvContents = $data[1];
-        $expectedState = $data[2];
-
+    protected function checkCsvImport(
+        array $initialState,
+        string $csvContents,
+        array $expectedState
+    ) {
         $initialItem = ($this->modelClass)::factory()->create($initialState);
         $id = $initialItem->getKey();
 

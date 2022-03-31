@@ -10,9 +10,9 @@ class ArtworkTypeTest extends CsvImportTestCase
 
     protected $resourceName = 'artwork-types';
 
-    protected function data()
+    public function test_it_imports_resource()
     {
-        return [
+        return $this->checkCsvImport(
             [
                 'id' => 1,
                 'title' => 'Foobar',
@@ -29,6 +29,6 @@ class ArtworkTypeTest extends CsvImportTestCase
                 'aat_id' => 67890,
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
-        ];
+        );
     }
 }

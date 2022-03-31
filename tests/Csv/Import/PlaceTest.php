@@ -10,9 +10,9 @@ class PlaceTest extends CsvImportTestCase
 
     protected $resourceName = 'places';
 
-    protected function data()
+    public function test_it_imports_resource()
     {
-        return [
+        return $this->checkCsvImport(
             [
                 'id' => 1,
                 'title' => 'Foobar',
@@ -33,6 +33,6 @@ class PlaceTest extends CsvImportTestCase
                 'tgn_id' => 67890,
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
-        ];
+        );
     }
 }

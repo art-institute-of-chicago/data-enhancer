@@ -31,9 +31,9 @@ class CsvImportTest extends BaseTestCase
         ]);
     }
 
-    protected function data()
+    public function test_it_imports_resource()
     {
-        return [
+        return $this->checkCsvImport(
             [
                 'id' => 1,
                 'title' => 'Foobar',
@@ -54,7 +54,7 @@ class CsvImportTest extends BaseTestCase
                     'foo' => 'baz',
                 ],
             ]
-        ];
+        );
     }
 
     public function test_it_shows_csv_import_form()

@@ -10,59 +10,61 @@ class ArtworkTest extends BaseTestCase
 
     protected $modelClass = \App\Models\Artwork::class;
 
-    protected function data()
+    public function test_it_exports_resource()
     {
-        return [
+        return $this->checkCsvExport(
             [
-                [
-                    'title' => 'Foobar',
-                    'dimension_display' => '5 x 5 x 5 mm',
-                    'width' => 5,
-                    'height' => 5,
-                    'depth' => 5,
-                    'medium_display' => 'Foobar',
-                    'support_aat_id' => 1234,
-                    'linked_art_json' => (object) [
-                        'foo' => 'bar',
-                    ],
-                    'source_updated_at' => '2020-02-02 02:02:02',
+                'title' => 'Foobar',
+                'dimension_display' => '5 x 5 x 5 mm',
+                'width' => 5,
+                'height' => 5,
+                'depth' => 5,
+                'medium_display' => 'Foobar',
+                'support_aat_id' => 1234,
+                'linked_art_json' => (object) [
+                    'foo' => 'bar',
                 ],
-                [
-                    'title' => 'Foobar',
-                    'dimension_display' => '5 x 5 x 5 mm',
-                    'width' => '5',
-                    'height' => '5',
-                    'depth' => '5',
-                    'medium_display' => 'Foobar',
-                    'support_aat_id' => 'aat/1234',
-                    'linked_art_json' => '{"foo":"bar"}',
-                    'source_updated_at' => '2020-02-02T02:02:02+00:00',
-                ]
+                'source_updated_at' => '2020-02-02 02:02:02',
             ],
             [
-                [
-                    'title' => null,
-                    'dimension_display' => null,
-                    'width' => null,
-                    'height' => null,
-                    'depth' => null,
-                    'medium_display' => null,
-                    'support_aat_id' => null,
-                    'linked_art_json' => null,
-                    'source_updated_at' => null,
-                ],
-                [
-                    'title' => '',
-                    'dimension_display' => '',
-                    'width' => '',
-                    'height' => '',
-                    'depth' => '',
-                    'medium_display' => '',
-                    'support_aat_id' => '',
-                    'linked_art_json' => 'null',
-                    'source_updated_at' => '',
-                ]
+                'title' => 'Foobar',
+                'dimension_display' => '5 x 5 x 5 mm',
+                'width' => '5',
+                'height' => '5',
+                'depth' => '5',
+                'medium_display' => 'Foobar',
+                'support_aat_id' => 'aat/1234',
+                'linked_art_json' => '{"foo":"bar"}',
+                'source_updated_at' => '2020-02-02T02:02:02+00:00',
+            ]
+        );
+    }
+
+    public function test_it_exports_nullable_resource()
+    {
+        return $this->checkCsvExport(
+            [
+                'title' => null,
+                'dimension_display' => null,
+                'width' => null,
+                'height' => null,
+                'depth' => null,
+                'medium_display' => null,
+                'support_aat_id' => null,
+                'linked_art_json' => null,
+                'source_updated_at' => null,
             ],
-        ];
+            [
+                'title' => '',
+                'dimension_display' => '',
+                'width' => '',
+                'height' => '',
+                'depth' => '',
+                'medium_display' => '',
+                'support_aat_id' => '',
+                'linked_art_json' => 'null',
+                'source_updated_at' => '',
+            ]
+        );
     }
 }

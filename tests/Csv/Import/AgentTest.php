@@ -10,9 +10,9 @@ class AgentTest extends CsvImportTestCase
 
     protected $resourceName = 'agents';
 
-    protected function data()
+    public function test_it_imports_resource()
     {
-        return [
+        return $this->checkCsvImport(
             [
                 'id' => 1,
                 'title' => 'Foobar',
@@ -35,6 +35,6 @@ class AgentTest extends CsvImportTestCase
                 'ulan_certainty' => 3,
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
-        ];
+        );
     }
 }
