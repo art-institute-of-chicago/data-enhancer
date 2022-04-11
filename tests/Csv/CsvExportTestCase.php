@@ -33,6 +33,10 @@ abstract class CsvExportTestCase extends FeatureTestCase
             'resource' => $this->resourceName,
         ]);
 
+        $response->assertSessionHasNoErrors();
+
+        $response->assertStatus(302);
+
         $csvReader = $this->getCsvReader();
 
         $finalState = $csvReader->fetchOne();

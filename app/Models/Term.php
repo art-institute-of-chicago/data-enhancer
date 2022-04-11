@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TermType;
 use Aic\Hub\Foundation\AbstractModel as BaseModel;
 
 class Term extends BaseModel
@@ -13,6 +14,7 @@ class Term extends BaseModel
     protected $casts = [
         'id' => 'string',
         'title' => 'string',
+        'subtype' => TermType::class,
         'aat_id' => 'integer',
         'source_updated_at' => 'datetime',
         'updated_at' => 'datetime',

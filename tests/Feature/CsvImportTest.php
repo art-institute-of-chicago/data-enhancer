@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Term;
 use App\Library\SourceConsumer;
 use Tests\Concerns\HasDates;
 

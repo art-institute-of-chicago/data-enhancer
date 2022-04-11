@@ -28,6 +28,7 @@ class DatumTest extends TestCase
             'qux' => ' ',
             'quux' => 'quux',
             'corge' => 'corge ',
+            'xyzzy' => ExampleEnum::FOOBAR,
         ];
 
         $input = array_merge($input, [
@@ -51,15 +52,17 @@ class DatumTest extends TestCase
         $this->checkDatumFields($datum->garply);
         $this->checkDatumFields($datum->waldo);
 
+        // Test that null elements are removed from arrays
         foreach (['fred', 'plugh'] as $key) {
             $value = $datum->{$key};
             $this->assertFalse(Arr::isAssoc($value));
             $this->assertEquals(1, $value[0]);
             $this->assertEquals('quux', $value[1]);
             $this->assertEquals('corge', $value[2]);
-            $this->checkDatumFields($value[3]);
+            $this->assertEquals(ExampleEnum::FOOBAR, $value[3]);
             $this->checkDatumFields($value[4]);
             $this->checkDatumFields($value[5]);
+            $this->checkDatumFields($value[6]);
         }
     }
 
@@ -72,6 +75,7 @@ class DatumTest extends TestCase
         $this->assertEquals(null, $datum->qux);
         $this->assertEquals('quux', $datum->quux);
         $this->assertEquals('corge', $datum->corge);
+        $this->assertEquals(ExampleEnum::FOOBAR, $datum->xyzzy);
     }
 
     public function test_one_datum_from_array()

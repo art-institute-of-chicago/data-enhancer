@@ -15,11 +15,13 @@ class TermTest extends BaseTestCase
         return $this->checkCsvExport(
             [
                 'title' => 'Foobar',
+                'subtype' => 'TT-1',
                 'aat_id' => 1234,
                 'source_updated_at' => '2020-02-02 02:02:02',
             ],
             [
                 'title' => 'Foobar',
+                'subtype' => 'classification',
                 'aat_id' => 'aat/1234',
                 'source_updated_at' => '2020-02-02T02:02:02+00:00',
             ]
@@ -31,11 +33,13 @@ class TermTest extends BaseTestCase
         return $this->checkCsvExport(
             [
                 'title' => null,
+                'subtype' => null,
                 'aat_id' => null,
                 'source_updated_at' => null,
             ],
             [
                 'title' => '',
+                'subtype' => null,
                 'aat_id' => '',
                 'source_updated_at' => '',
             ]
