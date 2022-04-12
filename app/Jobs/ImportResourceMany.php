@@ -8,26 +8,15 @@ use App\Library\SourceConsumer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 
-class ImportResource extends AbstractJob
+class ImportResourceMany extends AbstractJob
 {
-    private $sourceName;
-
-    private $resourceName;
-
-    private $isFull;
-
-    private $since;
-
     public function __construct(
-        string $sourceName,
-        string $resourceName,
-        bool $isFull,
-        ?string $since
+        private string $sourceName,
+        private string $resourceName,
+        private bool $isFull,
+        private ?string $since,
+        private ?int $maxPages,
     ) {
-        $this->sourceName = $sourceName;
-        $this->resourceName = $resourceName;
-        $this->isFull = $isFull;
-        $this->since = $since;
     }
 
     public function tags()
@@ -46,6 +35,10 @@ class ImportResource extends AbstractJob
 
         if (!$this->isFull && empty($this->since)) {
             throw new LogicException("Parameter 'since' cannot be empty for partial imports");
+        }
+
+        if (!is_null($this->maxPages)) {
+            $pages = min($pages, $this->maxPages);
         }
 
         $this->debug(sprintf('IMP %s %s',

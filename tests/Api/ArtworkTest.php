@@ -14,13 +14,14 @@ class ArtworkTest extends BaseTestCase
     {
         return [
             'id' => 'integer',
-            'title' => 'string',
+            'title' => 'string|null',
             'dimension_display' => 'string|null',
             'width' => 'integer|null',
             'height' => 'integer|null',
             'depth' => 'integer|null',
             'medium_display' => 'string|null',
             'support_aat_id' => 'integer|null',
+            'linked_art_json' => 'array|null',
             'source_updated_at' => 'string|null',
             'updated_at' => 'string',
         ];

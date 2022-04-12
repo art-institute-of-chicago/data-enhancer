@@ -13,15 +13,25 @@ abstract class AbstractTransformer
 
     abstract protected function getFields();
 
-    final public function transform($datum, $requestedFields = null): array
-    {
+    final public function transform(
+        $datum,
+        ?array $includeFields = null,
+        ?array $excludeFields = null,
+    ): array {
         $datum = $this->getDatum($datum);
         $mappedFields = $this->getMappedFields();
 
-        if (!empty($requestedFields)) {
+        if (!empty($includeFields)) {
             $mappedFields = array_intersect_key(
                 $mappedFields,
-                array_flip($requestedFields)
+                array_flip($includeFields)
+            );
+        }
+
+        if (!empty($excludeFields)) {
+            $mappedFields = array_diff_key(
+                $mappedFields,
+                array_flip($excludeFields)
             );
         }
 

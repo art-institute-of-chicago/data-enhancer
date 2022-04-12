@@ -7,31 +7,17 @@ use League\Csv\Writer;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CsvFile;
+use Spatie\SlackAlerts\Facades\SlackAlert;
 
 class ExportCsv extends AbstractJob
 {
-    private $resourceName;
-
-    private $ids;
-
-    private $since;
-
-    private $blankFields;
-
-    private $exportFields;
-
     public function __construct(
-        string $resourceName,
-        ?array $ids,
-        ?string $since,
-        ?array $blankFields,
-        ?array $exportFields
+        private string $resourceName,
+        private ?array $ids,
+        private ?string $since,
+        private ?array $blankFields,
+        private ?array $exportFields,
     ) {
-        $this->resourceName = $resourceName;
-        $this->ids = $ids;
-        $this->since = $since;
-        $this->blankFields = $blankFields;
-        $this->exportFields = $exportFields;
     }
 
     public function tags()
@@ -67,6 +53,8 @@ class ExportCsv extends AbstractJob
 
         $primaryKey = $model->getKeyName();
         $query = $modelClass::query();
+
+        $query->orderBy($primaryKey);
 
         if (!empty($this->ids)) {
             $query->whereIn($primaryKey, $this->ids);
@@ -139,5 +127,25 @@ class ExportCsv extends AbstractJob
             'blank_fields' => $this->blankFields,
             'export_fields' => $this->exportFields,
         ]);
+
+        $this->alertSlack($csvId);
+    }
+
+    private function alertSlack($csvId)
+    {
+        if (app()->environment('testing')) {
+            return;
+        }
+
+        $csvFile = CsvFile::find($csvId);
+
+        SlackAlert::message(sprintf(
+            'Enhancer: exported CSV with %d %s (<%s|%s>) [%s]',
+            $csvFile->count,
+            $csvFile->resource,
+            $csvFile->getCsvUrl(),
+            $csvFile->filename,
+            app('env'),
+        ));
     }
 }

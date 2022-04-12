@@ -7,13 +7,41 @@ use GuzzleHttp\ClientInterface;
 
 class SourceConsumer
 {
-    public static function get(string $sourceName, string $resourceName, array $params = [])
-    {
+    public static function getMany(
+        string $sourceName,
+        string $resourceName,
+        array $params = [],
+    ) {
+        return self::getFromSource(
+            $sourceName,
+            $resourceName,
+            $params,
+        );
+    }
+
+    public static function getOne(
+        string $sourceName,
+        string $resourceName,
+        string $resourceId,
+        array $params = [],
+    ) {
+        return self::getFromSource(
+            $sourceName,
+            $resourceName . '/' . $resourceId,
+            $params,
+        );
+    }
+
+    private static function getFromSource(
+        string $sourceName,
+        string $path,
+        array $params = [],
+    ) {
         $sourceConfig = self::getSourceConfig($sourceName);
 
         $uri = sprintf('%s/%s?%s', ...[
             $sourceConfig['base_uri'],
-            $resourceName,
+            $path,
             http_build_query($params),
         ]);
 
@@ -26,7 +54,9 @@ class SourceConsumer
         }
 
         $client = app()->make(ClientInterface::class);
-        $response = $client->request('GET', $uri, $headers);
+        $response = $client->request('GET', $uri, [
+            'headers' => $headers,
+        ]);
         $contents = $response->getBody()->getContents();
 
         return json_decode($contents);
@@ -35,7 +65,7 @@ class SourceConsumer
     public static function getTotalPages(string $sourceName, string $resourceName)
     {
         // API-87: Setting `limit` to 0 does nothing at the moment!
-        $result = self::get($sourceName, $resourceName, [
+        $result = self::getMany($sourceName, $resourceName, [
             'limit' => 0,
         ]);
 
@@ -108,7 +138,7 @@ class SourceConsumer
         $sourceConfig = self::getSourceConfig($sourceName, false);
         $resourceConfig = $sourceConfig['resources'][$resourceName] ?? null;
 
-        if (empty($sourceConfig)) {
+        if (empty($resourceConfig)) {
             throw new LogicException("Source '{$sourceName}' missing resource '{$resourceName}'");
         }
 

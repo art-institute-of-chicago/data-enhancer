@@ -4,33 +4,17 @@ namespace App\Jobs;
 
 use LogicException;
 use App\Library\SourceConsumer;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class ImportSource extends AbstractJob implements ShouldBeUnique
+class ImportSource extends AbstractJob
 {
-    private $sourceName;
-
-    private $resourceName;
-
-    private $isFull;
-
-    private $since;
-
     public function __construct(
-        string $sourceName,
-        ?string $resourceName,
-        bool $isFull,
-        ?string $since
+        private string $sourceName,
+        private ?string $resourceName,
+        private string|int|null $resourceId,
+        private bool $isFull,
+        private ?string $since,
+        private ?int $maxPages,
     ) {
-        $this->sourceName = $sourceName;
-        $this->resourceName = $resourceName;
-        $this->isFull = $isFull;
-        $this->since = $since;
-    }
-
-    public function uniqueId()
-    {
-        return $this->sourceName;
     }
 
     public function tags()
@@ -52,13 +36,30 @@ class ImportSource extends AbstractJob implements ShouldBeUnique
             );
         }
 
+        if (!empty($this->resourceId) && empty($this->resourceName)) {
+            throw new LogicException(
+                'Resource name is required when importing specific id'
+            );
+        }
+
+        if (!empty($this->resourceId)) {
+            ImportResourceOne::dispatch(
+                $this->sourceName,
+                $resources->take(1)->keys()->first(),
+                $this->resourceId,
+            );
+
+            return;
+        }
+
         $resources
             ->each(function ($resourceConfig, $resourceName) {
-                ImportResource::dispatch(
+                ImportResourceMany::dispatch(
                     $this->sourceName,
                     $resourceName,
                     $this->isFull,
                     $this->since,
+                    $this->maxPages,
                 );
             });
     }

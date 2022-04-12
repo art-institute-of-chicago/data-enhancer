@@ -14,6 +14,10 @@ return [
             'model' => \App\Models\ArtworkType::class,
             'transformer' => \App\Transformers\Outbound\Csv\ArtworkTypeTransformer::class,
         ],
+        'places' => [
+            'model' => \App\Models\Place::class,
+            'transformer' => \App\Transformers\Outbound\Csv\PlaceTransformer::class,
+        ],
         'terms' => [
             'model' => \App\Models\Term::class,
             'transformer' => \App\Transformers\Outbound\Csv\TermTransformer::class,

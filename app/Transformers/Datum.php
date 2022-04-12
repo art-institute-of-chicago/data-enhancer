@@ -72,7 +72,7 @@ class Datum implements JsonSerializable
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->all();
     }
@@ -141,6 +141,10 @@ class Datum implements JsonSerializable
         }
 
         if (is_object($value)) {
+            if (enum_exists(get_class($value))) {
+                return $value;
+            }
+
             return $this->getSubDatum($value);
         }
 

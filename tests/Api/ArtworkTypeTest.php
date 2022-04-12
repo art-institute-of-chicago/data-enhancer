@@ -14,7 +14,7 @@ class ArtworkTypeTest extends BaseTestCase
     {
         return [
             'id' => 'integer',
-            'title' => 'string',
+            'title' => 'string|null',
             'aat_id' => 'integer|null',
             'source_updated_at' => 'string|null',
             'updated_at' => 'string',

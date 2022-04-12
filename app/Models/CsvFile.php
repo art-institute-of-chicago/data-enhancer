@@ -21,4 +21,9 @@ class CsvFile extends Model
     ];
 
     protected $guarded = [];
+
+    public function getCsvUrl()
+    {
+        return url('/storage/' . $this->filename);
+    }
 }

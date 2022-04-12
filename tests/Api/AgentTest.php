@@ -14,12 +14,12 @@ class AgentTest extends BaseTestCase
     {
         return [
             'id' => 'integer',
-            'title' => 'string',
+            'title' => 'string|null',
             'birth_year' => 'integer|null',
             'death_year' => 'integer|null',
             'ulan_id' => 'integer|null',
             'ulan_certainty' => function ($value) {
-                return is_null($value) || (is_integer($value) && $value <= 3 && $value >= 0);
+                return is_null($value) || (is_integer($value) && $value <= 4 && $value >= 0);
             },
             'source_updated_at' => 'string|null',
             'updated_at' => 'string',

@@ -6,6 +6,7 @@ use League\Csv\Reader;
 use Illuminate\Support\Facades\Storage;
 use App\Library\SourceConsumer;
 use App\Jobs\Concerns\ImportsData;
+use Spatie\SlackAlerts\Facades\SlackAlert;
 
 class ImportCsv extends AbstractJob
 {
@@ -13,16 +14,18 @@ class ImportCsv extends AbstractJob
 
     private $sourceName = 'csv';
 
-    private $resourceName;
+    private $createdCount = 0;
 
-    private $csvPath;
+    private $updatedCount = 0;
+
+    private $ignoredCount = 0;
+
+    private $totalCount = 0;
 
     public function __construct(
-        string $resourceName,
-        string $csvPath
+        private string $resourceName,
+        private string $csvPath,
     ) {
-        $this->resourceName = $resourceName;
-        $this->csvPath = $csvPath;
     }
 
     public function tags()
@@ -49,6 +52,8 @@ class ImportCsv extends AbstractJob
         $modelClass = $resourceConfig['model'];
         $transformerClass = $resourceConfig['transformer'];
 
+        $includeFields = $csv->getHeader();
+
         $limit = SourceConsumer::getLimit($this->sourceName, $this->resourceName);
         $batch = [];
 
@@ -56,19 +61,23 @@ class ImportCsv extends AbstractJob
             $batch[] = $record;
 
             if (count($batch) === $limit) {
-                $this->importBatch($batch, $modelClass, $transformerClass);
+                $this->importBatch($batch, $modelClass, $transformerClass, $includeFields);
                 $batch = [];
             }
+
+            $this->totalCount += 1;
         }
 
         if (count($batch) > 0) {
-            $this->importBatch($batch, $modelClass, $transformerClass);
+            $this->importBatch($batch, $modelClass, $transformerClass, $includeFields);
         }
 
         Storage::delete($this->csvPath);
+
+        $this->alertSlack();
     }
 
-    private function importBatch($batch, $modelClass, $transformerClass)
+    private function importBatch($batch, $modelClass, $transformerClass, $includeFields)
     {
         [
             $createdCount,
@@ -78,6 +87,9 @@ class ImportCsv extends AbstractJob
             $batch,
             $modelClass,
             $transformerClass,
+            transformCallArgs: [
+                'includeFields' => $includeFields,
+            ],
         );
 
         $this->debug(sprintf(
@@ -88,6 +100,27 @@ class ImportCsv extends AbstractJob
             $updatedCount,
             $importedCount,
             count($batch),
+        ));
+
+        $this->createdCount += $createdCount;
+        $this->updatedCount += $updatedCount;
+        $this->ignoredCount += count($batch) - $createdCount - $updatedCount;
+    }
+
+    private function alertSlack()
+    {
+        if (app()->environment('testing')) {
+            return;
+        }
+
+        SlackAlert::message(sprintf(
+            'Enhancer: imported CSV with %d %s (C: %s, U: %s, I: %s) [%s]',
+            $this->totalCount,
+            $this->resourceName,
+            $this->createdCount,
+            $this->updatedCount,
+            $this->ignoredCount,
+            app('env'),
         ));
     }
 }

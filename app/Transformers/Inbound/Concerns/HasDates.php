@@ -25,8 +25,10 @@ trait HasDates
         return self::$sourceUpdatedAtField;
     }
 
-    protected function getDateTime($value)
+    protected function getDateTime($value): string
     {
-        return Carbon::parse($value);
+        return Carbon::parse($value)
+            ->setTimezone(config('app.timezone'))
+            ->toDateTimeString();
     }
 }

@@ -16,7 +16,7 @@
         @foreach ($csvFiles as $csvFile)
             <tr>
                 <td>{{ $csvFile->updated_at->format('Y-m-d g:i A') }}</th>
-                <td><a href="/storage/{{ $csvFile->filename }}">{{ $csvFile->filename }}</a></td>
+                <td><a href="{{ $csvFile->getCsvUrl() }}">{{ $csvFile->filename }}</a></td>
                 <td>{{ $csvFile->count }}</td>
             </tr>
         @endforeach

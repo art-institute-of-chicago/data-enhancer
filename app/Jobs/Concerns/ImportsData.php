@@ -12,14 +12,15 @@ trait ImportsData
         array $data,
         string $modelClass,
         string $transformerClass,
+        array $transformCallArgs = [],
         callable $dataFilterFunc = null,
-        callable $fieldFilterFunc = null
+        callable $fieldFilterFunc = null,
     ) {
         $primaryKey = $modelClass::instance()->getKeyName();
         $transformer = app()->make($transformerClass);
 
         $transformedData = collect($data)
-            ->map(fn ($datum) => $transformer->transform($datum))
+            ->map(fn ($datum) => $transformer->transform($datum, ...$transformCallArgs))
             ->keyBy($primaryKey);
 
         if ($dataFilterFunc) {
