@@ -14,7 +14,7 @@ enum TermType: string
 
     public function display(): string
     {
-        return match($this)
+        return match ($this)
         {
             self::CLASSIFICATION => 'classification',
             self::MATERIAL => 'material',
@@ -28,7 +28,7 @@ enum TermType: string
 
     public static function fromDisplay($value): TermType
     {
-        return match($value)
+        return match ($value)
         {
             'classification' => self::CLASSIFICATION,
             'material' => self::MATERIAL,

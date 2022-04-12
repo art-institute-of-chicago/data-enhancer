@@ -5,7 +5,6 @@ namespace App\Transformers;
 use stdClass;
 use JsonSerializable;
 use InvalidArgumentException;
-use BadMethodCallException;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
