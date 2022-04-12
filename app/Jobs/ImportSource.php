@@ -57,7 +57,6 @@ class ImportSource extends AbstractJob
                 ImportResourceMany::dispatch(
                     $this->sourceName,
                     $resourceName,
-                    $this->resourceId,
                     $this->isFull,
                     $this->since,
                     $this->maxPages,
