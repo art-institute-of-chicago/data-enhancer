@@ -15,6 +15,7 @@ class ImportResource extends AbstractJob
         private string $resourceName,
         private bool $isFull,
         private ?string $since,
+        private ?int $maxPages,
     ) {
     }
 
@@ -34,6 +35,10 @@ class ImportResource extends AbstractJob
 
         if (!$this->isFull && empty($this->since)) {
             throw new LogicException("Parameter 'since' cannot be empty for partial imports");
+        }
+
+        if ($this->isFull && !is_null($this->maxPages)) {
+            $pages = min($pages, $this->maxPages);
         }
 
         $this->debug(sprintf('IMP %s %s',

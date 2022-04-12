@@ -12,6 +12,7 @@ class ImportSource extends AbstractJob
         private ?string $resourceName,
         private bool $isFull,
         private ?string $since,
+        private ?int $maxPages,
     ) {
     }
 
@@ -41,6 +42,7 @@ class ImportSource extends AbstractJob
                     $resourceName,
                     $this->isFull,
                     $this->since,
+                    $this->maxPages,
                 );
             });
     }
