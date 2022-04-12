@@ -26,7 +26,7 @@ enum TermType: string
         };
     }
 
-    public static function fromDisplay($value): TermType
+    public static function fromDisplay($value): ?TermType
     {
         return match ($value)
         {
@@ -37,6 +37,7 @@ enum TermType: string
             'subject' => self::SUBJECT,
             'department' => self::DEPARTMENT,
             'theme' => self::THEME,
+            default => null,
         };
     }
 
