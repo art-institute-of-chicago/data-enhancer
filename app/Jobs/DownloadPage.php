@@ -44,7 +44,7 @@ class DownloadPage extends AbstractJob
         $fields = $transformer->getRequiredFields();
         $limit = SourceConsumer::getLimit($this->sourceName, $this->resourceName);
 
-        $results = SourceConsumer::get($this->sourceName, $this->resourceName, [
+        $results = SourceConsumer::getMany($this->sourceName, $this->resourceName, [
             'fields' => $fields,
             'limit' => $limit,
             'page' => $this->page,

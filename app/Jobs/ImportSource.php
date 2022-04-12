@@ -10,6 +10,7 @@ class ImportSource extends AbstractJob
     public function __construct(
         private string $sourceName,
         private ?string $resourceName,
+        private string|int|null $resourceId,
         private bool $isFull,
         private ?string $since,
         private ?int $maxPages,
@@ -35,11 +36,28 @@ class ImportSource extends AbstractJob
             );
         }
 
+        if (!empty($this->resourceId) && empty($this->resourceName)) {
+            throw new LogicException(
+                'Resource name is required when importing specific id'
+            );
+        }
+
+        if (!empty($this->resourceId)) {
+            ImportResourceOne::dispatch(
+                $this->sourceName,
+                $resources->take(1)->keys()->first(),
+                $this->resourceId,
+            );
+
+            return;
+        }
+
         $resources
             ->each(function ($resourceConfig, $resourceName) {
-                ImportResource::dispatch(
+                ImportResourceMany::dispatch(
                     $this->sourceName,
                     $resourceName,
+                    $this->resourceId,
                     $this->isFull,
                     $this->since,
                     $this->maxPages,

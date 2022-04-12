@@ -9,7 +9,7 @@ class ImportAggregator extends AbstractCommand
 {
     use HasSince;
 
-    protected $signature = 'import:aggregator {resource?} {--max-pages=}';
+    protected $signature = 'import:aggregator {resource?} {id?} {--max-pages=}';
 
     protected $description = 'Import configured resources from the aggregator';
 
@@ -18,6 +18,7 @@ class ImportAggregator extends AbstractCommand
         ImportSource::dispatch(
             'aggregator',
             $this->argument('resource'),
+            $this->argument('id'),
             $this->option('full'),
             $this->option('since'),
             $this->option('max-pages'),

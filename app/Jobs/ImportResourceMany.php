@@ -8,7 +8,7 @@ use App\Library\SourceConsumer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 
-class ImportResource extends AbstractJob
+class ImportResourceMany extends AbstractJob
 {
     public function __construct(
         private string $sourceName,
