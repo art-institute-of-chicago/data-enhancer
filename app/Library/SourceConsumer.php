@@ -65,7 +65,7 @@ class SourceConsumer
     public static function getTotalPages(string $sourceName, string $resourceName)
     {
         // API-87: Setting `limit` to 0 does nothing at the moment!
-        $result = self::getMany($sourceName, $resourceName, null, [
+        $result = self::getMany($sourceName, $resourceName, [
             'limit' => 0,
         ]);
 
