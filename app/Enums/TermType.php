@@ -41,9 +41,11 @@ enum TermType: string
         };
     }
 
-    public static function random(): TermType
+    public static function random(): ?TermType
     {
         $cases = static::cases();
+
+        array_push($cases, null);
 
         return $cases[array_rand($cases)];
     }
