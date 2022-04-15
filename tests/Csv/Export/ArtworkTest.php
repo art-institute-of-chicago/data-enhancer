@@ -20,7 +20,6 @@ class ArtworkTest extends BaseTestCase
                 'height' => 5,
                 'depth' => 5,
                 'medium_display' => 'Foobar',
-                'support_aat_id' => 1234,
                 'linked_art_json' => (object) [
                     'foo' => 'bar',
                 ],
@@ -33,7 +32,6 @@ class ArtworkTest extends BaseTestCase
                 'height' => '5',
                 'depth' => '5',
                 'medium_display' => 'Foobar',
-                'support_aat_id' => 'aat/1234',
                 'linked_art_json' => '{"foo":"bar"}',
                 'source_updated_at' => '2020-02-02T02:02:02+00:00',
             ]
@@ -50,7 +48,6 @@ class ArtworkTest extends BaseTestCase
                 'height' => null,
                 'depth' => null,
                 'medium_display' => null,
-                'support_aat_id' => null,
                 'linked_art_json' => null,
                 'source_updated_at' => null,
             ],
@@ -61,7 +58,6 @@ class ArtworkTest extends BaseTestCase
                 'height' => '',
                 'depth' => '',
                 'medium_display' => '',
-                'support_aat_id' => '',
                 'linked_art_json' => 'null',
                 'source_updated_at' => '',
             ]

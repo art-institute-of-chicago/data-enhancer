@@ -29,7 +29,6 @@ class ArtworkFactory extends BaseFactory
             'height' => $height,
             'depth' => $depth,
             'medium_display' => $this->faker->words(5, true),
-            'support_aat_id' => $this->getNumericId(),
             'linked_art_json' => $this->getLinkedArtJson(),
             'source_updated_at' => $this->faker->dateTime(),
         ];
@@ -44,7 +43,6 @@ class ArtworkFactory extends BaseFactory
             'height' => null,
             'depth' => null,
             'medium_display' => null,
-            'support_aat_id' => null,
             'linked_art_json' => null,
             'source_updated_at' => null,
         ]);
