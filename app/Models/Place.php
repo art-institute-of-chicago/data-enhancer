@@ -16,6 +16,7 @@ class Place extends BaseModel
         'latitude' => 'double',
         'longitude' => 'double',
         'tgn_id' => 'integer',
+        'tgn_xml' => 'string',
         'source_updated_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

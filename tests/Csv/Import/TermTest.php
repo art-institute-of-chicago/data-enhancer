@@ -17,16 +17,18 @@ class TermTest extends CsvImportTestCase
                 'id' => 'TM-1',
                 'title' => 'Foobar',
                 'aat_id' => 12345,
+                'aat_xml' => 'foobar',
                 'source_updated_at' => $this->oldUpdatedAt,
             ],
             <<<END
-            id,title,aat_id,source_updated_at
-            TM-1,Foobaz,aat/67890,{$this->newUpdatedAt}
+            id,title,aat_id,aat_xml,source_updated_at
+            TM-1,Foobaz,aat/67890,foobaz,{$this->newUpdatedAt}
             END,
             [
                 'id' => 'TM-1',
                 'title' => 'Foobar',
                 'aat_id' => 67890,
+                'aat_xml' => 'foobaz',
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
         );

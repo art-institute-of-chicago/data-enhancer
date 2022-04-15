@@ -19,11 +19,12 @@ class PlaceTest extends CsvImportTestCase
                 'latitude' => 41.8796,
                 'longitude' => 87.6237,
                 'tgn_id' => 12345,
+                'tgn_xml' => 'foobar',
                 'source_updated_at' => $this->oldUpdatedAt,
             ],
             <<<END
-            id,title,latitude,longitude,tgn_id,source_updated_at
-            1,Foobaz,39.8260,86.1857,tgn/67890,{$this->newUpdatedAt}
+            id,title,latitude,longitude,tgn_id,tgn_xml,source_updated_at
+            1,Foobaz,39.8260,86.1857,tgn/67890,foobaz,{$this->newUpdatedAt}
             END,
             [
                 'id' => 1,
@@ -31,6 +32,7 @@ class PlaceTest extends CsvImportTestCase
                 'latitude' => 41.8796,
                 'longitude' => 87.6237,
                 'tgn_id' => 67890,
+                'tgn_xml' => 'foobaz',
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
         );

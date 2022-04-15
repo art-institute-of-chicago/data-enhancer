@@ -13,6 +13,7 @@ class AgentTransformer extends AbstractTransformer
             'id' => null,
             'ulan_id' => fn (Datum $datum) => $this->trimPrefix($datum->ulan_id, 'ulan/'),
             'ulan_certainty' => null,
+            'ulan_xml' => null,
         ];
     }
 }

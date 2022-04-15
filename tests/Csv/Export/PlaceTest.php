@@ -16,11 +16,13 @@ class PlaceTest extends BaseTestCase
             [
                 'title' => 'Foobar',
                 'tgn_id' => 1234,
+                'tgn_xml' => 'foobar',
                 'source_updated_at' => '2020-02-02 02:02:02',
             ],
             [
                 'title' => 'Foobar',
                 'tgn_id' => 'tgn/1234',
+                'tgn_xml' => 'foobar',
                 'source_updated_at' => '2020-02-02T02:02:02+00:00',
             ]
         );
@@ -32,11 +34,13 @@ class PlaceTest extends BaseTestCase
             [
                 'title' => null,
                 'tgn_id' => null,
+                'tgn_xml' => null,
                 'source_updated_at' => null,
             ],
             [
                 'title' => '',
                 'tgn_id' => '',
+                'tgn_xml' => '',
                 'source_updated_at' => '',
             ]
         );

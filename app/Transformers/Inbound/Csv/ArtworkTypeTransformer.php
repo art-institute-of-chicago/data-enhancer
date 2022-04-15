@@ -12,6 +12,7 @@ class ArtworkTypeTransformer extends AbstractTransformer
         return [
             'id' => null,
             'aat_id' => fn (Datum $datum) => $this->trimPrefix($datum->aat_id, 'aat/'),
+            'aat_xml' => null,
         ];
     }
 }

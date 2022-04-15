@@ -16,6 +16,7 @@ class Term extends BaseModel
         'title' => 'string',
         'subtype' => TermType::class,
         'aat_id' => 'integer',
+        'aat_xml' => 'string',
         'source_updated_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

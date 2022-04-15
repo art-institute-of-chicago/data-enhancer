@@ -17,6 +17,7 @@ class Agent extends BaseModel
         'death_year' => 'integer',
         'ulan_id' => 'integer',
         'ulan_certainty' => 'integer',
+        'ulan_xml' => 'string',
         'source_updated_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

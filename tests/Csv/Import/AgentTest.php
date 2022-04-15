@@ -20,11 +20,12 @@ class AgentTest extends CsvImportTestCase
                 'death_year' => 1999,
                 'ulan_id' => 12345,
                 'ulan_certainty' => 1,
+                'ulan_xml' => 'foobar',
                 'source_updated_at' => $this->oldUpdatedAt,
             ],
             <<<END
-            id,title,birth_year,death_year,ulan_id,ulan_certainty,source_updated_at
-            1,Foobaz,1945,2000,ulan/67890,3,{$this->newUpdatedAt}
+            id,title,birth_year,death_year,ulan_id,ulan_certainty,ulan_xml,source_updated_at
+            1,Foobaz,1945,2000,ulan/67890,3,foobaz,{$this->newUpdatedAt}
             END,
             [
                 'id' => 1,
@@ -33,6 +34,7 @@ class AgentTest extends CsvImportTestCase
                 'death_year' => 1999,
                 'ulan_id' => 67890,
                 'ulan_certainty' => 3,
+                'ulan_xml' => 'foobaz',
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
         );

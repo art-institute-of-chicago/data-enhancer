@@ -19,6 +19,7 @@ class AgentTest extends BaseTestCase
                 'death_year' => 1234,
                 'ulan_id' => 1234,
                 'ulan_certainty' => 1,
+                'ulan_xml' => 'foobar',
                 'source_updated_at' => '2020-02-02 02:02:02',
             ],
             [
@@ -27,6 +28,7 @@ class AgentTest extends BaseTestCase
                 'death_year' => '1234',
                 'ulan_id' => 'ulan/1234',
                 'ulan_certainty' => '1',
+                'ulan_xml' => 'foobar',
                 'source_updated_at' => '2020-02-02T02:02:02+00:00',
             ]
         );
@@ -41,6 +43,7 @@ class AgentTest extends BaseTestCase
                 'death_year' => null,
                 'ulan_id' => null,
                 'ulan_certainty' => null,
+                'ulan_xml' => null,
                 'source_updated_at' => null,
             ],
             [
@@ -49,6 +52,7 @@ class AgentTest extends BaseTestCase
                 'death_year' => '',
                 'ulan_id' => '',
                 'ulan_certainty' => '',
+                'ulan_xml' => '',
                 'source_updated_at' => '',
             ]
         );
