@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h3 class="text-center mb-3">Generated CSV Files</h3>
+<h3 class="text-center mb-3">Exported CSV Files</h3>
 
 <table class="table">
     <thead>
@@ -22,6 +22,8 @@
         @endforeach
     </tbody>
 </table>
+
+<p>This table only shows <i>exported</i> CSVs. We don't keep a record of imported CSVs.</p>
 
 <p>Files are automatically deleted 72 hours after generation.</p>
 
