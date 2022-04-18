@@ -10,6 +10,10 @@ class FakeInboundCsvTransformer extends AbstractTransformer
 {
     use FromJson;
 
+    protected $jsonFields = [
+        'some_json',
+    ];
+
     public function getFields()
     {
         return [

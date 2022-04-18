@@ -31,4 +31,11 @@ trait HasDates
             ->setTimezone(config('app.timezone'))
             ->toDateTimeString();
     }
+
+    protected function prepDirtyCheckForHasDates($transformedDatum)
+    {
+        unset($transformedDatum[self::getSourceUpdatedAtField()]);
+
+        return $transformedDatum;
+    }
 }

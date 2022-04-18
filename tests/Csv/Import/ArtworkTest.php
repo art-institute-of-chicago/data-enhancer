@@ -45,4 +45,27 @@ class ArtworkTest extends CsvImportTestCase
             ]
         );
     }
+
+    public function test_it_detects_that_linked_art_json_has_not_changed()
+    {
+        return $this->checkCsvImport(
+            [
+                'id' => 1,
+                'linked_art_json' => (object) [
+                    'foo' => 'bar',
+                ],
+            ],
+            <<<END
+            id,linked_art_json
+            1,"{""foo"":""bar""}"
+            END,
+            [
+                'id' => 1,
+                'linked_art_json' => (object) [
+                    'foo' => 'bar',
+                ],
+            ],
+            false // updated_at did not change
+        );
+    }
 }

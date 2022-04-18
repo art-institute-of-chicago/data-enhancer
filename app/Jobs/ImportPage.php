@@ -66,11 +66,6 @@ class ImportPage extends AbstractJob
 
                 return $transformedData;
             },
-            fieldFilterFunc: function ($transformedDatum) use ($sourceUpdatedAtField) {
-                unset($transformedDatum[$sourceUpdatedAtField]);
-
-                return $transformedDatum;
-            },
         );
 
         $this->debug(sprintf(

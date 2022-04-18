@@ -13,6 +13,9 @@ abstract class AbstractTransformer
 
     abstract protected function getFields();
 
+    /**
+     * Returns an associative array suitable for bulk insert or output.
+     */
     final public function transform(
         $datum,
         ?array $includeFields = null,

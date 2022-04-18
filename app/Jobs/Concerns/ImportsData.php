@@ -6,7 +6,6 @@ trait ImportsData
 {
     /**
      * Specify `$dataFilterFunc` to decide which datums should be kept.
-     * Specify `$fieldFilterFunc` to decide which fields should be kept.
      */
     protected function importData(
         array $data,
@@ -14,7 +13,6 @@ trait ImportsData
         string $transformerClass,
         array $transformCallArgs = [],
         callable $dataFilterFunc = null,
-        callable $fieldFilterFunc = null,
     ) {
         $primaryKey = $modelClass::instance()->getKeyName();
         $transformer = app()->make($transformerClass);
@@ -43,14 +41,13 @@ trait ImportsData
                 function ($model) use (
                     $transformedData,
                     $primaryKey,
-                    $fieldFilterFunc
+                    $transformer
                 ) {
                     $transformedDatum = $transformedData
                         ->get($model->{$primaryKey});
 
-                    if ($fieldFilterFunc) {
-                        $transformedDatum = $fieldFilterFunc($transformedDatum);
-                    }
+                    $transformedDatum = $transformer
+                        ->prepDirtyCheck($transformedDatum);
 
                     $model->fill($transformedDatum);
 

@@ -82,6 +82,29 @@ class CsvImportTest extends BaseTestCase
         );
     }
 
+    public function test_it_detects_that_json_field_has_not_changed()
+    {
+        return $this->checkCsvImport(
+            [
+                'id' => 1,
+                'some_json' => (object) [
+                    'foo' => 'bar',
+                ],
+            ],
+            <<<END
+            id,some_json
+            1,"{""foo"":""bar""}"
+            END,
+            [
+                'id' => 1,
+                'some_json' => (object) [
+                    'foo' => 'bar',
+                ],
+            ],
+            false // updated_at did not change
+        );
+    }
+
     public function test_it_shows_csv_import_form()
     {
         $response = $this->get('/csv/import');

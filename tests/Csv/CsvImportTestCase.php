@@ -29,15 +29,26 @@ abstract class CsvImportTestCase extends FeatureTestCase
     protected function checkCsvImport(
         array $initialState,
         string $csvContents,
-        array $expectedState
+        array $expectedState,
+        bool $expectUpdatedAtToChange = true,
     ) {
         $initialItem = ($this->modelClass)::factory()->create($initialState);
         $id = $initialItem->getKey();
 
+        $this->travelTo(now()->addMinutes(30));
+
         $this->importCsv($this->resourceName, $csvContents);
+
+        $this->travelBack();
 
         $finalItem = ($this->modelClass)::find($id);
         $finalState = $finalItem->toArray();
+
+        if ($expectUpdatedAtToChange) {
+            $this->assertTrue($finalItem->updated_at->gt($initialItem->updated_at));
+        } else {
+            $this->assertTrue($finalItem->updated_at->eq($initialItem->updated_at));
+        }
 
         $this->assertEquals(
             $expectedState,

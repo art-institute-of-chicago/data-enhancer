@@ -10,6 +10,10 @@ class ArtworkTransformer extends AbstractTransformer
 {
     use FromJson;
 
+    protected $jsonFields = [
+        'linked_art_json',
+    ];
+
     protected function getFields()
     {
         return [

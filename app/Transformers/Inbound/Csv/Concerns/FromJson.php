@@ -17,11 +17,31 @@ trait FromJson
             return;
         }
 
-        $value = json_decode(
+        $value = $this->decodeJson($value);
+
+        return $this->toJson($value);
+    }
+
+    protected function prepDirtyCheckForFromJson($transformedDatum)
+    {
+        foreach (($this->jsonFields ?? []) as $jsonField) {
+            if (isset($transformedDatum[$jsonField])) {
+                $transformedDatum[$jsonField] = $this->decodeJson($transformedDatum[$jsonField]);
+            }
+        }
+
+        return $transformedDatum;
+    }
+
+    private function decodeJson($value)
+    {
+        if (is_null($value)) {
+            return;
+        }
+
+        return json_decode(
             json: $value,
             flags: JSON_THROW_ON_ERROR
         );
-
-        return $this->toJson($value);
     }
 }
