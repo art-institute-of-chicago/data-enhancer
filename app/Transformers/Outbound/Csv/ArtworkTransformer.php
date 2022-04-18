@@ -9,7 +9,7 @@ class ArtworkTransformer extends AbstractTransformer
 {
     use ToJson;
 
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,

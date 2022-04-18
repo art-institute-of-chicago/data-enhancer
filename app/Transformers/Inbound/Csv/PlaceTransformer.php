@@ -7,7 +7,7 @@ use App\Transformers\Inbound\AbstractTransformer;
 
 class PlaceTransformer extends AbstractTransformer
 {
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,

@@ -10,7 +10,7 @@ class ArtworkTransformer extends AbstractTransformer
 {
     use FromJson;
 
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,

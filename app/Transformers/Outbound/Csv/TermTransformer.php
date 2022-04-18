@@ -6,7 +6,7 @@ use App\Transformers\Datum;
 
 class TermTransformer extends AbstractTransformer
 {
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,
