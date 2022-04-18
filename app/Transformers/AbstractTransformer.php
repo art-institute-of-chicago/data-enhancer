@@ -11,10 +11,12 @@ abstract class AbstractTransformer
 
     private $mappedFields;
 
+    private $taggedFields = [];
+
     abstract protected function getFields();
 
     /**
-     * Returns an associative array suitable for bulk insert or output.
+     * Returns an associative array suitable for model assignment or output.
      */
     final public function transform(
         $datum,
@@ -59,6 +61,22 @@ abstract class AbstractTransformer
             ->all();
     }
 
+    protected function getTaggedFields(string $tag): array
+    {
+        return $taggedFields[$tag]
+            ?? $taggedFields[$tag] = $this->initTaggedFields($tag);
+
+    }
+
+    private function initTaggedFields(string $tag): array
+    {
+        return collect($this->getMappedFields())
+            ->map(fn ($mappedField) => $mappedField['tags'])
+            ->filter(fn ($tags) => in_array($tag, $tags))
+            ->keys()
+            ->all();
+    }
+
     private function getMappedFields()
     {
         return $this->mappedFields ?? $this->mappedFields = $this->initMappedFields();
@@ -90,6 +108,12 @@ abstract class AbstractTransformer
                 $mappedFields[$fieldName]['requires'] = [
                     $fieldName,
                 ];
+            }
+        }
+
+        foreach ($mappedFields as $fieldName => $fieldMapping) {
+            if (empty($fieldMapping['tags'])) {
+                $mappedFields[$fieldName]['tags'] = [];
             }
         }
 

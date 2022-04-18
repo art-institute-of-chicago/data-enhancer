@@ -20,21 +20,30 @@ trait HasDates
      */
     protected static $sourceUpdatedAtField = 'source_updated_at';
 
-    public static function getSourceUpdatedAtField()
+    public static function getSourceUpdatedAtField(): string
     {
         return self::$sourceUpdatedAtField;
     }
 
-    protected function getDateTime($value): string
+    protected function getDateTime($value): Carbon
     {
         return Carbon::parse($value)
-            ->setTimezone(config('app.timezone'))
-            ->toDateTimeString();
+            ->setTimezone(config('app.timezone'));
     }
 
-    protected function prepDirtyCheckForHasDates($transformedDatum)
+    protected function prepDirtyCheckForHasDates(array $transformedDatum): array
     {
-        unset($transformedDatum[self::getSourceUpdatedAtField()]);
+        unset($transformedDatum[self::$sourceUpdatedAtField]);
+
+        return $transformedDatum;
+    }
+
+    protected function prepBulkInsertForHasDates(array $transformedDatum): array
+    {
+        if (isset($transformedDatum[self::$sourceUpdatedAtField])) {
+            $transformedDatum[self::$sourceUpdatedAtField] =
+                $transformedDatum[self::$sourceUpdatedAtField]->toDateTimeString();
+        }
 
         return $transformedDatum;
     }

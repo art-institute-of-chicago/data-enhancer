@@ -59,8 +59,12 @@ trait ImportsData
         $upsertIds = $newIds->merge($dirtyIds);
         $upsertData = $transformedData->only($upsertIds);
 
+        $preppedData = $upsertData->map(
+            fn ($transformedDatum) => $transformer->prepBulkInsert($transformedDatum)
+        );
+
         ($modelClass)::upsert(
-            $upsertData->all(),
+            $preppedData->all(),
             $primaryKey,
             array_diff($columns, [$primaryKey])
         );

@@ -10,16 +10,17 @@ class FakeInboundCsvTransformer extends AbstractTransformer
 {
     use FromJson;
 
-    protected $jsonFields = [
-        'some_json',
-    ];
-
     public function getFields()
     {
         return [
             'id' => null,
             'acme_id' => fn (Datum $datum) => $this->trimPrefix($datum->acme_id, 'acme/'),
-            'some_json' => fn (Datum $datum) => $this->fromJson($datum->some_json),
+            'some_json' => [
+                'value' => fn (Datum $datum) => $this->fromJson($datum->some_json),
+                'tags' => [
+                    'json',
+                ],
+            ],
         ];
     }
 }
