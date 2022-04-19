@@ -9,7 +9,7 @@ trait FromJson
     use ToJson;
 
     /**
-     * Validate, then convert back to JSON for bulk insert.
+     * Convert JSON to object to match model.
      */
     protected function fromJson($value)
     {
@@ -17,11 +17,9 @@ trait FromJson
             return;
         }
 
-        $value = json_decode(
+        return json_decode(
             json: $value,
             flags: JSON_THROW_ON_ERROR
         );
-
-        return $this->toJson($value);
     }
 }

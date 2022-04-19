@@ -46,8 +46,6 @@ class ImportResourceOne extends AbstractJob
             ],
         );
 
-        $sourceUpdatedAtField = ($transformerClass)::getSourceUpdatedAtField();
-
         [
             $createdCount,
             $updatedCount,
@@ -58,11 +56,6 @@ class ImportResourceOne extends AbstractJob
             ],
             $modelClass,
             $transformerClass,
-            fieldFilterFunc: function ($transformedDatum) use ($sourceUpdatedAtField) {
-                unset($transformedDatum[$sourceUpdatedAtField]);
-
-                return $transformedDatum;
-            },
         );
 
         $this->debug(sprintf('IMP %s # %s',

@@ -14,6 +14,7 @@ class ArtworkType extends BaseModel
         'id' => 'integer',
         'title' => 'string',
         'aat_id' => 'integer',
+        'aat_xml' => 'string',
         'source_updated_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

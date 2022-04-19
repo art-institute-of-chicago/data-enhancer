@@ -6,7 +6,7 @@ use App\Transformers\Datum;
 
 class AgentTransformer extends AbstractTransformer
 {
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,
@@ -15,6 +15,7 @@ class AgentTransformer extends AbstractTransformer
             'death_year' => null,
             'ulan_id' => fn (Datum $datum) => $this->addPrefix($datum->ulan_id, 'ulan/'),
             'ulan_certainty' => null,
+            'ulan_xml' => null,
             'source_updated_at' => fn (Datum $datum) => $this->getDateTime($datum->source_updated_at),
             'updated_at' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
         ];

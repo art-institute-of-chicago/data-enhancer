@@ -7,7 +7,7 @@ use App\Transformers\Inbound\AbstractTransformer;
 
 class AgentTransformer extends AbstractTransformer
 {
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,

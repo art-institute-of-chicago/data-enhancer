@@ -7,12 +7,13 @@ use App\Transformers\Inbound\AbstractTransformer;
 
 class AgentTransformer extends AbstractTransformer
 {
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,
             'ulan_id' => fn (Datum $datum) => $this->trimPrefix($datum->ulan_id, 'ulan/'),
             'ulan_certainty' => null,
+            'ulan_xml' => null,
         ];
     }
 }

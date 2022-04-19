@@ -16,11 +16,13 @@ class ArtworkTypeTest extends BaseTestCase
             [
                 'title' => 'Foobar',
                 'aat_id' => 1234,
+                'aat_xml' => 'foobar',
                 'source_updated_at' => '2020-02-02 02:02:02',
             ],
             [
                 'title' => 'Foobar',
                 'aat_id' => 'aat/1234',
+                'aat_xml' => 'foobar',
                 'source_updated_at' => '2020-02-02T02:02:02+00:00',
             ]
         );
@@ -32,11 +34,13 @@ class ArtworkTypeTest extends BaseTestCase
             [
                 'title' => null,
                 'aat_id' => null,
+                'aat_xml' => null,
                 'source_updated_at' => null,
             ],
             [
                 'title' => '',
                 'aat_id' => '',
+                'aat_xml' => '',
                 'source_updated_at' => '',
             ]
         );

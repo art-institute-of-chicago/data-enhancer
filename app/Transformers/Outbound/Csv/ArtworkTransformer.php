@@ -9,7 +9,7 @@ class ArtworkTransformer extends AbstractTransformer
 {
     use ToJson;
 
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,
@@ -19,7 +19,6 @@ class ArtworkTransformer extends AbstractTransformer
             'height' => null,
             'depth' => null,
             'medium_display' => null,
-            'support_aat_id' => fn (Datum $datum) => $this->addPrefix($datum->support_aat_id, 'aat/'),
             'linked_art_json' => fn (Datum $datum) => $this->toJson($datum->linked_art_json),
             'source_updated_at' => fn (Datum $datum) => $this->getDateTime($datum->source_updated_at),
             'updated_at' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),

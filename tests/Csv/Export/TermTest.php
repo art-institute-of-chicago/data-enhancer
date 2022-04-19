@@ -17,12 +17,14 @@ class TermTest extends BaseTestCase
                 'title' => 'Foobar',
                 'subtype' => 'TT-1',
                 'aat_id' => 1234,
+                'aat_xml' => 'foobar',
                 'source_updated_at' => '2020-02-02 02:02:02',
             ],
             [
                 'title' => 'Foobar',
                 'subtype' => 'classification',
                 'aat_id' => 'aat/1234',
+                'aat_xml' => 'foobar',
                 'source_updated_at' => '2020-02-02T02:02:02+00:00',
             ]
         );
@@ -35,12 +37,14 @@ class TermTest extends BaseTestCase
                 'title' => null,
                 'subtype' => null,
                 'aat_id' => null,
+                'aat_xml' => null,
                 'source_updated_at' => null,
             ],
             [
                 'title' => '',
                 'subtype' => null,
                 'aat_id' => '',
+                'aat_xml' => '',
                 'source_updated_at' => '',
             ]
         );

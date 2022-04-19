@@ -7,11 +7,12 @@ use App\Transformers\Inbound\AbstractTransformer;
 
 class ArtworkTypeTransformer extends AbstractTransformer
 {
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,
             'aat_id' => fn (Datum $datum) => $this->trimPrefix($datum->aat_id, 'aat/'),
+            'aat_xml' => null,
         ];
     }
 }

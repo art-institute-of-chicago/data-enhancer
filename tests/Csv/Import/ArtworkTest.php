@@ -21,15 +21,14 @@ class ArtworkTest extends CsvImportTestCase
                 'height' => 5,
                 'depth' => 5,
                 'medium_display' => 'Foobar',
-                'support_aat_id' => 12345,
                 'linked_art_json' => (object) [
                     'foo' => 'bar',
                 ],
                 'source_updated_at' => $this->oldUpdatedAt,
             ],
             <<<END
-            id,title,dimension_display,width,height,depth,medium_display,support_aat_id,linked_art_json,source_updated_at
-            1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,aat/67890,"{""foo"":""baz""}",{$this->newUpdatedAt}
+            id,title,dimension_display,width,height,depth,medium_display,linked_art_json,source_updated_at
+            1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,"{""foo"":""baz""}",{$this->newUpdatedAt}
             END,
             [
                 'id' => 1,
@@ -39,12 +38,34 @@ class ArtworkTest extends CsvImportTestCase
                 'height' => 10,
                 'depth' => 10,
                 'medium_display' => 'Foobar',
-                'support_aat_id' => 67890,
                 'linked_art_json' => (object) [
                     'foo' => 'baz',
                 ],
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
+        );
+    }
+
+    public function test_it_detects_that_linked_art_json_has_not_changed()
+    {
+        return $this->checkCsvImport(
+            [
+                'id' => 1,
+                'linked_art_json' => (object) [
+                    'foo' => 'bar',
+                ],
+            ],
+            <<<END
+            id,linked_art_json
+            1,"{""foo"":""bar""}"
+            END,
+            [
+                'id' => 1,
+                'linked_art_json' => (object) [
+                    'foo' => 'bar',
+                ],
+            ],
+            false // updated_at did not change
         );
     }
 }

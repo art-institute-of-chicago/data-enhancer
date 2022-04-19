@@ -10,14 +10,13 @@ class ArtworkTransformer extends AbstractTransformer
 {
     use FromJson;
 
-    public function getFields()
+    protected function getFields()
     {
         return [
             'id' => null,
             'width' => null,
             'height' => null,
             'depth' => null,
-            'support_aat_id' => fn (Datum $datum) => $this->trimPrefix($datum->support_aat_id, 'aat/'),
             'linked_art_json' => fn (Datum $datum) => $this->fromJson($datum->linked_art_json),
         ];
     }

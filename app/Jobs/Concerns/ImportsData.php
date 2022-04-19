@@ -6,7 +6,6 @@ trait ImportsData
 {
     /**
      * Specify `$dataFilterFunc` to decide which datums should be kept.
-     * Specify `$fieldFilterFunc` to decide which fields should be kept.
      */
     protected function importData(
         array $data,
@@ -14,7 +13,6 @@ trait ImportsData
         string $transformerClass,
         array $transformCallArgs = [],
         callable $dataFilterFunc = null,
-        callable $fieldFilterFunc = null,
     ) {
         $primaryKey = $modelClass::instance()->getKeyName();
         $transformer = app()->make($transformerClass);
@@ -37,30 +35,50 @@ trait ImportsData
         $foundModels = ($modelClass)::select($columns)->findMany($incomingIds);
         $foundIds = $foundModels->pluck($primaryKey);
 
-        $newIds = $incomingIds->diff($foundIds);
-        $dirtyIds = $foundModels
-            ->filter(
+        $createIds = $incomingIds->diff($foundIds);
+        $createData = $transformedData
+            ->only($createIds)
+            ->map(
+                function ($transformedDatum) use ($modelClass) {
+                    $model = new $modelClass($transformedDatum);
+
+                    return array_intersect_key(
+                        $model->getAttributes(),
+                        $transformedDatum,
+                    );
+                }
+            )
+            ->values();
+
+        $updateData = $foundModels
+            ->map(
                 function ($model) use (
                     $transformedData,
                     $primaryKey,
-                    $fieldFilterFunc
+                    $transformer
                 ) {
                     $transformedDatum = $transformedData
                         ->get($model->{$primaryKey});
 
-                    if ($fieldFilterFunc) {
-                        $transformedDatum = $fieldFilterFunc($transformedDatum);
+                    $filteredDatum = $transformer
+                        ->prepDirtyCheck($transformedDatum);
+
+                    $model->fill($filteredDatum);
+
+                    if (count($model->getDirty()) < 1) {
+                        return;
                     }
 
-                    $model->fill($transformedDatum);
-
-                    return count($model->getDirty()) > 0;
+                    return array_intersect_key(
+                        $model->getAttributes(),
+                        $transformedDatum,
+                    );
                 }
             )
-            ->pluck($primaryKey);
+            ->filter()
+            ->values();
 
-        $upsertIds = $newIds->merge($dirtyIds);
-        $upsertData = $transformedData->only($upsertIds);
+        $upsertData = $createData->merge($updateData);
 
         ($modelClass)::upsert(
             $upsertData->all(),
@@ -69,8 +87,8 @@ trait ImportsData
         );
 
         return [
-            $newIds->count(),
-            $dirtyIds->count(),
+            $createData->count(),
+            $updateData->count(),
             $transformedData->count(),
         ];
     }
