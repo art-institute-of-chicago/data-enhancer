@@ -37,14 +37,4 @@ trait HasDates
 
         return $transformedDatum;
     }
-
-    protected function prepBulkInsertForHasDates(array $transformedDatum): array
-    {
-        if (isset($transformedDatum[self::$sourceUpdatedAtField])) {
-            $transformedDatum[self::$sourceUpdatedAtField] =
-                $transformedDatum[self::$sourceUpdatedAtField]->toDateTimeString();
-        }
-
-        return $transformedDatum;
-    }
 }

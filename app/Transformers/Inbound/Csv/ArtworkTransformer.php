@@ -17,12 +17,7 @@ class ArtworkTransformer extends AbstractTransformer
             'width' => null,
             'height' => null,
             'depth' => null,
-            'linked_art_json' => [
-                'value' => fn (Datum $datum) => $this->fromJson($datum->linked_art_json),
-                'tags' => [
-                    'json',
-                ],
-            ],
+            'linked_art_json' => fn (Datum $datum) => $this->fromJson($datum->linked_art_json),
         ];
     }
 }

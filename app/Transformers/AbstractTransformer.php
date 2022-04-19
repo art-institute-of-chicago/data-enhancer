@@ -16,7 +16,14 @@ abstract class AbstractTransformer
     abstract protected function getFields();
 
     /**
-     * Returns an associative array suitable for model assignment or output.
+     * Returns an associative array, keyed by field name, whose
+     * values match expectations of the intended context.
+     *
+     * For inbound transformers, values should be what you'd pass
+     * to `fill` operations on Eloquent models.
+     *
+     * For outbound transformers, values should be what you'd pass
+     * to CSV or API output.
      */
     final public function transform(
         $datum,

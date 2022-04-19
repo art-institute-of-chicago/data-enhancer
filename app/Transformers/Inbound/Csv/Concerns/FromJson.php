@@ -22,20 +22,4 @@ trait FromJson
             flags: JSON_THROW_ON_ERROR
         );
     }
-
-    /**
-     * Convert object back to JSON for bulk insert.
-     */
-    protected function prepBulkInsertForFromJson($transformedDatum)
-    {
-        $jsonFields = $this->getTaggedFields('json');
-
-        foreach ($jsonFields as $jsonField) {
-            if (isset($transformedDatum[$jsonField])) {
-                $transformedDatum[$jsonField] = $this->toJson($transformedDatum[$jsonField]);
-            }
-        }
-
-        return $transformedDatum;
-    }
 }

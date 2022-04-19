@@ -35,9 +35,23 @@ trait ImportsData
         $foundModels = ($modelClass)::select($columns)->findMany($incomingIds);
         $foundIds = $foundModels->pluck($primaryKey);
 
-        $newIds = $incomingIds->diff($foundIds);
-        $dirtyIds = $foundModels
-            ->filter(
+        $createIds = $incomingIds->diff($foundIds);
+        $createData = $transformedData
+            ->only($createIds)
+            ->map(
+                function ($transformedDatum) use ($modelClass) {
+                    $model = new $modelClass($transformedDatum);
+
+                    return array_intersect_key(
+                        $model->getAttributes(),
+                        $transformedDatum,
+                    );
+                }
+            )
+            ->values();
+
+        $updateData = $foundModels
+            ->map(
                 function ($model) use (
                     $transformedData,
                     $primaryKey,
@@ -46,32 +60,35 @@ trait ImportsData
                     $transformedDatum = $transformedData
                         ->get($model->{$primaryKey});
 
-                    $transformedDatum = $transformer
+                    $filteredDatum = $transformer
                         ->prepDirtyCheck($transformedDatum);
 
-                    $model->fill($transformedDatum);
+                    $model->fill($filteredDatum);
 
-                    return count($model->getDirty()) > 0;
+                    if (count($model->getDirty()) < 1) {
+                        return;
+                    }
+
+                    return array_intersect_key(
+                        $model->getAttributes(),
+                        $transformedDatum,
+                    );
                 }
             )
-            ->pluck($primaryKey);
+            ->filter()
+            ->values();
 
-        $upsertIds = $newIds->merge($dirtyIds);
-        $upsertData = $transformedData->only($upsertIds);
-
-        $preppedData = $upsertData->map(
-            fn ($transformedDatum) => $transformer->prepBulkInsert($transformedDatum)
-        );
+        $upsertData = $createData->merge($updateData);
 
         ($modelClass)::upsert(
-            $preppedData->all(),
+            $upsertData->all(),
             $primaryKey,
             array_diff($columns, [$primaryKey])
         );
 
         return [
-            $newIds->count(),
-            $dirtyIds->count(),
+            $createData->count(),
+            $updateData->count(),
             $transformedData->count(),
         ];
     }

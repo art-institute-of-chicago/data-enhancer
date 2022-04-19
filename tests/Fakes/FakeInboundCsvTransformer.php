@@ -15,12 +15,7 @@ class FakeInboundCsvTransformer extends AbstractTransformer
         return [
             'id' => null,
             'acme_id' => fn (Datum $datum) => $this->trimPrefix($datum->acme_id, 'acme/'),
-            'some_json' => [
-                'value' => fn (Datum $datum) => $this->fromJson($datum->some_json),
-                'tags' => [
-                    'json',
-                ],
-            ],
+            'some_json' => fn (Datum $datum) => $this->fromJson($datum->some_json),
         ];
     }
 }
