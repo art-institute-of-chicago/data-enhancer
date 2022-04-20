@@ -14,6 +14,7 @@ class TermTest extends BaseTestCase
     {
         return $this->checkCsvExport(
             [
+                'id' => 'TM-1',
                 'title' => 'Foobar',
                 'subtype' => 'TT-1',
                 'aat_id' => 1234,
@@ -21,6 +22,8 @@ class TermTest extends BaseTestCase
                 'source_updated_at' => '2020-02-02 02:02:02',
             ],
             [
+                'id' => 'TM-1',
+                'id_sort' => 1,
                 'title' => 'Foobar',
                 'subtype' => 'classification',
                 'aat_id' => 'aat/1234',

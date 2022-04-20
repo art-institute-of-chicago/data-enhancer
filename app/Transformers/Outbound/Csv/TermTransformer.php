@@ -10,6 +10,7 @@ class TermTransformer extends AbstractTransformer
     {
         return [
             'id' => null,
+            'id_sort' => fn (Datum $datum) => (int) $this->trimPrefix($datum->id, ['TM-', 'PC-']),
             'title' => null,
             'subtype' => fn (Datum $datum) => $datum->subtype?->display(),
             'aat_id' => fn (Datum $datum) => $this->addPrefix($datum->aat_id, 'aat/'),

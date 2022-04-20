@@ -13,14 +13,20 @@ trait CanPrefixValues
         return $prefix . $value;
     }
 
-    protected function trimPrefix($value, $prefix)
+    protected function trimPrefix($value, array|string $prefixes)
     {
         if (!is_string($value)) {
             return $value;
         }
 
-        if (substr($value, 0, strlen($prefix)) === $prefix) {
-            $value = substr($value, strlen($prefix));
+        if (!is_array($prefixes)) {
+            $prefixes = [$prefixes];
+        }
+
+        foreach ($prefixes as $prefix) {
+            if (substr($value, 0, strlen($prefix)) === $prefix) {
+                $value = substr($value, strlen($prefix));
+            }
         }
 
         return $value;
