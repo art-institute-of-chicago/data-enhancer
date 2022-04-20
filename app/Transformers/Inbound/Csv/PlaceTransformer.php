@@ -3,7 +3,7 @@
 namespace App\Transformers\Inbound\Csv;
 
 use App\Transformers\Datum;
-use App\Transformers\Inbound\AbstractTransformer;
+use App\Transformers\Inbound\Csv\AbstractTransformer;
 
 class PlaceTransformer extends AbstractTransformer
 {

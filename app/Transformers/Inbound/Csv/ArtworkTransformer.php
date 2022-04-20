@@ -4,7 +4,7 @@ namespace App\Transformers\Inbound\Csv;
 
 use App\Transformers\Datum;
 use App\Transformers\Inbound\Csv\Concerns\FromJson;
-use App\Transformers\Inbound\AbstractTransformer;
+use App\Transformers\Inbound\Csv\AbstractTransformer;
 
 class ArtworkTransformer extends AbstractTransformer
 {
