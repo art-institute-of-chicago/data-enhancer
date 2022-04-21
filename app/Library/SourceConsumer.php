@@ -45,7 +45,9 @@ class SourceConsumer
             http_build_query($params),
         ]);
 
-        $headers = [];
+        $headers = [
+            'Accept' => 'application/json',
+        ];
 
         $apiToken = $sourceConfig['api_token'];
 

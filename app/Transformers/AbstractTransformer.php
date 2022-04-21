@@ -13,6 +13,8 @@ abstract class AbstractTransformer
 
     private $taggedFields = [];
 
+    private $watchedFields = [];
+
     abstract protected function getFields();
 
     /**
@@ -58,9 +60,7 @@ abstract class AbstractTransformer
     public function getRequiredFields($requestedFields = null): array
     {
         return collect($this->getMappedFields())
-            ->map(function ($mappedField) {
-                return $mappedField['requires'];
-            })
+            ->map(fn ($mappedField) => $mappedField['requires'])
             ->only($requestedFields)
             ->flatten()
             ->unique()
@@ -68,10 +68,21 @@ abstract class AbstractTransformer
             ->all();
     }
 
+    /**
+     * Returns indexed array of callables for field.
+     */
+    public function getWatchers(string $fieldName): array
+    {
+        return $this->getMappedFields()[$fieldName]['on_change'];
+    }
+
+    /**
+     * Returns indexed array of transformed field names.
+     */
     protected function getTaggedFields(string $tag): array
     {
-        return $taggedFields[$tag]
-            ?? $taggedFields[$tag] = $this->initTaggedFields($tag);
+        return $this->taggedFields[$tag]
+            ?? $this->taggedFields[$tag] = $this->initTaggedFields($tag);
 
     }
 
@@ -121,6 +132,20 @@ abstract class AbstractTransformer
         foreach ($mappedFields as $fieldName => $fieldMapping) {
             if (empty($fieldMapping['tags'])) {
                 $mappedFields[$fieldName]['tags'] = [];
+            }
+        }
+
+        foreach ($mappedFields as $fieldName => $fieldMapping) {
+            if (empty($fieldMapping['on_change'])) {
+                $mappedFields[$fieldName]['on_change'] = [];
+            }
+        }
+
+        foreach ($mappedFields as $fieldName => $fieldMapping) {
+            if (!is_array($fieldMapping['on_change'])) {
+                $mappedFields[$fieldName]['on_change'] = [
+                    $mappedFields[$fieldName]['on_change'],
+                ];
             }
         }
 

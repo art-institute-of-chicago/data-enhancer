@@ -107,6 +107,11 @@ class ImportCsv extends AbstractJob
         $this->ignoredCount += count($batch) - $createdCount - $updatedCount;
     }
 
+    /**
+     * `SlackAlert` queues a job on the `default` queue, so the alert
+     * will get sent after any jobs that got queued due to a field
+     * value changing, cf. `on_change`. Those run on `high`.
+     */
     private function alertSlack()
     {
         if (app()->environment('testing')) {

@@ -3,10 +3,11 @@
 namespace App\Jobs;
 
 use App\Library\SourceConsumer;
+use App\Jobs\Concerns\TriesThrice;
 
 class DownloadPage extends AbstractJob
 {
-    public $tries = 3;
+    use TriesThrice;
 
     public function __construct(
         private string $sourceName,
@@ -15,15 +16,6 @@ class DownloadPage extends AbstractJob
         private bool $isFull,
         private ?string $since,
     ) {
-    }
-
-    public function backoff()
-    {
-        return [
-            random_int(1, 2),
-            random_int(3, 7),
-            random_int(8, 12),
-        ];
     }
 
     public function tags()
