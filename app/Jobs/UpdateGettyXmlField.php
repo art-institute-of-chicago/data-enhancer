@@ -14,7 +14,7 @@ class UpdateGettyXmlField extends AbstractJob
         private string $modelClass,
         private string $id,
         private string $xmlField,
-        private string|integer|null $gettyId,
+        private string|int|null $gettyId,
         private GettyVocab $gettyVocab,
     ) {
     }

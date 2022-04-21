@@ -20,6 +20,14 @@ trait CanUpdateGettyXmlFields
             $xmlField,
             $gettyVocab,
         ) {
+            /**
+             * Temporary solution so we don't hammer the Getty during our tests.
+             * We can setup a mock "listen for X request, give Y response" later.
+             */
+            if (app()->environment('testing')) {
+                return;
+            }
+
             return new UpdateGettyXmlField(
                 modelClass: $modelClass,
                 id: $id,
