@@ -35,6 +35,9 @@
         <server name="SESSION_DRIVER" value="array"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
 
+        <!-- Packages -->
+        <server name="SLACK_ALERT_WEBHOOK" value="null"/>
+
         <!-- App -->
         <server name="APP_TIMEZONE" value="UTC"/>
         <server name="IMPORTS_DEBUG" value="false"/>

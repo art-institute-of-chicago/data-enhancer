@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use League\Csv\Reader;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Bus\Batch;
 use App\Library\SourceConsumer;
 use App\Jobs\Concerns\ImportsData;
 use Spatie\SlackAlerts\Facades\SlackAlert;
@@ -21,6 +23,8 @@ class ImportCsv extends AbstractJob
     private $ignoredCount = 0;
 
     private $totalCount = 0;
+
+    private $jobsToRun = [];
 
     public function __construct(
         private string $resourceName,
@@ -74,6 +78,8 @@ class ImportCsv extends AbstractJob
 
         Storage::delete($this->csvPath);
 
+        $this->runWatcherJobs();
+
         $this->alertSlack();
     }
 
@@ -83,6 +89,7 @@ class ImportCsv extends AbstractJob
             $createdCount,
             $updatedCount,
             $importedCount,
+            $jobsToRun,
         ] = $this->importData(
             $batch,
             $modelClass,
@@ -90,6 +97,7 @@ class ImportCsv extends AbstractJob
             transformCallArgs: [
                 'includeFields' => $includeFields,
             ],
+            dispatchJobs: false,
         );
 
         $this->debug(sprintf(
@@ -105,6 +113,7 @@ class ImportCsv extends AbstractJob
         $this->createdCount += $createdCount;
         $this->updatedCount += $updatedCount;
         $this->ignoredCount += count($batch) - $createdCount - $updatedCount;
+        $this->jobsToRun = array_merge($this->jobsToRun, $jobsToRun);
     }
 
     private function alertSlack()
@@ -122,5 +131,30 @@ class ImportCsv extends AbstractJob
             $this->ignoredCount,
             app('env'),
         ));
+    }
+
+    /**
+     * We might not need this because `SlackAlert` is a queued job, too.
+     */
+    private function runWatcherJobs()
+    {
+        if (empty($this->jobsToRun)) {
+            return;
+        }
+
+        SlackAlert::message(sprintf(
+            'Performing post-processing on imported data... [%s]',
+            app('env'),
+        ));
+
+        Bus::batch($this->jobsToRun)
+            ->onQueue('high')
+            ->finally(function (Batch $batch) {
+                SlackAlert::message(sprintf(
+                    'Post-processing complete! [%s]',
+                    app('env'),
+                ));
+            })
+            ->dispatch();
     }
 }

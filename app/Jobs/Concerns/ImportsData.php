@@ -2,6 +2,8 @@
 
 namespace App\Jobs\Concerns;
 
+use App\Jobs\AbstractJob;
+
 trait ImportsData
 {
     /**
@@ -13,6 +15,7 @@ trait ImportsData
         string $transformerClass,
         array $transformCallArgs = [],
         callable $dataFilterFunc = null,
+        bool $dispatchJobs = true,
     ) {
         $primaryKey = $modelClass::instance()->getKeyName();
         $transformer = app()->make($transformerClass);
@@ -35,30 +38,32 @@ trait ImportsData
         $foundModels = ($modelClass)::select($columns)->findMany($incomingIds);
         $foundIds = $foundModels->pluck($primaryKey);
 
+        $jobsToRun = [];
+
         $createIds = $incomingIds->diff($foundIds);
+
         $createData = $transformedData
             ->only($createIds)
+            ->values()
             ->map(
-                function ($transformedDatum) use ($modelClass) {
-                    $model = new $modelClass($transformedDatum);
-
-                    return array_intersect_key(
-                        $model->getAttributes(),
+                function ($transformedDatum) use (
+                    $modelClass
+                ) {
+                    return [
+                        new $modelClass($transformedDatum),
                         $transformedDatum,
-                    );
+                    ];
                 }
-            )
-            ->values();
+            );
 
         $updateData = $foundModels
             ->map(
                 function ($model) use (
                     $transformedData,
-                    $primaryKey,
-                    $transformer
+                    $transformer,
                 ) {
                     $transformedDatum = $transformedData
-                        ->get($model->{$primaryKey});
+                        ->get($model->getKey());
 
                     $filteredDatum = $transformer
                         ->prepDirtyCheck($transformedDatum);
@@ -69,16 +74,48 @@ trait ImportsData
                         return;
                     }
 
-                    return array_intersect_key(
-                        $model->getAttributes(),
+                    return [
+                        $model,
                         $transformedDatum,
-                    );
+                    ];
                 }
             )
             ->filter()
             ->values();
 
-        $upsertData = $createData->merge($updateData);
+        $upsertData = $createData
+            ->merge($updateData)
+            ->map(
+                function ($item) use (
+                    $transformer,
+                    &$jobsToRun,
+                ) {
+                    [$model, $transformedDatum] = $item;
+
+                    $dirtyAttributes = array_keys($model->getDirty());
+                    $attributes = $model->getAttributes();
+
+                    foreach ($dirtyAttributes as $attribute) {
+                        foreach ($transformer->getWatchers($attribute) as $watcher) {
+                            $watcherReturn = $watcher(
+                                modelClass: get_class($model),
+                                id: $model->getKey(),
+                                oldValue: $model->getRawOriginal($attribute),
+                                newValue: $attributes[$attribute],
+                            );
+
+                            if ($watcherReturn instanceof AbstractJob) {
+                                $jobsToRun[] = $watcherReturn;
+                            }
+                        }
+                    }
+
+                    return array_intersect_key(
+                        $attributes,
+                        $transformedDatum,
+                    );
+                }
+            );
 
         ($modelClass)::upsert(
             $upsertData->all(),
@@ -86,10 +123,24 @@ trait ImportsData
             array_diff($columns, [$primaryKey])
         );
 
+        if ($dispatchJobs) {
+            if ($batch = $this->batch()) {
+                $batch->options['queue'] = 'high';
+                $batch->add($jobsToRun);
+            } else {
+                foreach ($jobsToRun as $job) {
+                    dispatch($job->onQueue('high'));
+                }
+            }
+
+            $jobsToRun = [];
+        }
+
         return [
             $createData->count(),
             $updateData->count(),
             $transformedData->count(),
+            $jobsToRun,
         ];
     }
 }

@@ -12,9 +12,6 @@ class GuzzleServiceProvider extends ServiceProvider
     {
         $this->app->singleton(ClientInterface::class, function () {
             return new Client([
-                'headers' => [
-                    'Accept' => 'application/json',
-                ],
                 'verify' => false,
             ]);
         });
