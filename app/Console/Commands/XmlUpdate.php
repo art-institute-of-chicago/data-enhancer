@@ -8,6 +8,7 @@ use App\Models\Agent;
 use App\Models\ArtworkType;
 use App\Models\Place;
 use App\Models\Term;
+use Illuminate\Support\Facades\Bus;
 
 class XmlUpdate extends AbstractCommand
 {
@@ -18,6 +19,7 @@ class XmlUpdate extends AbstractCommand
     public function handle()
     {
         $this->updateModel(
+            debugName: 'agents',
             modelClass: Agent::class,
             xmlField: 'ulan_xml',
             idField: 'ulan_id',
@@ -25,6 +27,7 @@ class XmlUpdate extends AbstractCommand
         );
 
         $this->updateModel(
+            debugName: 'artwork-types',
             modelClass: ArtworkType::class,
             xmlField: 'aat_xml',
             idField: 'aat_id',
@@ -32,6 +35,7 @@ class XmlUpdate extends AbstractCommand
         );
 
         $this->updateModel(
+            debugName: 'places',
             modelClass: Place::class,
             xmlField: 'tgn_xml',
             idField: 'tgn_id',
@@ -39,6 +43,7 @@ class XmlUpdate extends AbstractCommand
         );
 
         $this->updateModel(
+            debugName: 'terms',
             modelClass: Term::class,
             xmlField: 'aat_xml',
             idField: 'aat_id',
@@ -47,6 +52,7 @@ class XmlUpdate extends AbstractCommand
     }
 
     private function updateModel(
+        string $debugName,
         string $modelClass,
         string $xmlField,
         string $idField,
@@ -58,6 +64,8 @@ class XmlUpdate extends AbstractCommand
             ->select(['id', $idField])
             ->cursor();
 
+        $jobs = [];
+
         foreach ($items as $item) {
             $job = new UpdateGettyXmlField(
                 modelClass: $modelClass,
@@ -68,12 +76,20 @@ class XmlUpdate extends AbstractCommand
             );
 
             $this->info(sprintf('[%s] %s -> %s',
-                $modelClass,
+                $debugName,
                 $item->id,
                 $item->{$idField},
             ));
 
-            dispatch($job);
+            array_push($jobs, $job);
         }
+
+        if (empty($jobs)) {
+            return;
+        }
+
+        Bus::batch($jobs)
+            ->name('xml.update.' . $debugName)
+            ->dispatch();
     }
 }
