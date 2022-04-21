@@ -32,7 +32,7 @@ class PlaceTest extends CsvImportTestCase
                 'latitude' => 41.8796,
                 'longitude' => 87.6237,
                 'tgn_id' => 67890,
-                'tgn_xml' => 'foobaz',
+                'tgn_xml' => 'foobar',
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
         );

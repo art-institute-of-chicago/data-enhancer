@@ -19,7 +19,6 @@ class PlaceTransformer extends AbstractTransformer
                 'value' => fn (Datum $datum) => $this->trimPrefix($datum->tgn_id, 'tgn/'),
                 'on_change' => $this->updateGettyXmlField('tgn_xml', GettyVocab::TGN),
             ],
-            'tgn_xml' => null,
         ];
     }
 }

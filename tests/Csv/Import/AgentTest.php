@@ -34,7 +34,7 @@ class AgentTest extends CsvImportTestCase
                 'death_year' => 1999,
                 'ulan_id' => 67890,
                 'ulan_certainty' => 3,
-                'ulan_xml' => 'foobaz',
+                'ulan_xml' => 'foobar',
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
         );

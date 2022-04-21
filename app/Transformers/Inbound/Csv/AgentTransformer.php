@@ -20,7 +20,6 @@ class AgentTransformer extends AbstractTransformer
                 'on_change' => $this->updateGettyXmlField('ulan_xml', GettyVocab::ULAN),
             ],
             'ulan_certainty' => null,
-            'ulan_xml' => null,
         ];
     }
 }

@@ -19,7 +19,6 @@ class ArtworkTypeTransformer extends AbstractTransformer
                 'value' => fn (Datum $datum) => $this->trimPrefix($datum->aat_id, 'aat/'),
                 'on_change' => $this->updateGettyXmlField('aat_xml', GettyVocab::AAT),
             ],
-            'aat_xml' => null,
         ];
     }
 }

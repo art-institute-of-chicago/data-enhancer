@@ -28,7 +28,7 @@ class ArtworkTypeTest extends CsvImportTestCase
                 'id' => 1,
                 'title' => 'Foobar',
                 'aat_id' => 67890,
-                'aat_xml' => 'foobaz',
+                'aat_xml' => 'foobar',
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
         );
