@@ -15,7 +15,6 @@ trait ImportsData
         string $transformerClass,
         array $transformCallArgs = [],
         callable $dataFilterFunc = null,
-        bool $dispatchJobs = true,
     ) {
         $primaryKey = $modelClass::instance()->getKeyName();
         $transformer = app()->make($transformerClass);
@@ -123,24 +122,19 @@ trait ImportsData
             array_diff($columns, [$primaryKey])
         );
 
-        if ($dispatchJobs) {
-            if ($batch = $this->batch()) {
-                $batch->options['queue'] = 'high';
-                $batch->add($jobsToRun);
-            } else {
-                foreach ($jobsToRun as $job) {
-                    dispatch($job->onQueue('high'));
-                }
+        if ($batch = $this->batch()) {
+            $batch->options['queue'] = 'high';
+            $batch->add($jobsToRun);
+        } else {
+            foreach ($jobsToRun as $job) {
+                dispatch($job->onQueue('high'));
             }
-
-            $jobsToRun = [];
         }
 
         return [
             $createData->count(),
             $updateData->count(),
             $transformedData->count(),
-            $jobsToRun,
         ];
     }
 }
