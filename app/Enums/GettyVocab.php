@@ -13,7 +13,7 @@ enum GettyVocab: string
         return sprintf('http://vocabsservices.getty.edu/%sService.asmx', $this->value);
     }
 
-    public function getSubjectUri(string|integer $gettyId): string
+    public function getSubjectUri(string|int $gettyId): string
     {
         return sprintf('%s/%sGetSubject?subjectId=%d',
             $this->getBaseUri(),
