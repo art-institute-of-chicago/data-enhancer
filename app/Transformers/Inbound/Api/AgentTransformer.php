@@ -30,9 +30,9 @@ class AgentTransformer extends AbstractTransformer
                 ],
             ],
             'source_updated_at' => [
-                'value' => fn (Datum $datum) => $this->getDateTime($datum->last_updated),
+                'value' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
                 'requires' => [
-                    'last_updated',
+                    'updated_at',
                 ],
             ],
         ];
