@@ -11,24 +11,9 @@ class AgentTransformer extends AbstractTransformer
     {
         return [
             'id' => null,
-            'title' => [
-                'value' => fn (Datum $datum) => $datum->sort_title,
-                'requires' => [
-                    'sort_title',
-                ],
-            ],
-            'birth_year' => [
-                'value' => fn (Datum $datum) => $datum->birth_date,
-                'requires' => [
-                    'birth_date',
-                ],
-            ],
-            'death_year' => [
-                'value' => fn (Datum $datum) => $datum->death_date,
-                'requires' => [
-                    'death_date',
-                ],
-            ],
+            'title' => 'sort_title',
+            'birth_year' => 'birth_date',
+            'death_year' => 'death_date',
             'source_updated_at' => [
                 'value' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
                 'requires' => [

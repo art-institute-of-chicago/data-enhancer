@@ -112,6 +112,21 @@ abstract class AbstractTransformer
                 $mappedFields[$fieldName] = [
                     'value' => $fieldMapping,
                 ];
+            } elseif (is_string($fieldMapping)) {
+                $mappedFields[$fieldName] = [
+                    'renamed_from' => $fieldMapping,
+                ];
+            } elseif (!is_array($fieldMapping) && !is_null($fieldMapping)) {
+                throw new \LogicException("Invalid mapping for '${fieldName}' field");
+            }
+        }
+
+        foreach ($mappedFields as $fieldName => $fieldMapping) {
+            if (!empty($fieldMapping['renamed_from'])) {
+                $mappedFields[$fieldName]['value'] = fn (Datum $datum) => $datum->{$fieldMapping['renamed_from']};
+                $mappedFields[$fieldName]['requires'] = [
+                    $fieldMapping['renamed_from'],
+                ];
             }
         }
 
