@@ -10,10 +10,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/art-institute-of-chicago/composer-patches-plugin"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/art-institute-of-chicago/data-hub-foundation.git"
         }
     ],
