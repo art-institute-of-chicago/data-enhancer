@@ -18,6 +18,14 @@ return [
             'model' => \App\Models\Place::class,
             'transformer' => \App\Transformers\Outbound\Csv\PlaceTransformer::class,
         ],
+        'publications' => [
+            'model' => \App\Models\Publication::class,
+            'transformer' => \App\Transformers\Outbound\Csv\PublicationTransformer::class,
+        ],
+        'sections' => [
+            'model' => \App\Models\Section::class,
+            'transformer' => \App\Transformers\Outbound\Csv\SectionTransformer::class,
+        ],
         'terms' => [
             'model' => \App\Models\Term::class,
             'transformer' => \App\Transformers\Outbound\Csv\TermTransformer::class,

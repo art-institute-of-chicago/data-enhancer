@@ -11,11 +11,14 @@ abstract class AbstractTransformer extends BaseTransformer
 
     protected $primaryKey = 'id';
 
-    public function prepDirtyCheck(array $transformedDatum): array
+    public function beforeDirtyCheck(array $transformedDatum): array
     {
+        $savedDatum = [];
+
         foreach (class_uses_recursive($this) as $trait) {
-            if (method_exists($this, $method = 'prepDirtyCheckFor' . class_basename($trait))) {
-                $transformedDatum = $this->{$method}($transformedDatum);
+            if (method_exists($this, $method = 'beforeDirtyCheckFor' . class_basename($trait))) {
+                [$transformedDatum, $partialSavedDatum] = $this->{$method}($transformedDatum);
+                $savedDatum = array_merge($savedDatum, $partialSavedDatum);
             }
         }
 
@@ -23,6 +26,6 @@ abstract class AbstractTransformer extends BaseTransformer
             unset($transformedDatum[$this->primaryKey]);
         }
 
-        return $transformedDatum;
+        return [$transformedDatum, $savedDatum];
     }
 }

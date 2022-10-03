@@ -37,6 +37,24 @@ return [
             ],
         ],
 
+        'dsc' => [
+            'is_api' => true,
+            'base_uri' => env('DSC_BASE_URI', 'https://api.artic.edu/api/v1'),
+            'api_token' => null,
+            'resources' => [
+                'publications' => [
+                    'has_endpoint' => true,
+                    'model' => \App\Models\Publication::class,
+                    'transformer' => \App\Transformers\Inbound\Dsc\PublicationTransformer::class,
+                ],
+                'sections' => [
+                    'has_endpoint' => true,
+                    'model' => \App\Models\Section::class,
+                    'transformer' => \App\Transformers\Inbound\Dsc\SectionTransformer::class,
+                ],
+            ],
+        ],
+
         'csv' => [
             'is_api' => false,
             'resources' => [
@@ -55,6 +73,14 @@ return [
                 'places' => [
                     'model' => \App\Models\Place::class,
                     'transformer' => \App\Transformers\Inbound\Csv\PlaceTransformer::class,
+                ],
+                'publications' => [
+                    'model' => \App\Models\Publication::class,
+                    'transformer' => \App\Transformers\Inbound\Csv\PublicationTransformer::class,
+                ],
+                'sections' => [
+                    'model' => \App\Models\Section::class,
+                    'transformer' => \App\Transformers\Inbound\Csv\SectionTransformer::class,
                 ],
                 'terms' => [
                     'model' => \App\Models\Term::class,

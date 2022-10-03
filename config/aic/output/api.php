@@ -22,6 +22,16 @@ return [
             'model' => \App\Models\Place::class,
             'transformer' => \App\Transformers\Outbound\Api\PlaceTransformer::class,
         ],
+        'publications' => [
+            'has_endpoint' => true,
+            'model' => \App\Models\Publication::class,
+            'transformer' => \App\Transformers\Outbound\Api\PublicationTransformer::class,
+        ],
+        'sections' => [
+            'has_endpoint' => true,
+            'model' => \App\Models\Section::class,
+            'transformer' => \App\Transformers\Outbound\Api\SectionTransformer::class,
+        ],
         'terms' => [
             'has_endpoint' => true,
             'model' => \App\Models\Term::class,

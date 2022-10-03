@@ -56,7 +56,7 @@ class ImportPage extends AbstractJob
             $modelClass,
             $transformerClass,
             dataFilterFunc: function ($transformedData) use ($sourceUpdatedAtField) {
-                if (!$this->isFull) {
+                if (!$this->isFull && $sourceUpdatedAtField) {
                     $sinceCarbon = new Carbon($this->since);
 
                     $transformedData = $transformedData->filter(
