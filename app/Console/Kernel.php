@@ -26,7 +26,13 @@ class Kernel extends ConsoleKernel
         $since = Carbon::parse('10 min ago')->toIso8601String();
 
         $schedule->command("import:aggregator --since '{$since}'")
-            ->everyFiveMinutes()
+            ->everyTenMinutes()
+            ->withoutOverlapping(self::FOR_ONE_YEAR);
+
+        $since = Carbon::parse('1 day ago')->toIso8601String();
+
+        $schedule->command("import:aggregator --since '{$since}'")
+            ->daily()
             ->withoutOverlapping(self::FOR_ONE_YEAR);
 
         $before = Carbon::parse('72 hours ago')->toIso8601String();

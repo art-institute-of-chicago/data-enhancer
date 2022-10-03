@@ -31,10 +31,21 @@ trait HasDates
             ->setTimezone(config('app.timezone'));
     }
 
-    protected function prepDirtyCheckForHasDates(array $transformedDatum): array
+    protected function beforeDirtyCheckForHasDates(array $transformedDatum): array
     {
+        if (!isset($transformedDatum[self::$sourceUpdatedAtField])) {
+            return [$transformedDatum, []];
+        }
+
+        $sourceUpdatedAt = $transformedDatum[self::$sourceUpdatedAtField];
+
         unset($transformedDatum[self::$sourceUpdatedAtField]);
 
-        return $transformedDatum;
+        return [
+            $transformedDatum,
+            [
+                self::$sourceUpdatedAtField => $sourceUpdatedAt,
+            ]
+        ];
     }
 }

@@ -23,6 +23,7 @@ class ArtworkTest extends BaseTestCase
                 'linked_art_json' => (object) [
                     'foo' => 'bar',
                 ],
+                'nomisma_id' => 'http://numismatics.org/foo/id/ab.cd.1.2.34',
                 'source_updated_at' => '2020-02-02 02:02:02',
             ],
             [
@@ -33,6 +34,7 @@ class ArtworkTest extends BaseTestCase
                 'depth' => '5',
                 'medium_display' => 'Foobar',
                 'linked_art_json' => '{"foo":"bar"}',
+                'nomisma_id' => 'http://numismatics.org/foo/id/ab.cd.1.2.34',
                 'source_updated_at' => '2020-02-02T02:02:02+00:00',
             ]
         );
@@ -49,6 +51,7 @@ class ArtworkTest extends BaseTestCase
                 'depth' => null,
                 'medium_display' => null,
                 'linked_art_json' => null,
+                'nomisma_id' => null,
                 'source_updated_at' => null,
             ],
             [
@@ -59,6 +62,7 @@ class ArtworkTest extends BaseTestCase
                 'depth' => '',
                 'medium_display' => '',
                 'linked_art_json' => 'null',
+                'nomisma_id' => '',
                 'source_updated_at' => '',
             ]
         );

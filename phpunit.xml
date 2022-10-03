@@ -37,9 +37,12 @@
 
         <!-- Packages -->
         <server name="SLACK_ALERT_WEBHOOK" value="null"/>
+        <server name="BASIC_AUTH_USERNAME" value="null"/>
+        <server name="BASIC_AUTH_PASSWORD" value="null"/>
 
         <!-- App -->
         <server name="APP_TIMEZONE" value="UTC"/>
         <server name="IMPORTS_DEBUG" value="false"/>
+
     </php>
 </phpunit>

@@ -49,7 +49,7 @@ class SourceConsumer
             'Accept' => 'application/json',
         ];
 
-        $apiToken = $sourceConfig['api_token'];
+        $apiToken = $sourceConfig['api_token'] ?? null;
 
         if (!empty($apiToken)) {
             $headers['Authorization'] = 'Bearer ' . $apiToken;

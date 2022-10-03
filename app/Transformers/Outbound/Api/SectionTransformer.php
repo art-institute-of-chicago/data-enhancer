@@ -2,20 +2,19 @@
 
 namespace App\Transformers\Outbound\Api;
 
-class ArtworkTransformer extends AbstractTransformer
+class SectionTransformer extends AbstractTransformer
 {
     public function transform($item)
     {
         $data = [
             'id' => $item->id,
             'title' => $item->title,
-            'dimension_display' => $item->dimension_display,
-            'width' => $item->width,
-            'height' => $item->height,
-            'depth' => $item->depth,
-            'medium_display' => $item->medium_display,
-            'linked_art_json' => $item->linked_art_json,
-            'nomisma_id' => $item->nomisma_id,
+            'web_url' => $item->getWebUrl(),
+            'accession' => $item->accession,
+            'artwork_id' => $item->artwork_id,
+            'source_id' => $item->source_id,
+            'publication_id' => $item->publication_id,
+            'content' => $item->content,
             'source_updated_at' => $this->getDateTime($item->source_updated_at),
             'updated_at' => $this->getDateTime($item->updated_at),
         ];

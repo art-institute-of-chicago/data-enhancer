@@ -10,10 +10,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/art-institute-of-chicago/composer-patches-plugin"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/art-institute-of-chicago/data-hub-foundation.git"
         }
     ],
@@ -58,12 +54,6 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ],
-        "post-root-package-install": [
-            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "php artisan key:generate"
-        ],
         "lint": [
             "php-cs-fixer fix --diff --config vendor/aic/data-hub-foundation/.php-cs-fixer.dist.php",
             "DIR='vendor/aic/data-hub-foundation' && [ -L ${DIR} ] && [ -d ${DIR} ] && cd ${DIR} && php-cs-fixer fix --diff --config .php-cs-fixer.dist.php || true"
@@ -71,6 +61,10 @@
         "foundation": [
             "php vendor/aic/data-hub-foundation/composer-dev.php",
             "COMPOSER=composer-dev.json composer update aic/data-hub-foundation"
+        ],
+        "test": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpunit --order-by=defects --stop-on-failure"
         ]
     },
     "extra": {

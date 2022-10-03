@@ -64,14 +64,16 @@ trait ImportsData
                     $transformedDatum = $transformedData
                         ->get($model->getKey());
 
-                    $filteredDatum = $transformer
-                        ->prepDirtyCheck($transformedDatum);
+                    [$filteredDatum, $savedDatum] = $transformer
+                        ->beforeDirtyCheck($transformedDatum);
 
                     $model->fill($filteredDatum);
 
                     if (count($model->getDirty()) < 1) {
                         return;
                     }
+
+                    $model->fill($savedDatum);
 
                     return [
                         $model,

@@ -30,6 +30,7 @@ class ArtworkFactory extends BaseFactory
             'depth' => $depth,
             'medium_display' => $this->faker->words(5, true),
             'linked_art_json' => $this->getLinkedArtJson(),
+            'nomisma_id' => $this->faker->url,
             'source_updated_at' => $this->faker->dateTime(),
         ];
     }
@@ -44,6 +45,7 @@ class ArtworkFactory extends BaseFactory
             'depth' => null,
             'medium_display' => null,
             'linked_art_json' => null,
+            'nomisma_id' => null,
             'source_updated_at' => null,
         ]);
     }

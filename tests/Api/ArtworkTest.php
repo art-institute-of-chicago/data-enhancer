@@ -21,6 +21,7 @@ class ArtworkTest extends BaseTestCase
             'depth' => 'integer|null',
             'medium_display' => 'string|null',
             'linked_art_json' => 'array|null',
+            'nomisma_id' => 'string|null',
             'source_updated_at' => 'string|null',
             'updated_at' => 'string',
         ];

@@ -18,6 +18,7 @@ class ArtworkTransformer extends AbstractTransformer
             'height' => null,
             'depth' => null,
             'linked_art_json' => fn (Datum $datum) => $this->fromJson($datum->linked_art_json),
+            'nomisma_id' => null,
         ];
     }
 }

@@ -24,11 +24,12 @@ class ArtworkTest extends CsvImportTestCase
                 'linked_art_json' => (object) [
                     'foo' => 'bar',
                 ],
+                'nomisma_id' => 'http://numismatics.org/foo/id/ab.cd.1.2.34',
                 'source_updated_at' => $this->oldUpdatedAt,
             ],
             <<<END
-            id,title,dimension_display,width,height,depth,medium_display,linked_art_json,source_updated_at
-            1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,"{""foo"":""baz""}",{$this->newUpdatedAt}
+            id,title,dimension_display,width,height,depth,medium_display,linked_art_json,nomisma_id,source_updated_at
+            1,Foobaz,"10 × 10 × 10 cm",10,10,10,Foobaz,"{""foo"":""baz""}","http://numismatics.org/foo/id/ef.gh.5.6.78",{$this->newUpdatedAt}
             END,
             [
                 'id' => 1,
@@ -41,6 +42,7 @@ class ArtworkTest extends CsvImportTestCase
                 'linked_art_json' => (object) [
                     'foo' => 'baz',
                 ],
+                'nomisma_id' => 'http://numismatics.org/foo/id/ef.gh.5.6.78',
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
         );

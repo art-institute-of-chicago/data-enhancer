@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "225684ceb6e52ae16ecc8541058fd392",
+    "content-hash": "5f5da4cd31b5907bb518fb611f105bda",
     "packages": [
         {
             "name": "aic/data-hub-foundation",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/art-institute-of-chicago/data-hub-foundation.git",
-                "reference": "dc1a945f38eba8f080c3eebc90a3ba1fee572a98"
+                "reference": "7204e46c6d42f971c07a96cb370add5b4dddb381"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/art-institute-of-chicago/data-hub-foundation/zipball/dc1a945f38eba8f080c3eebc90a3ba1fee572a98",
-                "reference": "dc1a945f38eba8f080c3eebc90a3ba1fee572a98",
+                "url": "https://api.github.com/repos/art-institute-of-chicago/data-hub-foundation/zipball/7204e46c6d42f971c07a96cb370add5b4dddb381",
+                "reference": "7204e46c6d42f971c07a96cb370add5b4dddb381",
                 "shasum": ""
             },
             "require": {
@@ -25,7 +25,7 @@
                 "fruitcake/laravel-cors": "^2.0",
                 "laravel/framework": "*",
                 "league/fractal": "^0.16.0",
-                "netresearch/composer-patches-plugin": "dev-hotfix as 1.3.1",
+                "netresearch/composer-patches-plugin": "^1.3.1",
                 "php": "^7.3|^8.0"
             },
             "require-dev": {
@@ -50,6 +50,12 @@
                         {
                             "title": "API-45: Fix arrow functions in method_chaining_indentation",
                             "url": "vendor/aic/data-hub-foundation/patches/API-45---fix-arrow-functions-in-method-chaining-indentation.diff"
+                        }
+                    ],
+                    "doctrine/dbal": [
+                        {
+                            "title": "API-316: Support reorder of database columns",
+                            "url": "vendor/aic/data-hub-foundation/patches/API-316---support-reorder-of-database-columns.diff"
                         }
                     ]
                 }
@@ -82,7 +88,7 @@
                 "source": "https://github.com/art-institute-of-chicago/data-hub-foundation/tree/laravel-8-support",
                 "issues": "https://github.com/art-institute-of-chicago/data-hub-foundation/issues"
             },
-            "time": "2022-04-12T18:09:33+00:00"
+            "time": "2022-07-14T03:48:15+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -2627,16 +2633,16 @@
         },
         {
             "name": "netresearch/composer-patches-plugin",
-            "version": "dev-hotfix",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/art-institute-of-chicago/composer-patches-plugin.git",
-                "reference": "2c4564cc35cef89ded57f155b6b4d1eceed75f31"
+                "url": "https://github.com/netresearch/composer-patches-plugin.git",
+                "reference": "3691e7d67274f8f00817e5631d93d8fae6f673f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/art-institute-of-chicago/composer-patches-plugin/zipball/2c4564cc35cef89ded57f155b6b4d1eceed75f31",
-                "reference": "2c4564cc35cef89ded57f155b6b4d1eceed75f31",
+                "url": "https://api.github.com/repos/netresearch/composer-patches-plugin/zipball/3691e7d67274f8f00817e5631d93d8fae6f673f0",
+                "reference": "3691e7d67274f8f00817e5631d93d8fae6f673f0",
                 "shasum": ""
             },
             "require": {
@@ -2657,6 +2663,7 @@
                     "": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0"
             ],
@@ -2673,9 +2680,10 @@
                 "plugin"
             ],
             "support": {
-                "source": "https://github.com/art-institute-of-chicago/composer-patches-plugin/tree/hotfix"
+                "issues": "https://github.com/netresearch/composer-patches-plugin/issues",
+                "source": "https://github.com/netresearch/composer-patches-plugin/tree/1.3.1"
             },
-            "time": "2022-04-12T17:40:01+00:00"
+            "time": "2022-04-20T12:08:55+00:00"
         },
         {
             "name": "nette/schema",
