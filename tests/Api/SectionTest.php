@@ -15,6 +15,7 @@ class SectionTest extends BaseTestCase
         return [
             'id' => 'integer',
             'title' => 'string|null',
+            'web_url' => 'string|null',
             'accession' => 'string|null',
             'artwork_id' => 'integer|null',
             'source_id' => 'integer',

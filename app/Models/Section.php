@@ -21,4 +21,22 @@ class Section extends BaseModel
         'source_updated_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function publication()
+    {
+        return $this->belongsTo(Publication::class);
+    }
+
+    public function getWebUrl()
+    {
+        if (!$this->publication) {
+            return;
+        }
+
+        return sprintf(
+            '%s/section/%s',
+            $this->publication->getWebUrl(),
+            $this->source_id
+        );
+    }
 }

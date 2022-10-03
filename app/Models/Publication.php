@@ -14,4 +14,13 @@ class Publication extends BaseModel
         'generic_page_id' => 'integer',
         'updated_at' => 'datetime',
     ];
+
+    public function getWebUrl()
+    {
+        return sprintf(
+            'https://publications.artic.edu/%s/reader/%s',
+            $this->site,
+            $this->alias
+        );
+    }
 }

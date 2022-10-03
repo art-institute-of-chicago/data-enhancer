@@ -15,8 +15,7 @@ class PublicationTest extends BaseTestCase
         return [
             'id' => 'integer',
             'title' => 'string|null',
-            'site' => 'string',
-            'alias' => 'string',
+            'web_url' => 'string',
             'generic_page_id' => 'integer|null',
             'updated_at' => 'string',
         ];

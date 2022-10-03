@@ -9,6 +9,7 @@ class SectionTransformer extends AbstractTransformer
         $data = [
             'id' => $item->id,
             'title' => $item->title,
+            'web_url' => $item->getWebUrl(),
             'accession' => $item->accession,
             'artwork_id' => $item->artwork_id,
             'source_id' => $item->source_id,

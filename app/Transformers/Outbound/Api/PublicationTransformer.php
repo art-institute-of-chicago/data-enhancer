@@ -9,8 +9,7 @@ class PublicationTransformer extends AbstractTransformer
         $data = [
             'id' => $item->id,
             'title' => $item->title,
-            'site' => $item->site,
-            'alias' => $item->alias,
+            'web_url' => $item->getWebUrl(),
             'generic_page_id' => $item->generic_page_id,
             'updated_at' => $this->getDateTime($item->updated_at),
         ];
