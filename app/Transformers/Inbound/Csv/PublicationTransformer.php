@@ -4,7 +4,7 @@ namespace App\Transformers\Inbound\Csv;
 
 use App\Transformers\Datum;
 
-class PlaceTransformer extends AbstractTransformer
+class PublicationTransformer extends AbstractTransformer
 {
     protected function getFields()
     {
