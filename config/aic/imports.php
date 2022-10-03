@@ -74,6 +74,14 @@ return [
                     'model' => \App\Models\Place::class,
                     'transformer' => \App\Transformers\Inbound\Csv\PlaceTransformer::class,
                 ],
+                'publications' => [
+                    'model' => \App\Models\Publication::class,
+                    'transformer' => \App\Transformers\Inbound\Csv\PublicationTransformer::class,
+                ],
+                'sections' => [
+                    'model' => \App\Models\Section::class,
+                    'transformer' => \App\Transformers\Inbound\Csv\SectionTransformer::class,
+                ],
                 'terms' => [
                     'model' => \App\Models\Term::class,
                     'transformer' => \App\Transformers\Inbound\Csv\TermTransformer::class,
