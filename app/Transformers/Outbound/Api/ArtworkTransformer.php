@@ -16,6 +16,7 @@ class ArtworkTransformer extends AbstractTransformer
             'medium_display' => $item->medium_display,
             'linked_art_json' => $item->linked_art_json,
             'nomisma_id' => $item->nomisma_id,
+            'short_description' => $item->short_description,
             'source_updated_at' => $this->getDateTime($item->source_updated_at),
             'updated_at' => $this->getDateTime($item->updated_at),
         ];
