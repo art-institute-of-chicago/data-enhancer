@@ -21,6 +21,7 @@ class ArtworkTransformer extends AbstractTransformer
             'medium_display' => null,
             'linked_art_json' => fn (Datum $datum) => $this->toJson($datum->linked_art_json),
             'nomisma_id' => null,
+            'short_description' => null,
             'source_updated_at' => fn (Datum $datum) => $this->getDateTime($datum->source_updated_at),
             'updated_at' => fn (Datum $datum) => $this->getDateTime($datum->updated_at),
         ];

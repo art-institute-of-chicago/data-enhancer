@@ -25,6 +25,7 @@ class ArtworkTest extends CsvImportTestCase
                     'foo' => 'bar',
                 ],
                 'nomisma_id' => 'http://numismatics.org/foo/id/ab.cd.1.2.34',
+                'short_description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 'source_updated_at' => $this->oldUpdatedAt,
             ],
             <<<END
@@ -43,6 +44,7 @@ class ArtworkTest extends CsvImportTestCase
                     'foo' => 'baz',
                 ],
                 'nomisma_id' => 'http://numismatics.org/foo/id/ef.gh.5.6.78',
+                'short_description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 'source_updated_at' => $this->oldUpdatedAt,
             ]
         );

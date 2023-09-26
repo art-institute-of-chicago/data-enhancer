@@ -20,6 +20,7 @@ class Artwork extends BaseModel
         'medium_display' => 'string',
         'linked_art_json' => 'object',
         'nomisma_id' => 'string',
+        'short_description' => 'string',
         'source_updated_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
