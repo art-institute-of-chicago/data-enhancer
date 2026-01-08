@@ -23,7 +23,7 @@ class AddUpdatedAtIndexToAgents extends Migration
         foreach ($this->tables as $t)
         {
             Schema::table($t, function (Blueprint $table) {
-                $table->dropIndex('updated_at');
+                $table->dropIndex(['updated_at']);
             });
         }
     }
