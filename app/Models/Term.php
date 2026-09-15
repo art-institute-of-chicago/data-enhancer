@@ -7,6 +7,8 @@ use Aic\Hub\Foundation\AbstractModel as BaseModel;
 
 class Term extends BaseModel
 {
+    protected $keyType = 'string';
+
     protected $dates = [
         'source_updated_at',
     ];

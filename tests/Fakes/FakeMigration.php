@@ -9,6 +9,10 @@ class FakeMigration
 {
     public static function createFakeTable()
     {
+        if (Schema::hasTable('foos')) {
+            return;
+        }
+
         Schema::create('foos', function (Blueprint $table) {
             $table->integer('id', true, true);
             $table->text('title')->nullable();

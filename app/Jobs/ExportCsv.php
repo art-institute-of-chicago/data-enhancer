@@ -106,7 +106,7 @@ class ExportCsv extends AbstractJob
             $csvId
         );
 
-        Storage::disk('public')->put($csvFilename, null);
+        Storage::disk('public')->put($csvFilename, '');
 
         $csvPath = Storage::disk('public')->path($csvFilename);
 
