@@ -20,5 +20,4 @@ class Kernel extends BaseKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Aic\Hub\Foundation\Middleware\ETagMiddleware::class,
     ];
-
 }
