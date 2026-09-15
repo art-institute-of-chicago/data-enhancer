@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class () extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::create('csv_files', function (Blueprint $table) {
             $table->string('id', 6)->primary();
@@ -20,7 +20,7 @@ return new class () extends Migration {
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('csv_files');
     }

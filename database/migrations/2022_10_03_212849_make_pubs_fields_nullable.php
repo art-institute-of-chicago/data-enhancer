@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class () extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::table('publications', function (Blueprint $table) {
             $table->text('site')->nullable()->change();
@@ -18,7 +18,7 @@ return new class () extends Migration {
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::table('publications', function (Blueprint $table) {
             $table->text('site')->nullable(false)->change();

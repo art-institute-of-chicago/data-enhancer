@@ -10,9 +10,9 @@ class TermTest extends BaseTestCase
 
     protected $modelClass = \App\Models\Term::class;
 
-    public function test_it_exports_resource()
+    public function test_it_exports_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'id' => 'TM-1',
                 'title' => 'Foobar',
@@ -33,9 +33,9 @@ class TermTest extends BaseTestCase
         );
     }
 
-    public function test_it_exports_nullable_resource()
+    public function test_it_exports_nullable_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => null,
                 'subtype' => null,

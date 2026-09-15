@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class GuzzleServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(ClientInterface::class, function () {
             return new Client([

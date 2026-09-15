@@ -10,7 +10,7 @@ class ArtworkTypeTest extends BaseTestCase
 
     protected $model = \App\Models\ArtworkType::class;
 
-    protected function fields()
+    protected function fields(): array
     {
         return [
             'id' => 'integer',

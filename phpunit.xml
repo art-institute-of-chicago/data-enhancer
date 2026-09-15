@@ -6,23 +6,23 @@
 >
     <testsuites>
         <testsuite name="Api">
-            <directory suffix="Test.php">./tests/Api</directory>
+            <directory>tests/Api</directory>
         </testsuite>
         <testsuite name="Csv">
-            <directory suffix="Test.php">./tests/Csv</directory>
+            <directory>tests/Csv</directory>
         </testsuite>
         <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
+            <directory>tests/Feature</directory>
         </testsuite>
         <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+            <directory>tests/Unit</directory>
         </testsuite>
     </testsuites>
-    <coverage>
+    <source>
         <include>
-            <directory suffix=".php">./app</directory>
+            <directory>app</directory>
         </include>
-    </coverage>
+    </source>
     <php>
         <!-- Laravel -->
         <server name="APP_ENV" value="testing"/>

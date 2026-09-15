@@ -19,7 +19,7 @@ class TransformerServiceProvider extends ServiceProvider
         \App\Transformers\Inbound\Csv\TermTransformer::class,
     ];
 
-    public function register()
+    public function register(): void
     {
         foreach ($this->transformerClasses as $transformerClass) {
             $this->app->singleton($transformerClass, function () use ($transformerClass) {

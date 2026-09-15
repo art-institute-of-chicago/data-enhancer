@@ -10,9 +10,9 @@ class PlaceTest extends BaseTestCase
 
     protected $modelClass = \App\Models\Place::class;
 
-    public function test_it_exports_resource()
+    public function test_it_exports_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => 'Foobar',
                 'tgn_id' => 1234,
@@ -28,9 +28,9 @@ class PlaceTest extends BaseTestCase
         );
     }
 
-    public function test_it_exports_nullable_resource()
+    public function test_it_exports_nullable_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => null,
                 'tgn_id' => null,

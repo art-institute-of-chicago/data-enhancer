@@ -10,7 +10,7 @@ class TermTest extends BaseTestCase
 
     protected $model = \App\Models\Term::class;
 
-    protected function fields()
+    protected function fields(): array
     {
         return [
             'id' => 'string',

@@ -24,7 +24,7 @@ abstract class CsvExportTestCase extends FeatureTestCase
     protected function checkCsvExport(
         array $initialState,
         array $expectedState
-    ) {
+    ): void {
         $datum = ($this->modelClass)::factory()->create($initialState);
 
         $response = $this->post('/csv/export', [

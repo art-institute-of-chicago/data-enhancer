@@ -10,7 +10,7 @@ class SectionTest extends BaseTestCase
 
     protected $model = \App\Models\Section::class;
 
-    protected function fields()
+    protected function fields(): array
     {
         return [
             'id' => 'integer',

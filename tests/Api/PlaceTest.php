@@ -10,7 +10,7 @@ class PlaceTest extends BaseTestCase
 
     protected $model = \App\Models\Place::class;
 
-    protected function fields()
+    protected function fields(): array
     {
         return [
             'id' => 'integer',

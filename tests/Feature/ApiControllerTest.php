@@ -47,13 +47,13 @@ class ApiControllerTest extends BaseTestCase
         ]);
     }
 
-    public function test_it_200s_on_resource_index()
+    public function test_it_200s_on_resource_index(): void
     {
         $response = $this->get('/api/v1/foos');
         $response->assertStatus(200);
     }
 
-    public function test_it_200s_on_resource_show()
+    public function test_it_200s_on_resource_show(): void
     {
         $foo = ($this->modelClass)::factory()->create();
         $response = $this->get('/api/v1/foos/' . $foo->id);
@@ -61,25 +61,25 @@ class ApiControllerTest extends BaseTestCase
         $this->assertEquals($foo->getKey(), $response['data']['id']);
     }
 
-    public function test_it_404s_on_bad_api_version()
+    public function test_it_404s_on_bad_api_version(): void
     {
         $response = $this->get('/api/v2/foos');
         $response->assertStatus(404);
     }
 
-    public function test_it_404s_on_bad_resource()
+    public function test_it_404s_on_bad_resource(): void
     {
         $response = $this->get('/api/v1/quxs');
         $response->assertStatus(404);
     }
 
-    public function test_it_404s_on_resource_where_has_endpoint_is_false()
+    public function test_it_404s_on_resource_where_has_endpoint_is_false(): void
     {
         $response = $this->get('/api/v1/bars');
         $response->assertStatus(404);
     }
 
-    public function test_it_404s_on_resource_where_has_endpoint_is_missing()
+    public function test_it_404s_on_resource_where_has_endpoint_is_missing(): void
     {
         $response = $this->get('/api/v1/bars');
         $response->assertStatus(404);

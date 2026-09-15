@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class () extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::create('artwork_types', function (Blueprint $table) {
             $table->integer('id')->signed()->primary();
@@ -16,7 +16,7 @@ return new class () extends Migration {
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('artwork_types');
     }

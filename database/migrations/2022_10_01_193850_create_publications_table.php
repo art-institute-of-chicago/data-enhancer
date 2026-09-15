@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class () extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::create('publications', function (Blueprint $table) {
             $table->integer('id')->signed()->primary();
@@ -17,7 +17,7 @@ return new class () extends Migration {
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('publications');
     }

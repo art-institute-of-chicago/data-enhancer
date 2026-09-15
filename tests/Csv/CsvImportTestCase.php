@@ -30,7 +30,7 @@ abstract class CsvImportTestCase extends FeatureTestCase
         string $csvContents,
         array $expectedState,
         bool $expectUpdatedAtToChange = true,
-    ) {
+    ): void {
         $initialItem = ($this->modelClass)::factory()->create($initialState);
         $id = $initialItem->getKey();
 
