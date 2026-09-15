@@ -74,7 +74,7 @@ $config = [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'schema' => 'public',
+            'search_path' => 'public',
             'sslmode' => 'prefer',
         ],
 
@@ -89,6 +89,8 @@ $config = [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
     ],
@@ -129,7 +131,8 @@ $config = [
         'default' => [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
+            'username' => env('REDIS_USERNAME'),
+            'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
         ],
@@ -137,7 +140,8 @@ $config = [
         'cache' => [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
+            'username' => env('REDIS_USERNAME'),
+            'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
         ],

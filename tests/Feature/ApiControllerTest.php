@@ -4,13 +4,14 @@ namespace Tests\Feature;
 
 use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
-
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Transformers\Outbound\Api\AbstractTransformer as BaseTransformer;
 
 use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
 class ApiControllerTest extends BaseTestCase
 {
+    use RefreshDatabase;
     use HasFakeModel;
 
     protected function setUp(): void

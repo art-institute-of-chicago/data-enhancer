@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MakeTermsTitleNullable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -19,4 +19,4 @@ class MakeTermsTitleNullable extends Migration
             $table->text('title')->nullable(false)->change();
         });
     }
-}
+};

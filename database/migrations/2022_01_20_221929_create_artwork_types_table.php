@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateArtworkTypesTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -21,4 +21,4 @@ class CreateArtworkTypesTable extends Migration
     {
         Schema::dropIfExists('artwork_types');
     }
-}
+};

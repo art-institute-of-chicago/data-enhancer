@@ -7,12 +7,14 @@ use Tests\Concerns\HasDates;
 
 use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Fakes\FakeInboundCsvTransformer;
 
 use Tests\Csv\CsvImportTestCase as BaseTestCase;
 
 class CsvImportTest extends BaseTestCase
 {
+    use RefreshDatabase;
     use HasFakeModel;
     use HasDates;
 
