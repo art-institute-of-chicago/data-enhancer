@@ -9,10 +9,6 @@ class Term extends BaseModel
 {
     protected $keyType = 'string';
 
-    protected $dates = [
-        'source_updated_at',
-    ];
-
     protected $casts = [
         'id' => 'string',
         'title' => 'string',
