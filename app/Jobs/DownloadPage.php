@@ -42,7 +42,8 @@ class DownloadPage extends AbstractJob
             'page' => $this->page,
         ]);
 
-        $this->debug(sprintf('D/L %s, p. %d',
+        $this->debug(sprintf(
+            'D/L %s, p. %d',
             $this->resourceName,
             $this->page
         ));

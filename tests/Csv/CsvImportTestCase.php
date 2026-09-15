@@ -4,7 +4,6 @@ namespace Tests\Csv;
 
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
-
 use Aic\Hub\Foundation\Testing\FeatureTestCase;
 
 abstract class CsvImportTestCase extends FeatureTestCase

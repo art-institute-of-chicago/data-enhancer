@@ -58,7 +58,8 @@ class ImportResourceOne extends AbstractJob
             $transformerClass,
         );
 
-        $this->debug(sprintf('IMP %s # %s',
+        $this->debug(sprintf(
+            'IMP %s # %s',
             $this->resourceName,
             $this->resourceId,
         ));

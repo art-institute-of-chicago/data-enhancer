@@ -19,11 +19,13 @@ class Datum implements JsonSerializable
     public function __construct($datum)
     {
         if (is_object($datum)) {
-            if (!((
-                get_class($datum) === stdClass::class
-            ) || (
-                is_subclass_of($datum, Model::class)
-            ))) {
+            if (
+                !((
+                    get_class($datum) === stdClass::class
+                ) || (
+                    is_subclass_of($datum, Model::class)
+                ))
+            ) {
                 throw new InvalidArgumentException('attempting to create datum from invalid class');
             }
         } elseif (is_array($datum)) {

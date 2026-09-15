@@ -75,7 +75,8 @@ class XmlUpdate extends AbstractCommand
                 gettyVocab: $gettyVocab,
             );
 
-            $this->info(sprintf('[%s] %s -> %s',
+            $this->info(sprintf(
+                '[%s] %s -> %s',
                 $debugName,
                 $item->id,
                 $item->{$idField},

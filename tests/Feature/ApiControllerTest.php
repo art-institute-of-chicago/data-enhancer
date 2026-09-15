@@ -6,7 +6,6 @@ use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Transformers\Outbound\Api\AbstractTransformer as BaseTransformer;
-
 use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
 class ApiControllerTest extends BaseTestCase
@@ -18,7 +17,7 @@ class ApiControllerTest extends BaseTestCase
     {
         parent::setUp();
 
-        $transformerClass = new class() extends BaseTransformer {
+        $transformerClass = new class () extends BaseTransformer {
             public function transform($item)
             {
                 return parent::transform([

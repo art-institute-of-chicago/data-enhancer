@@ -41,7 +41,8 @@ class ImportResourceMany extends AbstractJob
             $pages = min($pages, $this->maxPages);
         }
 
-        $this->debug(sprintf('IMP %s %s',
+        $this->debug(sprintf(
+            'IMP %s %s',
             $this->resourceName,
             $this->isFull
                 ? 'full'

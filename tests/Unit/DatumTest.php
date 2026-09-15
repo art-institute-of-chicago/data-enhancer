@@ -11,7 +11,7 @@ class DatumTest extends TestCase
 {
     private function getModel($input)
     {
-        return new class($input) extends BaseModel {
+        return new class ($input) extends BaseModel {
             protected $guarded = [];
         };
     }
