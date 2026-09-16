@@ -35,7 +35,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'basic_auth' => \Aic\Hub\Foundation\Middleware\BasicAuthMiddleware::class,
         ]);
-
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // Sentry error reporting
