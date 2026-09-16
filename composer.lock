@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aic/data-hub-foundation",
-            "version": "6.12",
+            "version": "6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/art-institute-of-chicago/data-hub-foundation.git",
-                "reference": "7ccd7efe8be33a462b44defe17e35e43a8fedf46"
+                "reference": "9cafe407db1e282dc80442e17be4c46bac2ffc64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/art-institute-of-chicago/data-hub-foundation/zipball/7ccd7efe8be33a462b44defe17e35e43a8fedf46",
-                "reference": "7ccd7efe8be33a462b44defe17e35e43a8fedf46",
+                "url": "https://api.github.com/repos/art-institute-of-chicago/data-hub-foundation/zipball/9cafe407db1e282dc80442e17be4c46bac2ffc64",
+                "reference": "9cafe407db1e282dc80442e17be4c46bac2ffc64",
                 "shasum": ""
             },
             "require": {
@@ -68,10 +68,10 @@
             ],
             "description": "Shared components for our data hub services.",
             "support": {
-                "source": "https://github.com/art-institute-of-chicago/data-hub-foundation/tree/6.12",
+                "source": "https://github.com/art-institute-of-chicago/data-hub-foundation/tree/6.13",
                 "issues": "https://github.com/art-institute-of-chicago/data-hub-foundation/issues"
             },
-            "time": "2026-09-16T13:59:54+00:00"
+            "time": "2026-09-16T16:46:46+00:00"
         },
         {
             "name": "brick/math",
