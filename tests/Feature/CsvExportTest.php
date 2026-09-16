@@ -167,8 +167,8 @@ class CsvExportTest extends BaseTestCase
         );
 
         $this->assertEqualsCanonicalizing(
-            $exportedIds,
-            $chosenIds->all()
+            array_values($exportedIds),
+            $chosenIds->values()->all()
         );
     }
 
