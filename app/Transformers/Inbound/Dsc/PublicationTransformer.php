@@ -2,7 +2,6 @@
 
 namespace App\Transformers\Inbound\Dsc;
 
-use App\Transformers\Datum;
 use App\Transformers\Inbound\AbstractTransformer;
 
 class PublicationTransformer extends AbstractTransformer

@@ -2,8 +2,6 @@
 
 namespace App\Transformers\Inbound\Csv;
 
-use App\Transformers\Datum;
-
 class PublicationTransformer extends AbstractTransformer
 {
     protected function getFields()
