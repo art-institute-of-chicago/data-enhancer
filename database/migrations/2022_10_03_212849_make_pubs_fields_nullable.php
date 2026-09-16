@@ -13,7 +13,7 @@ return new class () extends Migration {
         });
 
         Schema::table('sections', function (Blueprint $table) {
-            $table->integer('source_id')->nullable()->change();
+            $table->integer('source_id')->signed()->nullable()->change();
             $table->unsignedInteger('publication_id')->nullable()->change();
         });
     }
@@ -26,7 +26,7 @@ return new class () extends Migration {
         });
 
         Schema::table('sections', function (Blueprint $table) {
-            $table->integer('source_id')->nullable(false)->change();
+            $table->integer('source_id')->signed()->nullable(false)->change();
             $table->unsignedInteger('publication_id')->nullable(false)->change();
         });
     }

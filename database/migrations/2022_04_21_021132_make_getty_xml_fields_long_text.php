@@ -8,38 +8,38 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::table('agents', function (Blueprint $table) {
-            $table->longText('ulan_xml')->change();
+            $table->longText('ulan_xml')->nullable()->after('ulan_certainty')->change();
         });
 
         Schema::table('artwork_types', function (Blueprint $table) {
-            $table->longText('aat_xml')->change();
+            $table->longText('aat_xml')->nullable()->after('aat_id')->change();
         });
 
         Schema::table('places', function (Blueprint $table) {
-            $table->longText('tgn_xml')->change();
+            $table->longText('tgn_xml')->nullable()->after('tgn_id')->change();
         });
 
         Schema::table('terms', function (Blueprint $table) {
-            $table->longText('aat_xml')->change();
+            $table->longText('aat_xml')->nullable()->after('aat_id')->change();
         });
     }
 
     public function down(): void
     {
         Schema::table('agents', function (Blueprint $table) {
-            $table->text('ulan_xml')->change();
+            $table->text('ulan_xml')->nullable()->after('ulan_certainty')->change();
         });
 
         Schema::table('artwork_types', function (Blueprint $table) {
-            $table->text('aat_xml')->change();
+            $table->text('aat_xml')->nullable()->after('aat_id')->change();
         });
 
         Schema::table('places', function (Blueprint $table) {
-            $table->text('tgn_xml')->change();
+            $table->text('tgn_xml')->nullable()->after('tgn_id')->change();
         });
 
         Schema::table('terms', function (Blueprint $table) {
-            $table->text('aat_xml')->change();
+            $table->text('aat_xml')->nullable()->after('aat_id')->change();
         });
     }
 };
