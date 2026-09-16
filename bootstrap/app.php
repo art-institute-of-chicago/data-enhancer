@@ -24,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/csv.php'));
         }
     )
-    ->withMiddleware(function (Middleware $middleware) {
+    ->withMiddleware(function (Middleware $middleware): void {
         $middleware->use([
             \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
             \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
@@ -36,7 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'basic_auth' => \Aic\Hub\Foundation\Middleware\BasicAuthMiddleware::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
+    ->withExceptions(function (Exceptions $exceptions): void {
         // Sentry error reporting
         $exceptions->reportable(function (Throwable $e) {
             Integration::captureUnhandledException($e);
