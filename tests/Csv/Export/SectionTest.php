@@ -10,9 +10,9 @@ class SectionTest extends BaseTestCase
 
     protected $modelClass = \App\Models\Section::class;
 
-    public function test_it_exports_resource()
+    public function test_it_exports_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => 'Foobar',
                 'accession' => '123.456.789',
@@ -34,9 +34,9 @@ class SectionTest extends BaseTestCase
         );
     }
 
-    public function test_it_exports_nullable_resource()
+    public function test_it_exports_nullable_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => null,
                 'accession' => null,

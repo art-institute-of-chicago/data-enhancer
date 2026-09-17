@@ -10,9 +10,9 @@ class TermTest extends CsvImportTestCase
 
     protected $resourceName = 'terms';
 
-    public function test_it_imports_resource()
+    public function test_it_imports_resource(): void
     {
-        return $this->checkCsvImport(
+        $this->checkCsvImport(
             [
                 'id' => 'TM-1',
                 'title' => 'Foobar',

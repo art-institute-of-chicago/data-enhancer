@@ -44,7 +44,7 @@ class ImportCsv extends AbstractJob
             $this->csvPath
         ));
 
-        $csv = Reader::createFromPath(Storage::path($this->csvPath), 'r');
+        $csv = Reader::from(Storage::path($this->csvPath), 'r');
         $csv->setHeaderOffset(0);
 
         $resourceConfig = SourceConsumer::getResourceConfig($this->sourceName, $this->resourceName);

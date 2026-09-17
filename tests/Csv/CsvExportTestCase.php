@@ -3,11 +3,9 @@
 namespace Tests\Csv;
 
 use Illuminate\Support\Facades\Artisan;
-
 use League\Csv\Reader;
 use App\Models\CsvFile;
 use Illuminate\Support\Facades\Storage;
-
 use Aic\Hub\Foundation\Testing\FeatureTestCase;
 
 abstract class CsvExportTestCase extends FeatureTestCase
@@ -26,7 +24,7 @@ abstract class CsvExportTestCase extends FeatureTestCase
     protected function checkCsvExport(
         array $initialState,
         array $expectedState
-    ) {
+    ): void {
         $datum = ($this->modelClass)::factory()->create($initialState);
 
         $response = $this->post('/csv/export', [

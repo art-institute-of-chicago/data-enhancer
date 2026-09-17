@@ -10,9 +10,9 @@ class ArtworkTest extends CsvImportTestCase
 
     protected $resourceName = 'artworks';
 
-    public function test_it_imports_resource()
+    public function test_it_imports_resource(): void
     {
-        return $this->checkCsvImport(
+        $this->checkCsvImport(
             [
                 'id' => 1,
                 'title' => 'Foobar',
@@ -50,9 +50,9 @@ class ArtworkTest extends CsvImportTestCase
         );
     }
 
-    public function test_it_detects_that_linked_art_json_has_not_changed()
+    public function test_it_detects_that_linked_art_json_has_not_changed(): void
     {
-        return $this->checkCsvImport(
+        $this->checkCsvImport(
             [
                 'id' => 1,
                 'linked_art_json' => (object) [

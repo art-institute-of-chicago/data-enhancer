@@ -10,7 +10,7 @@ class PublicationTest extends BaseTestCase
 
     protected $model = \App\Models\Publication::class;
 
-    protected function fields()
+    protected function fields(): array
     {
         return [
             'id' => 'integer',

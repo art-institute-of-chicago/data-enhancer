@@ -4,12 +4,11 @@ namespace Tests\Feature;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
-
 use Aic\Hub\Foundation\Testing\FeatureTestCase as BaseTestCase;
 
 class AggregatorImportTest extends BaseTestCase
 {
-    public function test_it_runs_import_aggregator()
+    public function test_it_runs_import_aggregator(): void
     {
         $since = Carbon::parse('10 min ago')->toIso8601String();
 

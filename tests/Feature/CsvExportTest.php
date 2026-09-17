@@ -4,15 +4,15 @@ namespace Tests\Feature;
 
 use Carbon\Carbon;
 use Tests\Concerns\HasDates;
-
 use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Fakes\FakeOutboundCsvTransformer;
-
 use Tests\Csv\CsvExportTestCase as BaseTestCase;
 
 class CsvExportTest extends BaseTestCase
 {
+    use RefreshDatabase;
     use HasFakeModel;
     use HasDates;
 
@@ -32,9 +32,9 @@ class CsvExportTest extends BaseTestCase
         ]);
     }
 
-    public function test_it_exports_resource()
+    public function test_it_exports_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'id' => 1,
                 'title' => 'Foobar',
@@ -54,9 +54,9 @@ class CsvExportTest extends BaseTestCase
         );
     }
 
-    public function test_it_exports_nullable_resource()
+    public function test_it_exports_nullable_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => null,
                 'acme_id' => null,
@@ -70,13 +70,13 @@ class CsvExportTest extends BaseTestCase
         );
     }
 
-    public function test_it_shows_csv_export_form()
+    public function test_it_shows_csv_export_form(): void
     {
         $response = $this->get('/csv/export');
         $response->assertSee('Export CSV');
     }
 
-    public function test_it_errors_on_missing_fields()
+    public function test_it_errors_on_missing_fields(): void
     {
         $response = $this->post('/csv/export');
         $response->assertSessionHasErrors([
@@ -84,7 +84,7 @@ class CsvExportTest extends BaseTestCase
         ]);
     }
 
-    public function test_it_errors_on_invalid_id()
+    public function test_it_errors_on_invalid_id(): void
     {
         $invalidId = ($this->modelClass)::factory()->getInvalidId();
 
@@ -98,7 +98,7 @@ class CsvExportTest extends BaseTestCase
         ]);
     }
 
-    public function test_it_errors_on_invalid_date()
+    public function test_it_errors_on_invalid_date(): void
     {
         $response = $this->post('/csv/export', [
             'resource' => $this->resourceName,
@@ -110,7 +110,7 @@ class CsvExportTest extends BaseTestCase
         ]);
     }
 
-    public function test_it_exports_many_sorted_items()
+    public function test_it_exports_many_sorted_items(): void
     {
         $datums = ($this->modelClass)::factory()
             ->count(3)
@@ -137,7 +137,7 @@ class CsvExportTest extends BaseTestCase
         }
     }
 
-    public function test_it_exports_only_specific_ids()
+    public function test_it_exports_only_specific_ids(): void
     {
         $datums = ($this->modelClass)::factory()
             ->count(8)
@@ -167,12 +167,12 @@ class CsvExportTest extends BaseTestCase
         );
 
         $this->assertEqualsCanonicalizing(
-            $exportedIds,
-            $chosenIds->all()
+            array_values($exportedIds),
+            $chosenIds->values()->all()
         );
     }
 
-    public function test_it_exports_only_items_updated_since_date()
+    public function test_it_exports_only_items_updated_since_date(): void
     {
         $this->travel(-5)->days();
         ($this->modelClass)::factory()->count(2)->create();
@@ -201,7 +201,7 @@ class CsvExportTest extends BaseTestCase
         }
     }
 
-    public function test_it_exports_only_items_where_field_is_blank()
+    public function test_it_exports_only_items_where_field_is_blank(): void
     {
         ($this->modelClass)::factory()->count(2)->create();
 
@@ -237,7 +237,7 @@ class CsvExportTest extends BaseTestCase
         }
     }
 
-    public function test_it_exports_only_specific_fields()
+    public function test_it_exports_only_specific_fields(): void
     {
         ($this->modelClass)::factory()->create();
 

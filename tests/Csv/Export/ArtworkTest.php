@@ -10,9 +10,9 @@ class ArtworkTest extends BaseTestCase
 
     protected $modelClass = \App\Models\Artwork::class;
 
-    public function test_it_exports_resource()
+    public function test_it_exports_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => 'Foobar',
                 'dimension_display' => '5 x 5 x 5 mm',
@@ -42,9 +42,9 @@ class ArtworkTest extends BaseTestCase
         );
     }
 
-    public function test_it_exports_nullable_resource()
+    public function test_it_exports_nullable_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => null,
                 'dimension_display' => null,

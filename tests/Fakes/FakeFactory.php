@@ -6,7 +6,7 @@ use Aic\Hub\Foundation\AbstractFactory;
 
 class FakeFactory extends AbstractFactory
 {
-    public function definition()
+    public function definition(): array
     {
         return [
             'id' => $this->getValidId(),

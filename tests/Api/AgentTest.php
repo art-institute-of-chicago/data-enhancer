@@ -10,7 +10,7 @@ class AgentTest extends BaseTestCase
 
     protected $model = \App\Models\Agent::class;
 
-    protected function fields()
+    protected function fields(): array
     {
         return [
             'id' => 'integer',

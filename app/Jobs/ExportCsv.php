@@ -99,13 +99,14 @@ class ExportCsv extends AbstractJob
             $csvId = Str::random(6);
         } while (CsvFile::where('id', $csvId)->exists());
 
-        $csvFilename = sprintf('%s-%s-%s.csv',
+        $csvFilename = sprintf(
+            '%s-%s-%s.csv',
             Carbon::now()->format('Y-m-d'),
             $this->resourceName,
             $csvId
         );
 
-        Storage::disk('public')->put($csvFilename, null);
+        Storage::disk('public')->put($csvFilename, '');
 
         $csvPath = Storage::disk('public')->path($csvFilename);
 

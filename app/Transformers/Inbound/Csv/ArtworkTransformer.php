@@ -3,7 +3,6 @@
 namespace App\Transformers\Inbound\Csv;
 
 use App\Transformers\Inbound\Csv\Concerns\FromJson;
-
 use App\Transformers\Datum;
 
 class ArtworkTransformer extends AbstractTransformer

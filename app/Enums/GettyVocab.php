@@ -15,7 +15,8 @@ enum GettyVocab: string
 
     public function getSubjectUri(string|int $gettyId): string
     {
-        return sprintf('%s/%sGetSubject?subjectId=%d',
+        return sprintf(
+            '%s/%sGetSubject?subjectId=%d',
             $this->getBaseUri(),
             $this->value,
             $gettyId,

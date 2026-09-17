@@ -10,9 +10,9 @@ class PublicationTest extends BaseTestCase
 
     protected $modelClass = \App\Models\Publication::class;
 
-    public function test_it_exports_resource()
+    public function test_it_exports_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => 'Foobar',
                 'site' => 'foosite',
@@ -28,9 +28,9 @@ class PublicationTest extends BaseTestCase
         );
     }
 
-    public function test_it_exports_nullable_resource()
+    public function test_it_exports_nullable_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => null,
                 'generic_page_id' => null,

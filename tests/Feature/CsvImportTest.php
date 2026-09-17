@@ -4,15 +4,15 @@ namespace Tests\Feature;
 
 use App\Library\SourceConsumer;
 use Tests\Concerns\HasDates;
-
 use Tests\Concerns\HasFakeModel;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Fakes\FakeInboundCsvTransformer;
-
 use Tests\Csv\CsvImportTestCase as BaseTestCase;
 
 class CsvImportTest extends BaseTestCase
 {
+    use RefreshDatabase;
     use HasFakeModel;
     use HasDates;
 
@@ -30,9 +30,9 @@ class CsvImportTest extends BaseTestCase
         ]);
     }
 
-    public function test_it_imports_resource()
+    public function test_it_imports_resource(): void
     {
-        return $this->checkCsvImport(
+        $this->checkCsvImport(
             [
                 'id' => 1,
                 'title' => 'Foobar',
@@ -56,9 +56,9 @@ class CsvImportTest extends BaseTestCase
         );
     }
 
-    public function test_it_imports_subset_of_importable_fields()
+    public function test_it_imports_subset_of_importable_fields(): void
     {
-        return $this->checkCsvImport(
+        $this->checkCsvImport(
             [
                 'id' => 2,
                 'title' => 'Foobar',
@@ -82,9 +82,9 @@ class CsvImportTest extends BaseTestCase
         );
     }
 
-    public function test_it_detects_that_json_field_has_not_changed()
+    public function test_it_detects_that_json_field_has_not_changed(): void
     {
-        return $this->checkCsvImport(
+        $this->checkCsvImport(
             [
                 'id' => 1,
                 'some_json' => (object) [
@@ -105,13 +105,13 @@ class CsvImportTest extends BaseTestCase
         );
     }
 
-    public function test_it_shows_csv_import_form()
+    public function test_it_shows_csv_import_form(): void
     {
         $response = $this->get('/csv/import');
         $response->assertSee('Import CSV');
     }
 
-    public function test_it_errors_on_missing_fields()
+    public function test_it_errors_on_missing_fields(): void
     {
         $response = $this->post('/csv/import');
         $response->assertSessionHasErrors([
@@ -128,7 +128,7 @@ class CsvImportTest extends BaseTestCase
      * in one batch. Also tests that `updated_at` gets updated correctly.
      * The `acme_id` column is modified between imports.
      */
-    public function test_it_imports_big_csv()
+    public function test_it_imports_big_csv(): void
     {
         $getCsvContents = fn ($items) => $items
             ->map(fn ($item) => $item->id . ',' . $item->acme_id)

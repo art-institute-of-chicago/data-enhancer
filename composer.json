@@ -11,26 +11,36 @@
         {
             "type": "vcs",
             "url": "https://github.com/art-institute-of-chicago/data-hub-foundation.git"
+        },
+        {
+            "type": "package",
+            "package": {
+                "type": "metapackage",
+                "name": "vendor/package-patches",
+                "version": "1.0.0",
+                "require": {
+                    "netresearch/composer-patches-plugin": "^1.3.1"
+                }
+            }
         }
     ],
     "require": {
-        "php": "^8.1",
-        "aic/data-hub-foundation": "dev-laravel-8-support",
+        "php": "^8.5",
+        "aic/data-hub-foundation": "^6.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.0",
+        "laravel/framework": "^13.0",
         "laravel/horizon": "^5.9",
-        "laravel/tinker": "^2.5",
+        "laravel/tinker": "^3.0",
         "league/csv": "^9.8",
-        "sentry/sentry-laravel": "^2.9",
+        "sentry/sentry-laravel": "^4.0",
         "spatie/laravel-slack-alerts": "^1.1"
     },
     "require-dev": {
-        "brianium/paratest": "^6.4",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.5",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^5.10",
-        "phpunit/phpunit": "^9.5.10"
+        "nunomaduro/collision": "^8.1",
+        "phpunit/phpunit": "^12.0"
     },
     "autoload": {
         "psr-4": {
@@ -55,8 +65,12 @@
             "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ],
         "lint": [
-            "php-cs-fixer fix --diff --config vendor/aic/data-hub-foundation/.php-cs-fixer.dist.php",
-            "DIR='vendor/aic/data-hub-foundation' && [ -L ${DIR} ] && [ -d ${DIR} ] && cd ${DIR} && php-cs-fixer fix --diff --config .php-cs-fixer.dist.php || true"
+            "@putenv COMPOSER=vendor/aic/data-hub-foundation/composer.json",
+            "@composer lint"
+        ],
+        "format": [
+            "@putenv COMPOSER=vendor/aic/data-hub-foundation/composer.json",
+            "@composer format"
         ],
         "foundation": [
             "php vendor/aic/data-hub-foundation/composer-dev.php",
@@ -77,10 +91,11 @@
         "sort-packages": true,
         "optimize-autoloader": true,
         "allow-plugins": {
+            "netresearch/composer-patches-plugin": true,
             "ocramius/package-versions": true,
-            "netresearch/composer-patches-plugin": true
+            "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

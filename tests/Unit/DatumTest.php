@@ -11,7 +11,7 @@ class DatumTest extends TestCase
 {
     private function getModel($input)
     {
-        return new class($input) extends BaseModel {
+        return new class ($input) extends BaseModel {
             protected $guarded = [];
         };
     }
@@ -19,7 +19,7 @@ class DatumTest extends TestCase
     /**
      * @todo Add test for Carbon value?
      */
-    private function getInput()
+    private function getInput(): array
     {
         $input = [
             'foo' => 1,
@@ -45,7 +45,7 @@ class DatumTest extends TestCase
         return $input;
     }
 
-    private function checkDatum($datum)
+    private function checkDatum($datum): void
     {
         $this->checkDatumFields($datum);
         $this->checkDatumFields($datum->grault);
@@ -66,7 +66,7 @@ class DatumTest extends TestCase
         }
     }
 
-    private function checkDatumFields($datum)
+    private function checkDatumFields($datum): void
     {
         $this->assertTrue($datum instanceof Datum);
         $this->assertEquals(1, $datum->foo);
@@ -78,21 +78,21 @@ class DatumTest extends TestCase
         $this->assertEquals(ExampleEnum::FOOBAR, $datum->xyzzy);
     }
 
-    public function test_one_datum_from_array()
+    public function test_one_datum_from_array(): void
     {
         $input = $this->getInput();
         $datum = new Datum($input);
         $this->checkDatum($datum);
     }
 
-    public function test_one_datum_from_object()
+    public function test_one_datum_from_object(): void
     {
         $input = (object) $this->getInput();
         $datum = new Datum($input);
         $this->checkDatum($datum);
     }
 
-    public function test_one_datum_from_model()
+    public function test_one_datum_from_model(): void
     {
         $input = $this->getModel($this->getInput());
         $datum = new Datum($input);

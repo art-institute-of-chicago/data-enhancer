@@ -1,0 +1,36 @@
+name: Testing
+on: [push]
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        services:
+            mysql:
+                image: mysql:8.0
+                env:
+                    MYSQL_ROOT_PASSWORD: password
+                    MYSQL_DATABASE: testing
+                    MYSQL_USER: sail
+                    MYSQL_PASSWORD: password
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="mysqladmin ping"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=3
+        steps:
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.5
+            - name: Checkout code
+              uses: actions/checkout@v7
+            - name: Install PHP dependencies
+              run: composer install --no-interaction --no-progress --no-scripts
+            - name: Migrate database
+              run: php artisan migrate --env=testing
+            - name: Generate key
+              run: php artisan key:generate --env=testing
+            - name: Run PHPUnit
+              run: php artisan test

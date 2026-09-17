@@ -10,7 +10,7 @@ class FakeInboundCsvTransformer extends AbstractTransformer
 {
     use FromJson;
 
-    public function getFields()
+    public function getFields(): array
     {
         return [
             'id' => null,

@@ -4,7 +4,6 @@ namespace Tests\Csv;
 
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
-
 use Aic\Hub\Foundation\Testing\FeatureTestCase;
 
 abstract class CsvImportTestCase extends FeatureTestCase
@@ -31,7 +30,7 @@ abstract class CsvImportTestCase extends FeatureTestCase
         string $csvContents,
         array $expectedState,
         bool $expectUpdatedAtToChange = true,
-    ) {
+    ): void {
         $initialItem = ($this->modelClass)::factory()->create($initialState);
         $id = $initialItem->getKey();
 

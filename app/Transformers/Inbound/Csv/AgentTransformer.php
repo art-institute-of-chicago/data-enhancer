@@ -4,7 +4,6 @@ namespace App\Transformers\Inbound\Csv;
 
 use App\Enums\GettyVocab;
 use App\Transformers\Inbound\Csv\Concerns\CanUpdateGettyXmlFields;
-
 use App\Transformers\Datum;
 
 class AgentTransformer extends AbstractTransformer

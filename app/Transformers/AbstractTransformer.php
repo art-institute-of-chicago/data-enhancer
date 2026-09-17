@@ -83,7 +83,6 @@ abstract class AbstractTransformer
     {
         return $this->taggedFields[$tag]
             ?? $this->taggedFields[$tag] = $this->initTaggedFields($tag);
-
     }
 
     private function initTaggedFields(string $tag): array

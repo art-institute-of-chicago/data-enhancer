@@ -12,6 +12,10 @@ use App\Jobs\Concerns\Debuggable;
 
 abstract class AbstractJob implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
     use Debuggable;
 }

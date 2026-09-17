@@ -10,9 +10,9 @@ class ArtworkTypeTest extends BaseTestCase
 
     protected $modelClass = \App\Models\ArtworkType::class;
 
-    public function test_it_exports_resource()
+    public function test_it_exports_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => 'Foobar',
                 'aat_id' => 1234,
@@ -28,9 +28,9 @@ class ArtworkTypeTest extends BaseTestCase
         );
     }
 
-    public function test_it_exports_nullable_resource()
+    public function test_it_exports_nullable_resource(): void
     {
-        return $this->checkCsvExport(
+        $this->checkCsvExport(
             [
                 'title' => null,
                 'aat_id' => null,

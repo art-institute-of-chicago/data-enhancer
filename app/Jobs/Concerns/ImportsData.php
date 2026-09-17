@@ -14,7 +14,7 @@ trait ImportsData
         string $modelClass,
         string $transformerClass,
         array $transformCallArgs = [],
-        callable $dataFilterFunc = null,
+        ?callable $dataFilterFunc = null,
     ) {
         $primaryKey = $modelClass::instance()->getKeyName();
         $transformer = app()->make($transformerClass);
